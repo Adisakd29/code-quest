@@ -40,6 +40,16 @@ if (process.env.DATABASE_URL) {
 
 async function initDb() {
   if (!pool) return;
+  // migration: โครงสร้างเวอร์ชันแรกไม่มีคอลัมน์ topic — ถ้าเจอให้สร้างตารางใหม่
+  await pool.query(`
+    DO $$ BEGIN
+      IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'progress')
+         AND NOT EXISTS (SELECT 1 FROM information_schema.columns
+                         WHERE table_name = 'progress' AND column_name = 'topic') THEN
+        DROP TABLE progress;
+      END IF;
+    END $$;
+  `);
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id            SERIAL PRIMARY KEY,
@@ -53,17 +63,31 @@ async function initDb() {
     CREATE TABLE IF NOT EXISTS progress (
       user_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       language  TEXT NOT NULL,
+      topic     TEXT NOT NULL,
       stage     INTEGER NOT NULL,
       completed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-      PRIMARY KEY (user_id, language, stage)
+      PRIMARY KEY (user_id, language, topic, stage)
     );
   `);
   console.log("✅ Database พร้อมใช้งาน");
 }
 
 /* ---------------- Game rules (server-side, กันโกง XP) ---------------- */
+/**
+ * XP ของแต่ละด่าน: STAGE_XP[ภาษา][หัวข้อ][ด่าน]
+ * ⚠️ ต้องตรงกับค่า xp ในเนื้อหาฝั่งเกม (public/index.html)
+ */
 const STAGE_XP = {
-  python: [50, 80, 120, 150], // XP ของแต่ละด่าน (index = stage)
+  python: {
+    print:         [30, 40, 50],
+    variable:      [40, 50, 60],
+    datastructure: [50, 60, 80],
+    operator:      [40, 50, 60],
+    ifelse:        [50, 60, 80],
+    loop:          [50, 60, 80, 100],
+    flowchart:     [80, 100],
+    function:      [60, 80, 100],
+  },
 };
 const REPLAY_XP = 10;
 const xpNeed = (level) => Math.round(100 * Math.pow(level, 1.5));
@@ -180,16 +204,16 @@ app.get("/api/me", needDb, auth, async (req, res) => {
 app.post("/api/complete", needDb, auth, async (req, res) => {
   const client = await pool.connect();
   try {
-    const { language, stage } = req.body || {};
-    const table = STAGE_XP[language];
+    const { language, topic, stage } = req.body || {};
+    const table = STAGE_XP[language] && STAGE_XP[language][topic];
     if (!table || !Number.isInteger(stage) || stage < 0 || stage >= table.length)
       return res.status(400).json({ error: "ด่านไม่ถูกต้อง" });
 
     await client.query("BEGIN");
     const ins = await client.query(
-      `INSERT INTO progress (user_id, language, stage)
-       VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING stage`,
-      [req.userId, language, stage]
+      `INSERT INTO progress (user_id, language, topic, stage)
+       VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING stage`,
+      [req.userId, language, topic, stage]
     );
     const first = ins.rows.length > 0;
     const gain = first ? table[stage] : REPLAY_XP;
@@ -223,7 +247,7 @@ function publicUser(u) {
 
 async function getProgress(userId) {
   const { rows } = await pool.query(
-    `SELECT language, stage FROM progress WHERE user_id = $1`,
+    `SELECT language, topic, stage FROM progress WHERE user_id = $1`,
     [userId]
   );
   return rows;
