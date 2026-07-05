@@ -9,30 +9,21 @@
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
 <style>
   :root{
-    --bg:#0f1226;
-    --panel:#1b2040;
-    --panel-2:#161a36;
-    --line:#2e3563;
-    --ink:#eef0ff;
-    --ink-dim:#9aa2d8;
-    --amber:#ffb347;
-    --cyan:#62e6ff;
-    --green:#6ee7a0;
-    --red:#ff6b81;
-    --code-bg:#0a0d1f;
-    --radius:14px;
+    --bg:#0f1226; --panel:#1b2040; --panel-2:#161a36; --line:#2e3563;
+    --ink:#eef0ff; --ink-dim:#9aa2d8;
+    --amber:#ffb347; --cyan:#62e6ff; --green:#6ee7a0; --red:#ff6b81;
+    --code-bg:#0a0d1f; --radius:14px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'IBM Plex Sans Thai',sans-serif;
-    min-height:100vh;
+    background:var(--bg); color:var(--ink);
+    font-family:'IBM Plex Sans Thai',sans-serif; min-height:100vh;
     background-image:
       radial-gradient(circle at 15% 10%, rgba(98,230,255,.06), transparent 40%),
       radial-gradient(circle at 85% 90%, rgba(255,179,71,.05), transparent 45%);
   }
   .pixel{font-family:'Press Start 2P',monospace}
+  .hide{display:none !important}
 
   /* ---------- Top bar ---------- */
   header{
@@ -40,66 +31,83 @@
     padding:14px 22px;border-bottom:1px solid var(--line);
     background:rgba(15,18,38,.85);position:sticky;top:0;z-index:10;backdrop-filter:blur(6px);
   }
-  .logo{font-size:13px;color:var(--cyan);letter-spacing:1px;text-shadow:0 0 12px rgba(98,230,255,.5)}
+  .logo{font-size:13px;color:var(--cyan);letter-spacing:1px;text-shadow:0 0 12px rgba(98,230,255,.5);cursor:pointer}
   .logo span{color:var(--amber)}
   .player{display:flex;align-items:center;gap:10px;margin-left:auto;flex-wrap:wrap}
-  .avatar{
-    width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--cyan),#7c6cff);
-    display:grid;place-items:center;font-size:16px;
-  }
+  .avatar{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--cyan),#7c6cff);display:grid;place-items:center;font-size:16px}
   .pname{font-size:14px;font-weight:600;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .lvl-badge{
-    font-size:9px;background:var(--amber);color:#3a2600;padding:6px 9px;border-radius:8px;
-    box-shadow:0 0 0 2px rgba(255,179,71,.25);white-space:nowrap;
-  }
+  .lvl-badge{font-size:9px;background:var(--amber);color:#3a2600;padding:6px 9px;border-radius:8px;box-shadow:0 0 0 2px rgba(255,179,71,.25);white-space:nowrap}
   .xp-wrap{min-width:180px;flex:0 1 260px}
   .xp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-dim);margin-bottom:4px}
   .xp-bar{height:12px;background:#0b0e20;border:1px solid var(--line);border-radius:99px;overflow:hidden}
-  .xp-fill{
-    height:100%;width:0%;border-radius:99px;
-    background:linear-gradient(90deg,var(--amber),#ffd98a);
-    box-shadow:0 0 10px rgba(255,179,71,.55);
-    transition:width .8s cubic-bezier(.22,1,.36,1);
-  }
-  .logout{
-    background:none;border:1px solid var(--line);color:var(--ink-dim);font-family:inherit;
-    padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;
-  }
+  .xp-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--amber),#ffd98a);box-shadow:0 0 10px rgba(255,179,71,.55);transition:width .8s cubic-bezier(.22,1,.36,1)}
+  .logout{background:none;border:1px solid var(--line);color:var(--ink-dim);font-family:inherit;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12.5px}
   .logout:hover{color:var(--ink);border-color:var(--ink-dim)}
 
-  /* ---------- Layout ---------- */
-  main{
-    display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:20px;
-    max-width:1200px;margin:0 auto;padding:22px;
-  }
-  @media(max-width:860px){main{grid-template-columns:1fr}}
-  .card{
-    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-    padding:20px;
-  }
+  /* ---------- Select screens ---------- */
+  .screen{max-width:1000px;margin:0 auto;padding:30px 22px}
+  .sec-eyebrow{font-size:9px;color:var(--cyan);letter-spacing:2px;margin-bottom:12px}
+  .sec-title{font-size:26px;font-weight:700;margin-bottom:8px}
+  .sec-sub{color:var(--ink-dim);font-size:15px;margin-bottom:26px;line-height:1.7}
+  .back{background:none;border:1px solid var(--line);color:var(--ink-dim);font-family:inherit;padding:8px 14px;border-radius:9px;cursor:pointer;font-size:13.5px;margin-bottom:20px}
+  .back:hover{color:var(--ink);border-color:var(--ink-dim)}
 
-  /* ---------- Mission ---------- */
-  .stage-tag{font-size:8px;color:var(--cyan);margin-bottom:12px;letter-spacing:1px}
+  .lang-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+  .lang-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;cursor:pointer;transition:all .18s;text-align:left;font-family:inherit;color:var(--ink);
+  }
+  .lang-card:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 8px 24px rgba(98,230,255,.12)}
+  .lang-card .icon{font-size:38px;margin-bottom:12px}
+  .lang-card h3{font-size:19px;margin-bottom:6px}
+  .lang-card p{color:var(--ink-dim);font-size:13.5px;line-height:1.7}
+  .lang-card .meta{margin-top:14px;font-size:12.5px;color:var(--cyan)}
+  .lang-card.soon{opacity:.5;cursor:not-allowed}
+  .lang-card.soon:hover{transform:none;border-color:var(--line);box-shadow:none}
+  .soon-tag{display:inline-block;font-size:10px;background:var(--panel-2);border:1px solid var(--line);color:var(--ink-dim);padding:4px 8px;border-radius:6px;margin-top:14px}
+
+  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+  .topic-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;cursor:pointer;transition:all .18s;text-align:left;font-family:inherit;color:var(--ink);position:relative;
+  }
+  .topic-card:hover{border-color:var(--amber);transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,179,71,.1)}
+  .topic-card .t-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .topic-card .t-num{font-size:8px;color:var(--ink-dim)}
+  .topic-card .icon{font-size:26px}
+  .topic-card h3{font-size:16px}
+  .topic-card p{color:var(--ink-dim);font-size:12.5px;line-height:1.65;min-height:40px}
+  .topic-card .t-meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--ink-dim)}
+  .topic-card .t-meta .done-txt{color:var(--green)}
+  .mini-bar{height:6px;background:#0b0e20;border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:8px}
+  .mini-fill{height:100%;background:var(--green);border-radius:99px;transition:width .4s}
+  .topic-card.complete{border-color:rgba(110,231,160,.5)}
+  .topic-card.complete::after{content:"✓";position:absolute;top:12px;right:14px;color:var(--green);font-weight:700}
+
+  /* ---------- Game layout ---------- */
+  main{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:20px;max-width:1200px;margin:0 auto;padding:22px}
+  @media(max-width:860px){main{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+
+  .stage-tag{font-size:8px;color:var(--cyan);margin-bottom:12px;letter-spacing:1px;line-height:1.9}
   .mission h2{font-size:22px;font-weight:700;margin-bottom:10px}
   .mission p{color:var(--ink-dim);line-height:1.75;font-size:15px}
-  .mission .goal{
-    margin-top:14px;background:var(--panel-2);border:1px dashed var(--line);
-    border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7;
-  }
+  .mission .goal{margin-top:14px;background:var(--panel-2);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7}
   .goal b{color:var(--amber)}
+  .goal .fc{
+    display:block;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--cyan);
+    background:var(--code-bg);border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;margin-top:10px;white-space:pre;overflow-x:auto;line-height:1.9;
+  }
   .reward{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--ink-dim)}
   .coin{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe3a3,var(--amber));box-shadow:0 0 8px rgba(255,179,71,.6);animation:spin 3s linear infinite}
   @keyframes spin{50%{transform:scaleX(.15)}}
-  .hint-btn{
-    margin-top:14px;background:none;border:1px solid var(--line);color:var(--cyan);
-    padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;
-  }
+  .hint-btn{margin-top:14px;background:none;border:1px solid var(--line);color:var(--cyan);padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px}
   .hint-btn:hover{border-color:var(--cyan)}
   .hint-box{display:none;margin-top:10px;font-size:13.5px;color:var(--ink-dim);background:var(--panel-2);border-left:3px solid var(--cyan);padding:10px 12px;border-radius:0 8px 8px 0;line-height:1.7}
   .hint-box.show{display:block}
   .hint-box code{font-family:'JetBrains Mono',monospace;color:var(--cyan);font-size:12.5px}
 
-  /* ---------- Robot companion ---------- */
   .robot-zone{display:flex;flex-direction:column;align-items:center;margin-top:22px;gap:10px}
   .robot{animation:bob 2.4s ease-in-out infinite}
   .robot.happy{animation:jump .5s ease 3}
@@ -107,135 +115,74 @@
   @keyframes bob{50%{transform:translateY(-7px)}}
   @keyframes jump{40%{transform:translateY(-22px) rotate(-4deg)}}
   @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-  .speech{
-    font-size:13px;background:var(--panel-2);border:1px solid var(--line);
-    padding:8px 14px;border-radius:12px;color:var(--ink-dim);text-align:center;max-width:260px;line-height:1.6;
-    transition:all .3s;
-  }
+  .speech{font-size:13px;background:var(--panel-2);border:1px solid var(--line);padding:8px 14px;border-radius:12px;color:var(--ink-dim);text-align:center;max-width:260px;line-height:1.6;transition:all .3s}
   .speech.ok{color:var(--green);border-color:rgba(110,231,160,.4)}
   .speech.no{color:var(--red);border-color:rgba(255,107,129,.4)}
 
-  /* ---------- Progress dots ---------- */
-  .dots{display:flex;gap:10px;margin-top:22px;justify-content:center}
-  .dot{
-    width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
-    display:grid;place-items:center;font-size:13px;color:var(--ink-dim);cursor:pointer;
-    background:var(--panel-2);transition:all .2s;font-family:inherit;
-  }
+  .dots{display:flex;gap:10px;margin-top:22px;justify-content:center;flex-wrap:wrap}
+  .dot{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;font-size:13px;color:var(--ink-dim);cursor:pointer;background:var(--panel-2);transition:all .2s;font-family:inherit}
   .dot.active{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 10px rgba(98,230,255,.3)}
   .dot.done{background:rgba(110,231,160,.12);border-color:rgba(110,231,160,.5);color:var(--green)}
 
-  /* ---------- Editor ---------- */
   .editor-card{display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden}
-  .editor-head{
-    display:flex;align-items:center;gap:10px;padding:12px 16px;
-    background:var(--panel-2);border-bottom:1px solid var(--line);
-  }
+  .editor-head{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--panel-2);border-bottom:1px solid var(--line)}
   .traffic{display:flex;gap:6px}
   .traffic i{width:11px;height:11px;border-radius:50%;display:block}
   .filename{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-dim)}
   .editor-head .actions{margin-left:auto;display:flex;gap:8px}
-  button.run{
-    font-family:'IBM Plex Sans Thai',sans-serif;font-weight:600;font-size:14px;
-    background:linear-gradient(135deg,var(--green),#3ecf82);color:#06301a;
-    border:none;padding:9px 20px;border-radius:9px;cursor:pointer;
-    box-shadow:0 3px 0 #1f7a4a;transition:transform .1s;
-  }
+  button.run{font-family:'IBM Plex Sans Thai',sans-serif;font-weight:600;font-size:14px;background:linear-gradient(135deg,var(--green),#3ecf82);color:#06301a;border:none;padding:9px 20px;border-radius:9px;cursor:pointer;box-shadow:0 3px 0 #1f7a4a;transition:transform .1s}
   button.run:active{transform:translateY(2px);box-shadow:none}
   button.run:disabled{opacity:.55;cursor:wait;box-shadow:none}
-  button.ghost{
-    background:none;border:1px solid var(--line);color:var(--ink-dim);
-    padding:9px 14px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;
-  }
+  button.ghost{background:none;border:1px solid var(--line);color:var(--ink-dim);padding:9px 14px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px}
   button.ghost:hover{color:var(--ink)}
-  textarea.code{
-    width:100%;min-height:230px;resize:vertical;border:none;outline:none;
-    background:var(--code-bg);color:#d9e2ff;
-    font-family:'JetBrains Mono',monospace;font-size:14.5px;line-height:1.8;
-    padding:18px 20px;tab-size:4;caret-color:var(--amber);
-  }
-  .console{
-    background:#070912;border-top:1px solid var(--line);padding:14px 20px;min-height:110px;
-    font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.8;
-  }
+  textarea.code{width:100%;min-height:230px;resize:vertical;border:none;outline:none;background:var(--code-bg);color:#d9e2ff;font-family:'JetBrains Mono',monospace;font-size:14.5px;line-height:1.8;padding:18px 20px;tab-size:4;caret-color:var(--amber)}
+  .console{background:#070912;border-top:1px solid var(--line);padding:14px 20px;min-height:110px;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.8}
   .console .tag{font-size:10px;color:var(--ink-dim);letter-spacing:2px;display:block;margin-bottom:6px;font-family:'IBM Plex Sans Thai',sans-serif}
   .console pre{white-space:pre-wrap;word-break:break-word;color:#c8d2ff}
   .console pre.err{color:var(--red)}
   .console .empty{color:#3d4470;font-style:italic;font-size:13px}
 
-  /* ---------- Result banner ---------- */
-  .banner{
-    display:none;align-items:center;gap:12px;margin:0 16px 16px;padding:13px 16px;border-radius:10px;font-size:14.5px;flex-wrap:wrap;
-  }
+  .banner{display:none;align-items:center;gap:12px;margin:0 16px 16px;padding:13px 16px;border-radius:10px;font-size:14.5px;flex-wrap:wrap}
   .banner.pass{display:flex;background:rgba(110,231,160,.1);border:1px solid rgba(110,231,160,.45);color:var(--green)}
   .banner.fail{display:flex;background:rgba(255,107,129,.08);border:1px solid rgba(255,107,129,.4);color:var(--red)}
-  .banner button.next{
-    margin-left:auto;background:var(--green);color:#06301a;border:none;font-weight:700;
-    padding:8px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;
-  }
+  .banner button.next{margin-left:auto;background:var(--green);color:#06301a;border:none;font-weight:700;padding:8px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px}
   .xp-pop{color:var(--amber);font-weight:700;font-size:13px;white-space:nowrap}
 
   /* ---------- Overlays ---------- */
-  .overlay{
-    position:fixed;inset:0;background:rgba(7,9,20,.86);display:none;
-    place-items:center;z-index:50;backdrop-filter:blur(4px);padding:20px;
-  }
+  .overlay{position:fixed;inset:0;background:rgba(7,9,20,.86);display:none;place-items:center;z-index:50;backdrop-filter:blur(4px);padding:20px}
   .overlay.show{display:grid}
   .levelup{text-align:center;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
   @keyframes pop{from{transform:scale(.4);opacity:0}}
   .levelup .big{font-size:26px;color:var(--amber);text-shadow:0 0 24px rgba(255,179,71,.7);margin-bottom:18px}
   .levelup .num{font-size:64px;color:var(--cyan);text-shadow:0 0 30px rgba(98,230,255,.8)}
   .levelup p{color:var(--ink-dim);margin-top:18px;font-size:15px}
-  .levelup button{
-    margin-top:24px;background:var(--amber);color:#3a2600;border:none;font-weight:700;
-    padding:12px 30px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:16px;
-    box-shadow:0 4px 0 #b87b1e;
-  }
+  .levelup button{margin-top:24px;background:var(--amber);color:#3a2600;border:none;font-weight:700;padding:12px 30px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:16px;box-shadow:0 4px 0 #b87b1e}
   .confetti{position:fixed;top:-14px;width:10px;height:14px;z-index:60;animation:fall linear forwards;pointer-events:none}
   @keyframes fall{to{transform:translateY(105vh) rotate(660deg);opacity:.2}}
 
   /* ---------- Auth ---------- */
-  .auth-card{
-    width:min(400px,100%);background:var(--panel);border:1px solid var(--line);
-    border-radius:var(--radius);padding:28px;animation:pop .4s cubic-bezier(.2,1.4,.4,1);
-  }
+  .auth-card{width:min(400px,100%);background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:28px;animation:pop .4s cubic-bezier(.2,1.4,.4,1)}
   .auth-card .logo-mid{font-size:14px;color:var(--cyan);text-align:center;margin-bottom:6px;text-shadow:0 0 14px rgba(98,230,255,.5)}
   .auth-card .logo-mid span{color:var(--amber)}
   .auth-card .sub{text-align:center;color:var(--ink-dim);font-size:13.5px;margin-bottom:20px}
   .tabs{display:flex;gap:6px;background:var(--panel-2);padding:5px;border-radius:10px;margin-bottom:18px}
-  .tabs button{
-    flex:1;background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:14px;
-    padding:9px;border-radius:7px;cursor:pointer;font-weight:600;
-  }
+  .tabs button{flex:1;background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:14px;padding:9px;border-radius:7px;cursor:pointer;font-weight:600}
   .tabs button.on{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
   .field{margin-bottom:12px}
   .field label{display:block;font-size:12.5px;color:var(--ink-dim);margin-bottom:5px}
-  .field input{
-    width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;
-    color:var(--ink);font-family:inherit;font-size:14.5px;padding:11px 13px;outline:none;
-  }
+  .field input{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;color:var(--ink);font-family:inherit;font-size:14.5px;padding:11px 13px;outline:none}
   .field input:focus{border-color:var(--cyan)}
   .auth-err{display:none;color:var(--red);font-size:13px;background:rgba(255,107,129,.08);border:1px solid rgba(255,107,129,.35);border-radius:8px;padding:9px 12px;margin-bottom:12px;line-height:1.6}
   .auth-err.show{display:block}
-  .auth-submit{
-    width:100%;background:linear-gradient(135deg,var(--cyan),#4db8e8);color:#04222e;font-weight:700;
-    border:none;padding:12px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:15px;
-    box-shadow:0 3px 0 #2a7ea3;margin-top:4px;
-  }
+  .auth-submit{width:100%;background:linear-gradient(135deg,var(--cyan),#4db8e8);color:#04222e;font-weight:700;border:none;padding:12px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:15px;box-shadow:0 3px 0 #2a7ea3;margin-top:4px}
   .auth-submit:disabled{opacity:.6;cursor:wait;box-shadow:none}
-  .guest{
-    width:100%;background:none;border:1px dashed var(--line);color:var(--ink-dim);
-    padding:11px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13.5px;margin-top:12px;
-  }
+  .guest{width:100%;background:none;border:1px dashed var(--line);color:var(--ink-dim);padding:11px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13.5px;margin-top:12px}
   .guest:hover{color:var(--ink);border-color:var(--ink-dim)}
   .sync-note{font-size:12px;color:var(--ink-dim);text-align:center;margin-top:14px;line-height:1.6}
 
   /* ---------- Loading ---------- */
-  .boot{
-    position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:100;
-    transition:opacity .5s;
-  }
-  .boot.hide{opacity:0;pointer-events:none}
+  .boot{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:100;transition:opacity .5s}
+  .boot.hide2{opacity:0;pointer-events:none}
   .boot .inner{text-align:center}
   .boot .logo-big{font-size:20px;color:var(--cyan);margin-bottom:26px;text-shadow:0 0 18px rgba(98,230,255,.6)}
   .boot .logo-big span{color:var(--amber)}
@@ -289,7 +236,7 @@
 </div>
 
 <header>
-  <div class="logo pixel">CODE<span> QUEST</span></div>
+  <div class="logo pixel" id="homeBtn" title="กลับหน้าเลือกภาษา">CODE<span> QUEST</span></div>
   <div class="player">
     <div class="avatar">🧑‍🚀</div>
     <span class="pname" id="pname">ผู้เยี่ยมชม</span>
@@ -302,10 +249,28 @@
   </div>
 </header>
 
-<main>
-  <!-- Mission panel -->
+<!-- ═══ Screen 1: เลือกภาษา ═══ -->
+<section class="screen" id="langScreen">
+  <div class="sec-eyebrow pixel">SELECT LANGUAGE</div>
+  <h1 class="sec-title">อยากผจญภัยในโลกของภาษาไหน?</h1>
+  <p class="sec-sub">เลือกภาษาโปรแกรมที่อยากฝึก แล้วเลือกหัวข้อที่อยากเรียนได้ตามใจ</p>
+  <div class="lang-grid" id="langGrid"></div>
+</section>
+
+<!-- ═══ Screen 2: เลือกหัวข้อ ═══ -->
+<section class="screen hide" id="topicScreen">
+  <button class="back" id="backToLang">← เปลี่ยนภาษา</button>
+  <div class="sec-eyebrow pixel" id="topicEyebrow">PYTHON COURSE</div>
+  <h1 class="sec-title" id="topicTitle">เลือกหัวข้อที่อยากเรียน</h1>
+  <p class="sec-sub">เรียนหัวข้อไหนก่อนก็ได้ แต่ถ้าเพิ่งเริ่ม แนะนำให้ไล่ตามลำดับ</p>
+  <div class="topic-grid" id="topicGrid"></div>
+</section>
+
+<!-- ═══ Screen 3: เล่นเกม ═══ -->
+<main class="hide" id="gameScreen">
   <section class="card mission">
-    <div class="stage-tag pixel" id="stageTag">🐍 PYTHON · STAGE 1 / 4</div>
+    <button class="back" id="backToTopic" style="margin-bottom:14px">← เลือกหัวข้ออื่น</button>
+    <div class="stage-tag pixel" id="stageTag"></div>
     <h2 id="mTitle"></h2>
     <p id="mDesc"></p>
     <div class="goal" id="mGoal"></div>
@@ -328,13 +293,12 @@
           <rect x="66" y="62" width="10" height="6" rx="3" fill="#62e6ff"/>
         </svg>
       </div>
-      <div class="speech" id="speech">พิมพ์โค้ดแล้วกด "รันโค้ด" ได้เลย เราเชียร์อยู่นะ!</div>
+      <div class="speech" id="speech"></div>
     </div>
 
     <div class="dots" id="dots"></div>
   </section>
 
-  <!-- Editor panel -->
   <section class="card editor-card">
     <div class="editor-head">
       <div class="traffic">
@@ -370,61 +334,389 @@
 </div>
 
 <script>
-/* ================= Game data ================= */
-const LANGUAGE = "python";
-const LEVELS = [
-  {
-    title: "พิมพ์คำทักทายแรก",
-    desc: "ทุกการผจญภัยเริ่มจากคำทักทาย ในภาษา Python เราใช้คำสั่ง print() เพื่อแสดงข้อความออกทางหน้าจอ",
-    goal: 'ทำให้โปรแกรมแสดงข้อความ <b>สวัสดี Python</b> ออกมา 1 บรรทัด',
-    starter: '# ภารกิจ: แสดงข้อความ สวัสดี Python\nprint("")\n',
-    hint: 'ใส่ข้อความไว้ในเครื่องหมายคำพูด เช่น <code>print("สวัสดี Python")</code>',
-    xp: 50,
-    check: (out, code) => out.trim() === "สวัสดี Python"
+/* ═══════════════ เนื้อหาเกม ═══════════════
+   ⚠️ ค่า xp ของแต่ละด่านต้องตรงกับ STAGE_XP ใน server.js */
+const COURSES = {
+  python: {
+    name: "Python", icon: "🐍",
+    tagline: "ภาษายอดนิยมที่อ่านง่ายที่สุด เหมาะกับผู้เริ่มต้น ใช้ได้ตั้งแต่ AI ยันเว็บไซต์",
+    topics: [
+      {
+        id: "print", icon: "🖨️", title: "คำสั่ง Print",
+        blurb: "ก้าวแรกของทุกโปรแกรมเมอร์ — สั่งให้คอมพิวเตอร์พูดกับเรา",
+        stages: [
+          {
+            title: "คำทักทายแรก",
+            desc: "ในภาษา Python เราใช้คำสั่ง print() เพื่อแสดงข้อความออกทางหน้าจอ ข้อความต้องอยู่ในเครื่องหมายคำพูดเสมอ",
+            goal: 'ทำให้โปรแกรมแสดงข้อความ <b>สวัสดี Python</b> ออกมา 1 บรรทัด',
+            starter: '# ภารกิจ: แสดงข้อความ สวัสดี Python\nprint("")\n',
+            hint: 'ใส่ข้อความไว้ในเครื่องหมายคำพูด เช่น <code>print("สวัสดี Python")</code>',
+            xp: 30,
+            check: (out) => out.trim() === "สวัสดี Python"
+          },
+          {
+            title: "ป้ายประกาศสามบรรทัด",
+            desc: "print หนึ่งคำสั่งจะขึ้นบรรทัดใหม่ให้เสมอ ถ้าอยากได้หลายบรรทัด ก็ใช้ print หลายครั้ง",
+            goal: 'แสดงป้ายประกาศ 3 บรรทัด: บรรทัดแรก <b>ยินดีต้อนรับ</b> บรรทัดสอง <b>สู่โลกของ</b> บรรทัดสาม <b>Python</b>',
+            starter: '# ภารกิจ: พิมพ์ป้ายประกาศ 3 บรรทัด\nprint("ยินดีต้อนรับ")\n\n',
+            hint: 'เพิ่ม print อีก 2 บรรทัด: <code>print("สู่โลกของ")</code> และ <code>print("Python")</code>',
+            xp: 40,
+            check: (out) => {
+              const l = out.trim().split("\n").map(s => s.trim());
+              return l.length === 3 && l[0] === "ยินดีต้อนรับ" && l[1] === "สู่โลกของ" && l[2] === "Python";
+            }
+          },
+          {
+            title: "พิมพ์หลายค่าพร้อมกัน",
+            desc: "print รับได้หลายค่าโดยคั่นด้วยเครื่องหมายจุลภาค (,) แล้วมันจะเว้นวรรคให้เองอัตโนมัติ",
+            goal: 'ใช้ print <b>คำสั่งเดียว</b> แสดงข้อความและตัวเลขคู่กัน ให้ได้ผลลัพธ์ <b>HP: 100</b>',
+            starter: '# ภารกิจ: พิมพ์ HP: 100 ด้วย print เดียว โดยคั่นค่าด้วย ,\nprint()\n',
+            hint: 'ลอง <code>print("HP:", 100)</code> — สังเกตว่าตัวเลขไม่ต้องมีเครื่องหมายคำพูด',
+            xp: 50,
+            check: (out, code) => out.trim() === "HP: 100" && code.includes(",")
+          }
+        ]
+      },
+      {
+        id: "variable", icon: "📦", title: "ตัวแปร (Variable)",
+        blurb: "กล่องวิเศษสำหรับเก็บข้อมูล ตั้งชื่อแล้วหยิบมาใช้เมื่อไหร่ก็ได้",
+        stages: [
+          {
+            title: "กล่องใส่ชื่อ",
+            desc: "ตัวแปรคือการตั้งชื่อให้ข้อมูล ใช้เครื่องหมาย = เพื่อเก็บค่า เช่น name = \"มะลิ\" แล้วเรียกใช้ผ่านชื่อได้เลย",
+            goal: 'สร้างตัวแปร <b>name</b> เก็บชื่อของคุณ แล้วแสดงผล <b>ฉันชื่อ ...</b> ตามด้วยชื่อในตัวแปร',
+            starter: '# ภารกิจ: ใส่ชื่อในตัวแปร name\nname = ""\nprint("ฉันชื่อ " + name)\n',
+            hint: 'แค่เติมชื่อในเครื่องหมายคำพูด เช่น <code>name = "มะลิ"</code>',
+            xp: 40,
+            check: (out, code) => /ฉันชื่อ .+/.test(out.trim()) && /name\s*=/.test(code)
+          },
+          {
+            title: "คำนวณพลังชีวิต",
+            desc: "ตัวแปรเก็บตัวเลขได้ด้วย และเอามาบวกลบคูณหารกันได้เหมือนเลขคณิตปกติ",
+            goal: 'สร้างตัวแปร <b>hp = 80</b> และ <b>potion = 25</b> แล้ว print ผลรวมของทั้งสอง (ต้องได้ <b>105</b>)',
+            starter: '# ภารกิจ: ดื่มยาเพิ่มพลัง! รวม hp กับ potion\nhp = 80\npotion = 25\n\n',
+            hint: 'พิมพ์ <code>print(hp + potion)</code> — Python จะคำนวณให้เอง',
+            xp: 50,
+            check: (out, code) => out.trim() === "105" && /hp\s*=/.test(code) && /\+/.test(code)
+          },
+          {
+            title: "f-string เวทมนตร์แทรกค่า",
+            desc: "f-string คือวิธีแทรกตัวแปรลงในข้อความแบบเท่ๆ แค่ใส่ f หน้าเครื่องหมายคำพูด แล้วครอบตัวแปรด้วย {}",
+            goal: 'สร้างตัวแปร <b>level = 5</b> แล้วใช้ f-string แสดงผล <b>ตอนนี้เลเวล 5 แล้ว</b>',
+            starter: '# ภารกิจ: ใช้ f-string แทรกค่า level ลงในประโยค\nlevel = 5\nprint(f"")\n',
+            hint: 'ลอง <code>print(f"ตอนนี้เลเวล {level} แล้ว")</code> — ตัวแปรใน {} จะถูกแทนที่ด้วยค่าจริง',
+            xp: 60,
+            check: (out, code) => out.trim() === "ตอนนี้เลเวล 5 แล้ว" && /f["']/.test(code)
+          }
+        ]
+      },
+      {
+        id: "datastructure", icon: "🗂️", title: "โครงสร้างข้อมูล",
+        blurb: "จัดระเบียบข้อมูลด้วย List และ Dictionary — กระเป๋าเก็บของของโปรแกรมเมอร์",
+        stages: [
+          {
+            title: "กระเป๋านักผจญภัย (List)",
+            desc: "List คือรายการข้อมูลหลายชิ้นในตัวแปรเดียว เขียนใน [] และหยิบของชิ้นที่ต้องการด้วยเลขตำแหน่ง (เริ่มนับจาก 0!)",
+            goal: 'มี list ชื่อ <b>items</b> อยู่แล้ว จง print ของ<b>ชิ้นแรก</b>ในกระเป๋า (ต้องได้ <b>ดาบ</b>)',
+            starter: '# ภารกิจ: หยิบของชิ้นแรกจากกระเป๋า\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
+            hint: 'ตำแหน่งแรกคือ 0 — ลอง <code>print(items[0])</code>',
+            xp: 50,
+            check: (out, code) => out.trim() === "ดาบ" && /\[0\]/.test(code)
+          },
+          {
+            title: "เก็บของเพิ่มเข้ากระเป๋า",
+            desc: "ใช้ .append() เพื่อเพิ่มของเข้าท้าย list และ len() เพื่อนับว่ามีของกี่ชิ้น",
+            goal: 'เพิ่ม <b>"คบเพลิง"</b> เข้าไปใน items แล้ว print จำนวนของทั้งหมด (ต้องได้ <b>4</b>)',
+            starter: '# ภารกิจ: เก็บคบเพลิงเข้ากระเป๋า แล้วนับของ\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
+            hint: 'สองบรรทัด: <code>items.append("คบเพลิง")</code> แล้ว <code>print(len(items))</code>',
+            xp: 60,
+            check: (out, code) => out.trim() === "4" && /\.append\(/.test(code) && /len\(/.test(code)
+          },
+          {
+            title: "บัตรประจำตัว (Dictionary)",
+            desc: "Dictionary เก็บข้อมูลเป็นคู่ ชื่อช่อง: ค่า เขียนใน {} เหมาะกับข้อมูลที่มีหลายด้าน เช่น ข้อมูลตัวละคร",
+            goal: 'มี dict ชื่อ <b>player</b> อยู่แล้ว จง print ค่าพลังชีวิตจากช่อง <b>"hp"</b> (ต้องได้ <b>100</b>)',
+            starter: '# ภารกิจ: อ่านค่า hp จากบัตรตัวละคร\nplayer = {"name": "นักผจญภัย", "hp": 100}\n\n',
+            hint: 'เข้าถึงค่าใน dict ด้วยชื่อช่อง: <code>print(player["hp"])</code>',
+            xp: 80,
+            check: (out, code) => out.trim() === "100" && /\[\s*["']hp["']\s*\]/.test(code)
+          }
+        ]
+      },
+      {
+        id: "operator", icon: "➗", title: "ตัวดำเนินการ (Operator)",
+        blurb: "เครื่องมือคำนวณและเปรียบเทียบ — หาเศษ หารปัดเศษ และตรรกะ and/or",
+        stages: [
+          {
+            title: "หารเอาเศษ กับหารปัดเศษ",
+            desc: "นอกจาก + - * / แล้ว Python ยังมี % (หารเอาเศษ) และ // (หารปัดเศษลง) ที่ใช้บ่อยมากในเกมและโจทย์จริง",
+            goal: 'print สองบรรทัด: บรรทัดแรกคือ <b>17 % 5</b> บรรทัดสองคือ <b>17 // 5</b> (ต้องได้ <b>2</b> และ <b>3</b>)',
+            starter: '# ภารกิจ: แบ่งเหรียญ 17 อันให้เพื่อน 5 คน\n# เหลือเศษกี่อัน? ได้คนละกี่อัน?\n\n',
+            hint: 'สองบรรทัด: <code>print(17 % 5)</code> และ <code>print(17 // 5)</code>',
+            xp: 40,
+            check: (out, code) => {
+              const l = out.trim().split("\n").map(s => s.trim());
+              return l.length === 2 && l[0] === "2" && l[1] === "3" && code.includes("%") && code.includes("//");
+            }
+          },
+          {
+            title: "เครื่องเปรียบเทียบ",
+            desc: "ตัวดำเนินการเปรียบเทียบ เช่น > < == != จะให้คำตอบเป็น True หรือ False ซึ่งเป็นหัวใจของการตัดสินใจในโปรแกรม",
+            goal: 'print สองบรรทัด: <b>10 > 7</b> และ <b>3 == 5</b> (ต้องได้ <b>True</b> และ <b>False</b>)',
+            starter: '# ภารกิจ: ให้ Python ตอบคำถามจริง/เท็จ\n# ระวัง: เท่ากับ ใช้ == (สองตัว) ไม่ใช่ =\n\n',
+            hint: '<code>print(10 > 7)</code> และ <code>print(3 == 5)</code> — ไม่ต้องใส่เครื่องหมายคำพูด',
+            xp: 50,
+            check: (out, code) => {
+              const l = out.trim().split("\n").map(s => s.trim());
+              return l.length === 2 && l[0] === "True" && l[1] === "False" && code.includes("==");
+            }
+          },
+          {
+            title: "ตรรกะ and / or",
+            desc: "and จะเป็น True เมื่อทั้งสองฝั่งจริง ส่วน or เป็น True เมื่อฝั่งใดฝั่งหนึ่งจริง ใช้รวมหลายเงื่อนไขเข้าด้วยกัน",
+            goal: 'มีตัวแปร key และ torch อยู่แล้ว จง print <b>key and torch</b> แล้วตามด้วย <b>key or torch</b> (ต้องได้ <b>False</b> และ <b>True</b>)',
+            starter: '# ภารกิจ: มีกุญแจแต่ไม่มีคบเพลิง จะเข้าถ้ำได้ไหม?\nkey = True\ntorch = False\n\n',
+            hint: '<code>print(key and torch)</code> และ <code>print(key or torch)</code>',
+            xp: 60,
+            check: (out, code) => {
+              const l = out.trim().split("\n").map(s => s.trim());
+              return l.length === 2 && l[0] === "False" && l[1] === "True" && /\band\b/.test(code) && /\bor\b/.test(code);
+            }
+          }
+        ]
+      },
+      {
+        id: "ifelse", icon: "🚪", title: "เงื่อนไข If-Else",
+        blurb: "สอนโปรแกรมให้ตัดสินใจ — ถ้าเจอแบบนี้ให้ทำอย่างนั้น ไม่งั้นทำอีกอย่าง",
+        stages: [
+          {
+            title: "ประตูลับ",
+            desc: "if ใช้ตรวจเงื่อนไข ถ้าจริงจะทำบรรทัดที่ย่อหน้าเข้าไป ถ้าไม่จริงจะไปทำในส่วน else แทน อย่าลืมเครื่องหมาย : ท้ายบรรทัด",
+            goal: 'กำหนด <b>key = 7</b> ถ้า key มากกว่า 5 ให้พิมพ์ <b>ประตูเปิดแล้ว!</b> ไม่งั้นพิมพ์ <b>ประตูล็อกอยู่</b>',
+            starter: '# ภารกิจ: ใช้ if/else เปิดประตูลับ\nkey = 7\n\n',
+            hint: 'โครงสร้าง: <code>if key > 5:</code> (ขึ้นบรรทัดใหม่ ย่อหน้า) <code>print(...)</code> แล้ว <code>else:</code> อีกชุด',
+            xp: 50,
+            check: (out, code) => out.trim() === "ประตูเปิดแล้ว!" && /if\s+/.test(code) && /else\s*:/.test(code)
+          },
+          {
+            title: "ตัดเกรดด้วย elif",
+            desc: "ถ้ามีมากกว่า 2 ทางเลือก ใช้ elif (else if) คั่นกลาง Python จะเช็คจากบนลงล่างแล้วเลือกทางแรกที่เป็นจริง",
+            goal: 'กำหนด <b>score = 75</b> ถ้า ≥ 80 พิมพ์ <b>เก่งมาก</b> / ถ้า ≥ 50 พิมพ์ <b>ผ่าน</b> / นอกนั้นพิมพ์ <b>ลองใหม่</b> (คำตอบต้องได้ <b>ผ่าน</b>)',
+            starter: '# ภารกิจ: ตัดเกรดคะแนนสอบเวทมนตร์\nscore = 75\n\n',
+            hint: 'เรียงเป็น <code>if score >= 80:</code> → <code>elif score >= 50:</code> → <code>else:</code>',
+            xp: 60,
+            check: (out, code) => out.trim() === "ผ่าน" && /elif\s+/.test(code)
+          },
+          {
+            title: "เงื่อนไขซ้อนด้วย and",
+            desc: "บางครั้งต้องผ่านหลายเงื่อนไขพร้อมกัน เช่น ต้องมีพลังชีวิตเหลือ และ มีกุญแจ ถึงจะไปต่อได้ ใช้ and เชื่อมใน if ได้เลย",
+            goal: 'กำหนด <b>hp = 50</b> และ <b>has_key = True</b> ถ้า hp มากกว่า 0 <b>และ</b> has_key เป็นจริง พิมพ์ <b>ไปต่อได้!</b> ไม่งั้นพิมพ์ <b>ติดอยู่ที่เดิม</b>',
+            starter: '# ภารกิจ: เช็คสองเงื่อนไขก่อนเข้าด่านต่อไป\nhp = 50\nhas_key = True\n\n',
+            hint: 'เขียน <code>if hp > 0 and has_key:</code> — ตัวแปร True/False ใช้เดี่ยวๆ ในเงื่อนไขได้เลย',
+            xp: 80,
+            check: (out, code) => out.trim() === "ไปต่อได้!" && /\band\b/.test(code) && /if\s+/.test(code)
+          }
+        ]
+      },
+      {
+        id: "loop", icon: "🔁", title: "ลูป For / While",
+        blurb: "ทำงานซ้ำร้อยรอบด้วยโค้ดไม่กี่บรรทัด — พลังที่แท้จริงของคอมพิวเตอร์",
+        stages: [
+          {
+            title: "วนลูปเก็บเหรียญ",
+            desc: "for i in range(1, 6) จะวน 5 รอบ โดย i มีค่า 1,2,3,4,5 (range หยุดก่อนเลขตัวหลัง) บรรทัดในลูปต้องย่อหน้าเข้าไป",
+            goal: 'ใช้ <b>for loop</b> แสดง <b>เก็บเหรียญที่ 1</b> ไปจนถึง <b>เก็บเหรียญที่ 5</b> (5 บรรทัด)',
+            starter: '# ภารกิจ: วนลูปเก็บเหรียญ 5 อัน\nfor i in range(1, 6):\n    print()\n',
+            hint: 'ในลูป ลอง <code>print("เก็บเหรียญที่", i)</code>',
+            xp: 50,
+            check: (out, code) => {
+              const l = out.trim().split("\n").map(s => s.trim().replace(/\s+/g, " "));
+              return /for\s+/.test(code) && l.length === 5 && l.every((s, i) => s === `เก็บเหรียญที่ ${i + 1}`);
+            }
+          },
+          {
+            title: "รวมสมบัติทั้งหมด",
+            desc: "รูปแบบที่ใช้บ่อยสุดของลูป: สร้างตัวแปรผลรวมไว้ก่อน แล้วบวกสะสมทีละรอบ",
+            goal: 'ใช้ for loop รวมตัวเลข <b>1 ถึง 10</b> เก็บในตัวแปร total แล้ว print ออกมา (ต้องได้ <b>55</b>)',
+            starter: '# ภารกิจ: รวมค่าสมบัติ 1 ถึง 10\ntotal = 0\nfor i in range(1, 11):\n    # บวก i เข้าไปใน total\n\nprint(total)\n',
+            hint: 'ในลูปเขียน <code>total = total + i</code> (หรือย่อเป็น <code>total += i</code>)',
+            xp: 60,
+            check: (out, code) => out.trim() === "55" && /for\s+/.test(code) && /range\(/.test(code)
+          },
+          {
+            title: "นับถอยหลังด้วย While",
+            desc: "while จะวนไปเรื่อยๆ ตราบใดที่เงื่อนไขยังจริง ระวัง! ต้องมีบรรทัดที่ทำให้เงื่อนไขเป็นเท็จได้ ไม่งั้นลูปจะไม่มีวันจบ",
+            goal: 'ใช้ <b>while</b> นับถอยหลัง <b>3, 2, 1</b> (บรรทัดละเลข) แล้วปิดท้ายด้วย <b>ทะยานออกไป!</b>',
+            starter: '# ภารกิจ: นับถอยหลังปล่อยจรวด\ncount = 3\nwhile count > 0:\n    print(count)\n    # อย่าลืมลดค่า count!\n\nprint("ทะยานออกไป!")\n',
+            hint: 'ในลูปเพิ่ม <code>count = count - 1</code> (หรือ <code>count -= 1</code>) ไม่งั้นลูปไม่จบ',
+            xp: 80,
+            check: (out, code) => {
+              const l = out.trim().split("\n").map(s => s.trim());
+              return /while\s+/.test(code) && l.length === 4 && l[0] === "3" && l[1] === "2" && l[2] === "1" && l[3] === "ทะยานออกไป!";
+            }
+          },
+          {
+            title: "กรองเฉพาะเลขคู่",
+            desc: "รวมพลังลูปกับ if: วนดูตัวเลขทีละตัว แล้วเลือกทำเฉพาะตัวที่เข้าเงื่อนไข เลขคู่คือเลขที่หาร 2 ลงตัว (เศษเป็น 0)",
+            goal: 'วนลูปเลข 1 ถึง 10 แล้ว print <b>เฉพาะเลขคู่</b> (ต้องได้ 2, 4, 6, 8, 10 บรรทัดละเลข)',
+            starter: '# ภารกิจ: เดินเก็บเฉพาะเหรียญเลขคู่\nfor i in range(1, 11):\n    # print เฉพาะตอนที่ i เป็นเลขคู่\n\n',
+            hint: 'ในลูปเช็ค <code>if i % 2 == 0:</code> แล้วค่อย <code>print(i)</code>',
+            xp: 100,
+            check: (out, code) => {
+              const l = out.trim().split("\n").map(s => s.trim());
+              return /for\s+/.test(code) && /%/.test(code) && l.join(",") === "2,4,6,8,10";
+            }
+          }
+        ]
+      },
+      {
+        id: "flowchart", icon: "🧭", title: "Flowchart สู่โค้ด",
+        blurb: "อ่านผังงานให้เป็น แล้วแปลงเป็นโค้ด — ทักษะออกแบบโปรแกรมก่อนลงมือเขียน",
+        stages: [
+          {
+            title: "อ่านผังงานเงื่อนไข",
+            desc: "Flowchart คือแผนภาพแสดงลำดับการทำงานของโปรแกรม สี่เหลี่ยมคือคำสั่ง ข้าวหลามตัด (?) คือจุดตัดสินใจที่แยกเป็นสองทาง จงอ่านผังแล้วเขียนโค้ดให้ตรงเป๊ะ",
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n     x = 10\n        │\n   ┌─ x > 5 ? ─┐\n  ใช่          ไม่\n   │            │\nพิมพ์ "มากกว่า"   พิมพ์ "น้อยกว่า"\n   └─────┬─────┘\n        จบ</span>',
+            starter: '# ภารกิจ: แปลงผังงานเป็นโค้ด\n\n',
+            hint: 'เริ่มจาก <code>x = 10</code> แล้วใช้ if/else ตามเส้นทางในผัง — x เป็น 10 ซึ่งมากกว่า 5 ผลลัพธ์จึงควรเป็น "มากกว่า"',
+            xp: 80,
+            check: (out, code) => out.trim() === "มากกว่า" && /if\s+/.test(code) && /x\s*=/.test(code)
+          },
+          {
+            title: "อ่านผังงานลูป",
+            desc: "ผังงานที่มีเส้นวนกลับขึ้นไปคือลูป! ตามเส้นดูว่าอะไรถูกทำซ้ำ และเงื่อนไขไหนที่ทำให้หลุดออกจากลูป",
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n      i = 1\n        │\n   ┌─ i <= 3 ? ◄──┐\n  ใช่          │\n   │              │\nพิมพ์ "รอบที่", i    │\n   │              │\n  i = i + 1 ──────┘\n\n  ไม่ → พิมพ์ "จบ"</span>',
+            starter: '# ภารกิจ: แปลงผังงานลูปเป็นโค้ด\n\n',
+            hint: 'ใช้ <code>while i <= 3:</code> ข้างในมี print กับ i = i + 1 แล้วค่อย print("จบ") นอกลูป — หรือใช้ for ก็ได้ถ้าผลลัพธ์ตรงกัน',
+            xp: 100,
+            check: (out, code) => {
+              const l = out.trim().split("\n").map(s => s.trim().replace(/\s+/g, " "));
+              return l.length === 4 && l[0] === "รอบที่ 1" && l[1] === "รอบที่ 2" && l[2] === "รอบที่ 3" && l[3] === "จบ";
+            }
+          }
+        ]
+      },
+      {
+        id: "function", icon: "🧩", title: "ฟังก์ชัน (Function)",
+        blurb: "ห่อโค้ดเป็นท่าไม้ตาย ตั้งชื่อไว้ แล้วเรียกใช้ซ้ำได้ไม่จำกัด",
+        stages: [
+          {
+            title: "ท่าไม้ตายแรก",
+            desc: "def คือการสร้างฟังก์ชัน — ห่อโค้ดไว้ใต้ชื่อที่เราตั้ง โค้ดจะยังไม่ทำงานจนกว่าจะถูก \"เรียก\" ด้วยชื่อตามด้วยวงเล็บ",
+            goal: 'สร้างฟังก์ชัน <b>greet</b> ที่พิมพ์ <b>สวัสดีนักผจญภัย</b> แล้วเรียกใช้มัน 1 ครั้ง',
+            starter: '# ภารกิจ: สร้างและเรียกใช้ฟังก์ชันแรก\ndef greet():\n    print("สวัสดีนักผจญภัย")\n\n# เรียกใช้ฟังก์ชันตรงนี้\n',
+            hint: 'เรียกฟังก์ชันด้วยชื่อ + วงเล็บ: <code>greet()</code> (ไม่ต้องมี def)',
+            xp: 60,
+            check: (out, code) => out.trim() === "สวัสดีนักผจญภัย" && /def\s+greet/.test(code)
+          },
+          {
+            title: "รับค่าและส่งค่ากลับ",
+            desc: "ฟังก์ชันรับข้อมูลผ่านวงเล็บ (parameter) และส่งผลลัพธ์กลับด้วย return ทำให้เอาผลไปใช้ต่อได้",
+            goal: 'สร้างฟังก์ชัน <b>double(x)</b> ที่ return ค่า x คูณ 2 แล้ว <b>print(double(21))</b> (ต้องได้ <b>42</b>)',
+            starter: '# ภารกิจ: สร้างเวทเพิ่มพลังสองเท่า\ndef double(x):\n    # return ค่า x คูณ 2\n\nprint(double(21))\n',
+            hint: 'ในฟังก์ชันเขียน <code>return x * 2</code>',
+            xp: 80,
+            check: (out, code) => out.trim() === "42" && /def\s+double/.test(code) && /return/.test(code)
+          },
+          {
+            title: "ฟังก์ชัน + ลูป = คอมโบ",
+            desc: "ด่านสุดท้าย! รวมทุกอย่างที่เรียนมา: สร้างฟังก์ชันแล้วเรียกใช้ซ้ำๆ ในลูป นี่คือวิธีที่โปรแกรมจริงทำงาน",
+            goal: 'สร้างฟังก์ชัน <b>power_up(lv)</b> ที่ return ค่า lv + 10 แล้วใช้ for loop เรียกกับเลข 1 ถึง 3 และ print ผลลัพธ์ (ต้องได้ <b>11, 12, 13</b> บรรทัดละเลข)',
+            starter: '# ภารกิจสุดท้าย: อัพพลังทีมทั้ง 3 คน\ndef power_up(lv):\n    return lv + 10\n\n# วนลูป 1 ถึง 3 แล้ว print(power_up(i))\n',
+            hint: '<code>for i in range(1, 4):</code> แล้วในลูป <code>print(power_up(i))</code>',
+            xp: 100,
+            check: (out, code) => {
+              const l = out.trim().split("\n").map(s => s.trim());
+              return /def\s+power_up/.test(code) && /for\s+/.test(code) && l.join(",") === "11,12,13";
+            }
+          }
+        ]
+      }
+    ]
   },
-  {
-    title: "ตัวแปรคู่ใจ",
-    desc: "ตัวแปรคือกล่องเก็บข้อมูล เราตั้งชื่อกล่องแล้วหยิบมาใช้เมื่อไหร่ก็ได้ ลองสร้างตัวแปรเก็บชื่อของคุณดู",
-    goal: 'สร้างตัวแปรชื่อ <b>name</b> เก็บชื่อของคุณ แล้วแสดงผลว่า <b>ฉันชื่อ ...</b> (ตามด้วยชื่อในตัวแปร)',
-    starter: '# ภารกิจ: สร้างตัวแปร name แล้วพิมพ์ ฉันชื่อ ตามด้วยชื่อ\nname = ""\nprint("ฉันชื่อ " + name)\n',
-    hint: 'ใส่ชื่อในตัวแปรก่อน เช่น <code>name = "มะลิ"</code> แล้วบรรทัด print จะต่อข้อความให้เอง',
-    xp: 80,
-    check: (out, code) => /ฉันชื่อ .+/.test(out.trim()) && /name\s*=/.test(code)
+  javascript: {
+    name: "JavaScript", icon: "🟨", comingSoon: true,
+    tagline: "ภาษาแห่งโลกเว็บ ทุกเว็บไซต์ที่คุณใช้มี JavaScript อยู่เบื้องหลัง"
   },
-  {
-    title: "วนลูปเก็บเหรียญ",
-    desc: "ถ้ามีเหรียญ 5 อันคงไม่มีใครอยากพิมพ์ print ห้ารอบ! ลูป for ช่วยให้เราทำงานซ้ำๆ ได้ในไม่กี่บรรทัด",
-    goal: 'ใช้ <b>for loop</b> แสดงข้อความ <b>เก็บเหรียญที่ 1</b> ไปจนถึง <b>เก็บเหรียญที่ 5</b> (รวม 5 บรรทัด)',
-    starter: '# ภารกิจ: วนลูปเก็บเหรียญ 5 อัน\nfor i in range(1, 6):\n    print()\n',
-    hint: 'ในลูป ตัวแปร i จะเป็น 1,2,3,4,5 — ลอง <code>print("เก็บเหรียญที่", i)</code>',
-    xp: 120,
-    check: (out, code) => {
-      const lines = out.trim().split("\n").map(s => s.trim());
-      if (!/for\s+/.test(code)) return false;
-      if (lines.length !== 5) return false;
-      return lines.every((l, idx) => l.replace(/\s+/g, " ") === `เก็บเหรียญที่ ${idx + 1}`);
-    }
-  },
-  {
-    title: "เงื่อนไขเปิดประตูลับ",
-    desc: "ประตูลับจะเปิดก็ต่อเมื่อพลังกุญแจมากกว่า 5 เท่านั้น คำสั่ง if/else ช่วยให้โปรแกรมตัดสินใจได้",
-    goal: 'กำหนด <b>key = 7</b> ถ้า key มากกว่า 5 ให้พิมพ์ <b>ประตูเปิดแล้ว!</b> ไม่งั้นพิมพ์ <b>ประตูล็อกอยู่</b>',
-    starter: '# ภารกิจ: ใช้ if/else เปิดประตูลับ\nkey = 7\n\n',
-    hint: 'โครงสร้างคือ <code>if key > 5:</code> ตามด้วยบรรทัดที่ย่อหน้าเข้าไป แล้วต่อด้วย <code>else:</code>',
-    xp: 150,
-    check: (out, code) => out.trim() === "ประตูเปิดแล้ว!" && /if\s+/.test(code) && /else\s*:/.test(code)
+  cpp: {
+    name: "C++", icon: "⚙️", comingSoon: true,
+    tagline: "ภาษาสายพลัง เร็วแรงระดับเกม AAA และระบบปฏิบัติการ"
   }
-];
+};
 
-/* ================= State ================= */
-let state = { user: null, level: 1, xp: 0, stage: 0, done: [] };
+/* ═══════════════ State ═══════════════ */
+let state = { user: null, level: 1, xp: 0, lang: null, topic: null, stage: 0, done: new Set() };
 const xpNeed = lv => Math.round(100 * Math.pow(lv, 1.5));
+const doneKey = (lang, topic, stage) => `${lang}/${topic}/${stage}`;
+const curTopic = () => COURSES[state.lang].topics.find(t => t.id === state.topic);
+const levels = () => curTopic().stages;
 
-/* ================= Elements ================= */
 const $ = id => document.getElementById(id);
 const codeEl = $("code"), outEl = $("out"), runBtn = $("runBtn");
 
-/* ================= API ================= */
+/* ═══════════════ Screens ═══════════════ */
+function showScreen(name) {
+  $("langScreen").classList.toggle("hide", name !== "lang");
+  $("topicScreen").classList.toggle("hide", name !== "topic");
+  $("gameScreen").classList.toggle("hide", name !== "game");
+  window.scrollTo(0, 0);
+}
+
+function renderLangs() {
+  const g = $("langGrid");
+  g.innerHTML = "";
+  for (const [id, c] of Object.entries(COURSES)) {
+    const el = document.createElement("button");
+    el.className = "lang-card" + (c.comingSoon ? " soon" : "");
+    const topicCount = c.topics ? c.topics.length : 0;
+    const stageCount = c.topics ? c.topics.reduce((n, t) => n + t.stages.length, 0) : 0;
+    el.innerHTML = `
+      <div class="icon">${c.icon}</div>
+      <h3>${c.name}</h3>
+      <p>${c.tagline}</p>
+      ${c.comingSoon
+        ? `<span class="soon-tag">🔒 เร็วๆ นี้</span>`
+        : `<div class="meta">${topicCount} หัวข้อ · ${stageCount} ด่าน →</div>`}
+    `;
+    if (!c.comingSoon) el.onclick = () => { state.lang = id; renderTopics(); showScreen("topic"); };
+    g.appendChild(el);
+  }
+}
+
+function renderTopics() {
+  const c = COURSES[state.lang];
+  $("topicEyebrow").textContent = `${c.name.toUpperCase()} COURSE`;
+  $("topicTitle").textContent = `${c.icon} ${c.name} — เลือกหัวข้อที่อยากเรียน`;
+  const g = $("topicGrid");
+  g.innerHTML = "";
+  c.topics.forEach((t, idx) => {
+    const doneCount = t.stages.filter((_, s) => state.done.has(doneKey(state.lang, t.id, s))).length;
+    const total = t.stages.length;
+    const totalXp = t.stages.reduce((n, s) => n + s.xp, 0);
+    const el = document.createElement("button");
+    el.className = "topic-card" + (doneCount === total ? " complete" : "");
+    el.innerHTML = `
+      <div class="t-num pixel">TOPIC ${String(idx + 1).padStart(2, "0")}</div>
+      <div class="t-head"><span class="icon">${t.icon}</span><h3>${t.title}</h3></div>
+      <p>${t.blurb}</p>
+      <div class="t-meta">
+        <span class="${doneCount === total ? "done-txt" : ""}">${doneCount} / ${total} ด่าน</span>
+        <span>💰 ${totalXp} EXP</span>
+      </div>
+      <div class="mini-bar"><div class="mini-fill" style="width:${(doneCount / total) * 100}%"></div></div>
+    `;
+    el.onclick = () => {
+      state.topic = t.id;
+      const firstUndone = t.stages.findIndex((_, s) => !state.done.has(doneKey(state.lang, t.id, s)));
+      state.stage = firstUndone === -1 ? 0 : firstUndone;
+      renderStage();
+      showScreen("game");
+    };
+    g.appendChild(el);
+  });
+}
+
+/* ═══════════════ API ═══════════════ */
 async function api(path, body) {
   const res = await fetch(path, {
     method: body ? "POST" : "GET",
@@ -441,14 +733,13 @@ function applySession(data) {
   state.user = data.user;
   state.xp = data.user.xp;
   state.level = data.user.level;
-  state.done = (data.progress || [])
-    .filter(p => p.language === LANGUAGE)
-    .map(p => p.stage);
+  state.done = new Set((data.progress || []).map(p => doneKey(p.language, p.topic, p.stage)));
   $("pname").textContent = data.user.name;
   $("authBtn").textContent = "ออกจากระบบ";
   $("authOverlay").classList.remove("show");
   renderXP();
-  renderDots();
+  renderLangs();
+  showScreen("lang");
 }
 
 async function tryRestore() {
@@ -460,7 +751,7 @@ async function tryRestore() {
   }
 }
 
-/* ================= Auth UI ================= */
+/* ═══════════════ Auth UI ═══════════════ */
 let authMode = "login";
 function setAuthMode(mode) {
   authMode = mode;
@@ -478,11 +769,7 @@ $("authSubmit").onclick = async () => {
   btn.disabled = true;
   $("authErr").classList.remove("show");
   try {
-    const body = {
-      email: $("inEmail").value,
-      password: $("inPass").value,
-      name: $("inName").value
-    };
+    const body = { email: $("inEmail").value, password: $("inPass").value, name: $("inName").value };
     const data = await api(authMode === "login" ? "/api/login" : "/api/register", body);
     applySession(data);
   } catch (e) {
@@ -493,15 +780,15 @@ $("authSubmit").onclick = async () => {
   }
 };
 
-$("guestBtn").onclick = () => $("authOverlay").classList.remove("show");
+$("guestBtn").onclick = () => { $("authOverlay").classList.remove("show"); showScreen("lang"); };
 
 $("authBtn").onclick = async () => {
   if (state.user) {
     await api("/api/logout", {}).catch(() => {});
-    state = { user: null, level: 1, xp: 0, stage: 0, done: [] };
+    state = { user: null, level: 1, xp: 0, lang: null, topic: null, stage: 0, done: new Set() };
     $("pname").textContent = "ผู้เยี่ยมชม";
     $("authBtn").textContent = "เข้าสู่ระบบ";
-    renderXP(); renderStage();
+    renderXP(); renderLangs(); showScreen("lang");
   }
   $("authOverlay").classList.add("show");
 };
@@ -510,7 +797,11 @@ $("authBtn").onclick = async () => {
   el.addEventListener("keydown", e => { if (e.key === "Enter") $("authSubmit").click(); })
 );
 
-/* ================= Pyodide ================= */
+$("homeBtn").onclick = () => { renderLangs(); showScreen("lang"); };
+$("backToLang").onclick = () => { renderLangs(); showScreen("lang"); };
+$("backToTopic").onclick = () => { renderTopics(); showScreen("topic"); };
+
+/* ═══════════════ Pyodide ═══════════════ */
 let pyodide = null;
 const bootMsgs = ["กำลังปลุกงูหลามให้ตื่น...", "กำลังโหลดเวทมนตร์ WebAssembly...", "เตรียมสนามฝึกโค้ด...", "เกือบเสร็จแล้ว..."];
 let bootIdx = 0;
@@ -529,21 +820,21 @@ async function initPy() {
     runBtn.textContent = "โหลดไม่สำเร็จ";
   } finally {
     clearInterval(bootTimer);
-    $("boot").classList.add("hide");
+    $("boot").classList.add("hide2");
   }
 }
 
-/* ================= Render ================= */
+/* ═══════════════ Game render ═══════════════ */
 function renderStage() {
-  const L = LEVELS[state.stage];
-  $("stageTag").textContent = `🐍 PYTHON · STAGE ${state.stage + 1} / ${LEVELS.length}`;
+  const c = COURSES[state.lang], t = curTopic(), L = levels()[state.stage];
+  $("stageTag").textContent = `${c.icon} ${c.name.toUpperCase()} · ${t.title} · STAGE ${state.stage + 1}/${levels().length}`;
   $("mTitle").textContent = L.title;
   $("mDesc").textContent = L.desc;
   $("mGoal").innerHTML = "🎯 เป้าหมาย: " + L.goal;
   $("mReward").textContent = `รางวัลเมื่อผ่านด่าน: ${L.xp} EXP`;
   $("hintBox").innerHTML = L.hint;
   $("hintBox").classList.remove("show");
-  $("fileName").textContent = `stage_${state.stage + 1}.py`;
+  $("fileName").textContent = `${t.id}_${state.stage + 1}.py`;
   codeEl.value = L.starter;
   $("banner").className = "banner";
   outEl.innerHTML = '<span class="empty">ยังไม่มีผลลัพธ์ — เขียนโค้ดแล้วกดรันดูสิ</span>';
@@ -554,10 +845,11 @@ function renderStage() {
 function renderDots() {
   const d = $("dots");
   d.innerHTML = "";
-  LEVELS.forEach((_, i) => {
+  levels().forEach((_, i) => {
+    const isDone = state.done.has(doneKey(state.lang, state.topic, i));
     const b = document.createElement("button");
-    b.className = "dot" + (i === state.stage ? " active" : "") + (state.done.includes(i) ? " done" : "");
-    b.textContent = state.done.includes(i) ? "✓" : i + 1;
+    b.className = "dot" + (i === state.stage ? " active" : "") + (isDone ? " done" : "");
+    b.textContent = isDone ? "✓" : i + 1;
     b.onclick = () => { state.stage = i; renderStage(); };
     d.appendChild(b);
   });
@@ -580,7 +872,7 @@ function say(msg, mood) {
   if (mood === "no") { void r.offsetWidth; r.classList.add("sad"); }
 }
 
-/* ================= Run code ================= */
+/* ═══════════════ Run code ═══════════════ */
 async function runCode() {
   if (!pyodide) return;
   runBtn.disabled = true;
@@ -608,12 +900,14 @@ async function runCode() {
     outEl.textContent = stdout || "(โปรแกรมทำงานเสร็จ แต่ไม่มีข้อความแสดงออกมา)";
   }
 
-  const L = LEVELS[state.stage];
+  const L = levels()[state.stage];
   const banner = $("banner");
   if (!stderr && L.check(stdout, code)) {
     banner.className = "banner pass";
     $("bannerText").textContent = "ภารกิจสำเร็จ!";
-    $("nextBtn").style.display = state.stage < LEVELS.length - 1 ? "inline-block" : "none";
+    const lastStage = state.stage >= levels().length - 1;
+    $("nextBtn").style.display = "inline-block";
+    $("nextBtn").textContent = lastStage ? "จบหัวข้อนี้แล้ว! เลือกหัวข้อถัดไป →" : "ด่านถัดไป →";
     say(pick(["เก่งมาก! โค้ดสวยเป๊ะเลย 🎉", "ผ่านฉลุย! ไปด่านต่อกันเถอะ", "สุดยอดโปรแกรมเมอร์!"]), "ok");
     await recordPass();
     renderDots();
@@ -627,12 +921,11 @@ async function runCode() {
 }
 
 async function recordPass() {
-  const stage = state.stage;
+  const key = doneKey(state.lang, state.topic, state.stage);
   if (state.user) {
-    // ผู้ใช้ที่ล็อกอิน: ให้เซิร์ฟเวอร์คำนวณและบันทึก
     try {
-      const r = await api("/api/complete", { language: LANGUAGE, stage });
-      if (r.first && !state.done.includes(stage)) state.done.push(stage);
+      const r = await api("/api/complete", { language: state.lang, topic: state.topic, stage: state.stage });
+      if (r.first) state.done.add(key);
       const leveled = r.level > state.level;
       state.xp = r.xp; state.level = r.level;
       $("xpPop").textContent = `+${r.gained} EXP`;
@@ -642,10 +935,9 @@ async function recordPass() {
       $("xpPop").textContent = "(บันทึกไม่สำเร็จ: " + e.message + ")";
     }
   } else {
-    // ผู้เยี่ยมชม: นับในหน้านี้เท่านั้น
-    const first = !state.done.includes(stage);
-    const gain = first ? LEVELS[stage].xp : 10;
-    if (first) state.done.push(stage);
+    const first = !state.done.has(key);
+    const gain = first ? levels()[state.stage].xp : 10;
+    if (first) state.done.add(key);
     $("xpPop").textContent = `+${gain} EXP (ยังไม่ถูกบันทึก — ล็อกอินเพื่อเก็บถาวร)`;
     gainXPLocal(gain);
   }
@@ -657,10 +949,11 @@ function friendlyError(err) {
   if (/SyntaxError/.test(err)) tip = "\n\n💡 SyntaxError = พิมพ์ผิดไวยากรณ์ เช็ควงเล็บ เครื่องหมายคำพูด และเครื่องหมาย : ดูนะ";
   else if (/IndentationError/.test(err)) tip = "\n\n💡 IndentationError = การย่อหน้าไม่ถูกต้อง บรรทัดใน if/for ต้องเว้นวรรคเข้าไป 4 ช่อง";
   else if (/NameError/.test(err)) tip = "\n\n💡 NameError = ใช้ชื่อตัวแปรที่ยังไม่ได้สร้าง เช็คตัวสะกดดูนะ";
+  else if (/TypeError/.test(err)) tip = "\n\n💡 TypeError = ชนิดข้อมูลไม่เข้ากัน เช่น เอาข้อความ + ตัวเลขตรงๆ ไม่ได้ ลองใช้ f-string หรือคั่นด้วย , ใน print";
   return last + tip;
 }
 
-/* ================= XP / Level (guest mode) ================= */
+/* ═══════════════ XP / Level (guest) ═══════════════ */
 function gainXPLocal(amount) {
   state.xp += amount;
   let leveled = false;
@@ -695,11 +988,19 @@ function confetti() {
 
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
-/* ================= Events ================= */
+/* ═══════════════ Events ═══════════════ */
 runBtn.onclick = runCode;
-$("resetBtn").onclick = () => { codeEl.value = LEVELS[state.stage].starter; };
+$("resetBtn").onclick = () => { codeEl.value = levels()[state.stage].starter; };
 $("hintBtn").onclick = () => $("hintBox").classList.toggle("show");
-$("nextBtn").onclick = () => { if (state.stage < LEVELS.length - 1) { state.stage++; renderStage(); } };
+$("nextBtn").onclick = () => {
+  if (state.stage < levels().length - 1) {
+    state.stage++;
+    renderStage();
+  } else {
+    renderTopics();
+    showScreen("topic");
+  }
+};
 $("closeOverlay").onclick = () => $("overlay").classList.remove("show");
 codeEl.addEventListener("keydown", e => {
   if (e.key === "Tab") {
@@ -711,8 +1012,8 @@ codeEl.addEventListener("keydown", e => {
   if ((e.ctrlKey || e.metaKey) && e.key === "Enter") runCode();
 });
 
-/* ================= Init ================= */
-renderStage();
+/* ═══════════════ Init ═══════════════ */
+renderLangs();
 renderXP();
 tryRestore();
 initPy();
