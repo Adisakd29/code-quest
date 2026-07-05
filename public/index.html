@@ -1,1 +1,721 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Quest — เกมฝึกเขียนโปรแกรม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Press+Start+2P&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<style>
+  :root{
+    --bg:#0f1226;
+    --panel:#1b2040;
+    --panel-2:#161a36;
+    --line:#2e3563;
+    --ink:#eef0ff;
+    --ink-dim:#9aa2d8;
+    --amber:#ffb347;
+    --cyan:#62e6ff;
+    --green:#6ee7a0;
+    --red:#ff6b81;
+    --code-bg:#0a0d1f;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Thai',sans-serif;
+    min-height:100vh;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(98,230,255,.06), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(255,179,71,.05), transparent 45%);
+  }
+  .pixel{font-family:'Press Start 2P',monospace}
 
+  /* ---------- Top bar ---------- */
+  header{
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    padding:14px 22px;border-bottom:1px solid var(--line);
+    background:rgba(15,18,38,.85);position:sticky;top:0;z-index:10;backdrop-filter:blur(6px);
+  }
+  .logo{font-size:13px;color:var(--cyan);letter-spacing:1px;text-shadow:0 0 12px rgba(98,230,255,.5)}
+  .logo span{color:var(--amber)}
+  .player{display:flex;align-items:center;gap:10px;margin-left:auto;flex-wrap:wrap}
+  .avatar{
+    width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--cyan),#7c6cff);
+    display:grid;place-items:center;font-size:16px;
+  }
+  .pname{font-size:14px;font-weight:600;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lvl-badge{
+    font-size:9px;background:var(--amber);color:#3a2600;padding:6px 9px;border-radius:8px;
+    box-shadow:0 0 0 2px rgba(255,179,71,.25);white-space:nowrap;
+  }
+  .xp-wrap{min-width:180px;flex:0 1 260px}
+  .xp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-dim);margin-bottom:4px}
+  .xp-bar{height:12px;background:#0b0e20;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+  .xp-fill{
+    height:100%;width:0%;border-radius:99px;
+    background:linear-gradient(90deg,var(--amber),#ffd98a);
+    box-shadow:0 0 10px rgba(255,179,71,.55);
+    transition:width .8s cubic-bezier(.22,1,.36,1);
+  }
+  .logout{
+    background:none;border:1px solid var(--line);color:var(--ink-dim);font-family:inherit;
+    padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;
+  }
+  .logout:hover{color:var(--ink);border-color:var(--ink-dim)}
+
+  /* ---------- Layout ---------- */
+  main{
+    display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:20px;
+    max-width:1200px;margin:0 auto;padding:22px;
+  }
+  @media(max-width:860px){main{grid-template-columns:1fr}}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px;
+  }
+
+  /* ---------- Mission ---------- */
+  .stage-tag{font-size:8px;color:var(--cyan);margin-bottom:12px;letter-spacing:1px}
+  .mission h2{font-size:22px;font-weight:700;margin-bottom:10px}
+  .mission p{color:var(--ink-dim);line-height:1.75;font-size:15px}
+  .mission .goal{
+    margin-top:14px;background:var(--panel-2);border:1px dashed var(--line);
+    border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7;
+  }
+  .goal b{color:var(--amber)}
+  .reward{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--ink-dim)}
+  .coin{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe3a3,var(--amber));box-shadow:0 0 8px rgba(255,179,71,.6);animation:spin 3s linear infinite}
+  @keyframes spin{50%{transform:scaleX(.15)}}
+  .hint-btn{
+    margin-top:14px;background:none;border:1px solid var(--line);color:var(--cyan);
+    padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;
+  }
+  .hint-btn:hover{border-color:var(--cyan)}
+  .hint-box{display:none;margin-top:10px;font-size:13.5px;color:var(--ink-dim);background:var(--panel-2);border-left:3px solid var(--cyan);padding:10px 12px;border-radius:0 8px 8px 0;line-height:1.7}
+  .hint-box.show{display:block}
+  .hint-box code{font-family:'JetBrains Mono',monospace;color:var(--cyan);font-size:12.5px}
+
+  /* ---------- Robot companion ---------- */
+  .robot-zone{display:flex;flex-direction:column;align-items:center;margin-top:22px;gap:10px}
+  .robot{animation:bob 2.4s ease-in-out infinite}
+  .robot.happy{animation:jump .5s ease 3}
+  .robot.sad{animation:shake .4s ease 2}
+  @keyframes bob{50%{transform:translateY(-7px)}}
+  @keyframes jump{40%{transform:translateY(-22px) rotate(-4deg)}}
+  @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .speech{
+    font-size:13px;background:var(--panel-2);border:1px solid var(--line);
+    padding:8px 14px;border-radius:12px;color:var(--ink-dim);text-align:center;max-width:260px;line-height:1.6;
+    transition:all .3s;
+  }
+  .speech.ok{color:var(--green);border-color:rgba(110,231,160,.4)}
+  .speech.no{color:var(--red);border-color:rgba(255,107,129,.4)}
+
+  /* ---------- Progress dots ---------- */
+  .dots{display:flex;gap:10px;margin-top:22px;justify-content:center}
+  .dot{
+    width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+    display:grid;place-items:center;font-size:13px;color:var(--ink-dim);cursor:pointer;
+    background:var(--panel-2);transition:all .2s;font-family:inherit;
+  }
+  .dot.active{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 10px rgba(98,230,255,.3)}
+  .dot.done{background:rgba(110,231,160,.12);border-color:rgba(110,231,160,.5);color:var(--green)}
+
+  /* ---------- Editor ---------- */
+  .editor-card{display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden}
+  .editor-head{
+    display:flex;align-items:center;gap:10px;padding:12px 16px;
+    background:var(--panel-2);border-bottom:1px solid var(--line);
+  }
+  .traffic{display:flex;gap:6px}
+  .traffic i{width:11px;height:11px;border-radius:50%;display:block}
+  .filename{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-dim)}
+  .editor-head .actions{margin-left:auto;display:flex;gap:8px}
+  button.run{
+    font-family:'IBM Plex Sans Thai',sans-serif;font-weight:600;font-size:14px;
+    background:linear-gradient(135deg,var(--green),#3ecf82);color:#06301a;
+    border:none;padding:9px 20px;border-radius:9px;cursor:pointer;
+    box-shadow:0 3px 0 #1f7a4a;transition:transform .1s;
+  }
+  button.run:active{transform:translateY(2px);box-shadow:none}
+  button.run:disabled{opacity:.55;cursor:wait;box-shadow:none}
+  button.ghost{
+    background:none;border:1px solid var(--line);color:var(--ink-dim);
+    padding:9px 14px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;
+  }
+  button.ghost:hover{color:var(--ink)}
+  textarea.code{
+    width:100%;min-height:230px;resize:vertical;border:none;outline:none;
+    background:var(--code-bg);color:#d9e2ff;
+    font-family:'JetBrains Mono',monospace;font-size:14.5px;line-height:1.8;
+    padding:18px 20px;tab-size:4;caret-color:var(--amber);
+  }
+  .console{
+    background:#070912;border-top:1px solid var(--line);padding:14px 20px;min-height:110px;
+    font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.8;
+  }
+  .console .tag{font-size:10px;color:var(--ink-dim);letter-spacing:2px;display:block;margin-bottom:6px;font-family:'IBM Plex Sans Thai',sans-serif}
+  .console pre{white-space:pre-wrap;word-break:break-word;color:#c8d2ff}
+  .console pre.err{color:var(--red)}
+  .console .empty{color:#3d4470;font-style:italic;font-size:13px}
+
+  /* ---------- Result banner ---------- */
+  .banner{
+    display:none;align-items:center;gap:12px;margin:0 16px 16px;padding:13px 16px;border-radius:10px;font-size:14.5px;flex-wrap:wrap;
+  }
+  .banner.pass{display:flex;background:rgba(110,231,160,.1);border:1px solid rgba(110,231,160,.45);color:var(--green)}
+  .banner.fail{display:flex;background:rgba(255,107,129,.08);border:1px solid rgba(255,107,129,.4);color:var(--red)}
+  .banner button.next{
+    margin-left:auto;background:var(--green);color:#06301a;border:none;font-weight:700;
+    padding:8px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;
+  }
+  .xp-pop{color:var(--amber);font-weight:700;font-size:13px;white-space:nowrap}
+
+  /* ---------- Overlays ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(7,9,20,.86);display:none;
+    place-items:center;z-index:50;backdrop-filter:blur(4px);padding:20px;
+  }
+  .overlay.show{display:grid}
+  .levelup{text-align:center;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes pop{from{transform:scale(.4);opacity:0}}
+  .levelup .big{font-size:26px;color:var(--amber);text-shadow:0 0 24px rgba(255,179,71,.7);margin-bottom:18px}
+  .levelup .num{font-size:64px;color:var(--cyan);text-shadow:0 0 30px rgba(98,230,255,.8)}
+  .levelup p{color:var(--ink-dim);margin-top:18px;font-size:15px}
+  .levelup button{
+    margin-top:24px;background:var(--amber);color:#3a2600;border:none;font-weight:700;
+    padding:12px 30px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:16px;
+    box-shadow:0 4px 0 #b87b1e;
+  }
+  .confetti{position:fixed;top:-14px;width:10px;height:14px;z-index:60;animation:fall linear forwards;pointer-events:none}
+  @keyframes fall{to{transform:translateY(105vh) rotate(660deg);opacity:.2}}
+
+  /* ---------- Auth ---------- */
+  .auth-card{
+    width:min(400px,100%);background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);padding:28px;animation:pop .4s cubic-bezier(.2,1.4,.4,1);
+  }
+  .auth-card .logo-mid{font-size:14px;color:var(--cyan);text-align:center;margin-bottom:6px;text-shadow:0 0 14px rgba(98,230,255,.5)}
+  .auth-card .logo-mid span{color:var(--amber)}
+  .auth-card .sub{text-align:center;color:var(--ink-dim);font-size:13.5px;margin-bottom:20px}
+  .tabs{display:flex;gap:6px;background:var(--panel-2);padding:5px;border-radius:10px;margin-bottom:18px}
+  .tabs button{
+    flex:1;background:none;border:none;color:var(--ink-dim);font-family:inherit;font-size:14px;
+    padding:9px;border-radius:7px;cursor:pointer;font-weight:600;
+  }
+  .tabs button.on{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:12.5px;color:var(--ink-dim);margin-bottom:5px}
+  .field input{
+    width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;
+    color:var(--ink);font-family:inherit;font-size:14.5px;padding:11px 13px;outline:none;
+  }
+  .field input:focus{border-color:var(--cyan)}
+  .auth-err{display:none;color:var(--red);font-size:13px;background:rgba(255,107,129,.08);border:1px solid rgba(255,107,129,.35);border-radius:8px;padding:9px 12px;margin-bottom:12px;line-height:1.6}
+  .auth-err.show{display:block}
+  .auth-submit{
+    width:100%;background:linear-gradient(135deg,var(--cyan),#4db8e8);color:#04222e;font-weight:700;
+    border:none;padding:12px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:15px;
+    box-shadow:0 3px 0 #2a7ea3;margin-top:4px;
+  }
+  .auth-submit:disabled{opacity:.6;cursor:wait;box-shadow:none}
+  .guest{
+    width:100%;background:none;border:1px dashed var(--line);color:var(--ink-dim);
+    padding:11px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13.5px;margin-top:12px;
+  }
+  .guest:hover{color:var(--ink);border-color:var(--ink-dim)}
+  .sync-note{font-size:12px;color:var(--ink-dim);text-align:center;margin-top:14px;line-height:1.6}
+
+  /* ---------- Loading ---------- */
+  .boot{
+    position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:100;
+    transition:opacity .5s;
+  }
+  .boot.hide{opacity:0;pointer-events:none}
+  .boot .inner{text-align:center}
+  .boot .logo-big{font-size:20px;color:var(--cyan);margin-bottom:26px;text-shadow:0 0 18px rgba(98,230,255,.6)}
+  .boot .logo-big span{color:var(--amber)}
+  .boot .status{color:var(--ink-dim);font-size:14px;margin-top:16px;min-height:22px}
+  .loader{width:220px;height:10px;border:1px solid var(--line);border-radius:99px;margin:0 auto;overflow:hidden}
+  .loader i{display:block;height:100%;width:20%;background:var(--cyan);border-radius:99px;animation:scan 1.1s ease-in-out infinite alternate}
+  @keyframes scan{to{transform:translateX(400%)}}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+<!-- Boot screen -->
+<div class="boot" id="boot">
+  <div class="inner">
+    <div class="logo-big pixel">CODE<span> QUEST</span></div>
+    <div class="loader"><i></i></div>
+    <div class="status" id="bootStatus">กำลังปลุกงูหลามให้ตื่น...</div>
+  </div>
+</div>
+
+<!-- Auth overlay -->
+<div class="overlay" id="authOverlay">
+  <div class="auth-card">
+    <div class="logo-mid pixel">CODE<span> QUEST</span></div>
+    <div class="sub">ล็อกอินเพื่อเก็บ EXP และความคืบหน้าไว้ในบัญชีของคุณ</div>
+    <div class="tabs">
+      <button id="tabLogin" class="on">เข้าสู่ระบบ</button>
+      <button id="tabRegister">สมัครสมาชิก</button>
+    </div>
+    <div class="auth-err" id="authErr"></div>
+    <div class="field" id="fieldName" style="display:none">
+      <label for="inName">ชื่อผู้เล่น</label>
+      <input id="inName" type="text" maxlength="30" placeholder="เช่น นักผจญภัยสายโค้ด">
+    </div>
+    <div class="field">
+      <label for="inEmail">อีเมล</label>
+      <input id="inEmail" type="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label for="inPass">รหัสผ่าน</label>
+      <input id="inPass" type="password" placeholder="อย่างน้อย 6 ตัวอักษร" autocomplete="current-password">
+    </div>
+    <button class="auth-submit" id="authSubmit">เข้าสู่ระบบ</button>
+    <button class="guest" id="guestBtn">เล่นแบบผู้เยี่ยมชมก่อน (ไม่บันทึกความคืบหน้า)</button>
+    <div class="sync-note">สมัครฟรี ใช้แค่อีเมลกับรหัสผ่าน — EXP จะตามคุณไปทุกอุปกรณ์</div>
+  </div>
+</div>
+
+<header>
+  <div class="logo pixel">CODE<span> QUEST</span></div>
+  <div class="player">
+    <div class="avatar">🧑‍🚀</div>
+    <span class="pname" id="pname">ผู้เยี่ยมชม</span>
+    <div class="lvl-badge pixel" id="lvlBadge">LV.1</div>
+    <div class="xp-wrap">
+      <div class="xp-label"><span>EXP</span><span id="xpText">0 / 100</span></div>
+      <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+    </div>
+    <button class="logout" id="authBtn">เข้าสู่ระบบ</button>
+  </div>
+</header>
+
+<main>
+  <!-- Mission panel -->
+  <section class="card mission">
+    <div class="stage-tag pixel" id="stageTag">🐍 PYTHON · STAGE 1 / 4</div>
+    <h2 id="mTitle"></h2>
+    <p id="mDesc"></p>
+    <div class="goal" id="mGoal"></div>
+    <div class="reward"><span class="coin"></span><span id="mReward"></span></div>
+    <button class="hint-btn" id="hintBtn">💡 ขอคำใบ้</button>
+    <div class="hint-box" id="hintBox"></div>
+
+    <div class="robot-zone">
+      <div class="robot" id="robot">
+        <svg width="86" height="92" viewBox="0 0 86 92" fill="none" aria-hidden="true">
+          <rect x="18" y="20" width="50" height="40" rx="10" fill="#2e3563"/>
+          <rect x="18" y="20" width="50" height="40" rx="10" stroke="#62e6ff" stroke-width="2"/>
+          <rect x="27" y="32" width="12" height="12" rx="3" fill="#62e6ff"/>
+          <rect x="47" y="32" width="12" height="12" rx="3" fill="#62e6ff"/>
+          <rect x="34" y="50" width="18" height="4" rx="2" fill="#ffb347"/>
+          <line x1="43" y1="20" x2="43" y2="8" stroke="#62e6ff" stroke-width="2"/>
+          <circle cx="43" cy="6" r="4" fill="#ffb347"/>
+          <rect x="26" y="64" width="34" height="18" rx="7" fill="#22284f" stroke="#2e3563" stroke-width="2"/>
+          <rect x="10" y="62" width="10" height="6" rx="3" fill="#62e6ff"/>
+          <rect x="66" y="62" width="10" height="6" rx="3" fill="#62e6ff"/>
+        </svg>
+      </div>
+      <div class="speech" id="speech">พิมพ์โค้ดแล้วกด "รันโค้ด" ได้เลย เราเชียร์อยู่นะ!</div>
+    </div>
+
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <!-- Editor panel -->
+  <section class="card editor-card">
+    <div class="editor-head">
+      <div class="traffic">
+        <i style="background:#ff6b81"></i><i style="background:#ffb347"></i><i style="background:#6ee7a0"></i>
+      </div>
+      <span class="filename" id="fileName">stage_1.py</span>
+      <div class="actions">
+        <button class="ghost" id="resetBtn">รีเซ็ต</button>
+        <button class="run" id="runBtn" disabled>▶ กำลังโหลด...</button>
+      </div>
+    </div>
+    <textarea class="code" id="code" spellcheck="false"></textarea>
+    <div class="banner" id="banner">
+      <span id="bannerText"></span>
+      <span class="xp-pop" id="xpPop"></span>
+      <button class="next" id="nextBtn" style="display:none">ด่านถัดไป →</button>
+    </div>
+    <div class="console">
+      <span class="tag">ผลลัพธ์จากโปรแกรม</span>
+      <pre id="out"><span class="empty">ยังไม่มีผลลัพธ์ — เขียนโค้ดแล้วกดรันดูสิ</span></pre>
+    </div>
+  </section>
+</main>
+
+<!-- Level up -->
+<div class="overlay" id="overlay">
+  <div class="levelup">
+    <div class="big pixel">LEVEL UP!</div>
+    <div class="num pixel" id="newLvl">2</div>
+    <p>สุดยอด! พลังการเขียนโค้ดของคุณเพิ่มขึ้นแล้ว</p>
+    <button id="closeOverlay">ลุยต่อ!</button>
+  </div>
+</div>
+
+<script>
+/* ================= Game data ================= */
+const LANGUAGE = "python";
+const LEVELS = [
+  {
+    title: "พิมพ์คำทักทายแรก",
+    desc: "ทุกการผจญภัยเริ่มจากคำทักทาย ในภาษา Python เราใช้คำสั่ง print() เพื่อแสดงข้อความออกทางหน้าจอ",
+    goal: 'ทำให้โปรแกรมแสดงข้อความ <b>สวัสดี Python</b> ออกมา 1 บรรทัด',
+    starter: '# ภารกิจ: แสดงข้อความ สวัสดี Python\nprint("")\n',
+    hint: 'ใส่ข้อความไว้ในเครื่องหมายคำพูด เช่น <code>print("สวัสดี Python")</code>',
+    xp: 50,
+    check: (out, code) => out.trim() === "สวัสดี Python"
+  },
+  {
+    title: "ตัวแปรคู่ใจ",
+    desc: "ตัวแปรคือกล่องเก็บข้อมูล เราตั้งชื่อกล่องแล้วหยิบมาใช้เมื่อไหร่ก็ได้ ลองสร้างตัวแปรเก็บชื่อของคุณดู",
+    goal: 'สร้างตัวแปรชื่อ <b>name</b> เก็บชื่อของคุณ แล้วแสดงผลว่า <b>ฉันชื่อ ...</b> (ตามด้วยชื่อในตัวแปร)',
+    starter: '# ภารกิจ: สร้างตัวแปร name แล้วพิมพ์ ฉันชื่อ ตามด้วยชื่อ\nname = ""\nprint("ฉันชื่อ " + name)\n',
+    hint: 'ใส่ชื่อในตัวแปรก่อน เช่น <code>name = "มะลิ"</code> แล้วบรรทัด print จะต่อข้อความให้เอง',
+    xp: 80,
+    check: (out, code) => /ฉันชื่อ .+/.test(out.trim()) && /name\s*=/.test(code)
+  },
+  {
+    title: "วนลูปเก็บเหรียญ",
+    desc: "ถ้ามีเหรียญ 5 อันคงไม่มีใครอยากพิมพ์ print ห้ารอบ! ลูป for ช่วยให้เราทำงานซ้ำๆ ได้ในไม่กี่บรรทัด",
+    goal: 'ใช้ <b>for loop</b> แสดงข้อความ <b>เก็บเหรียญที่ 1</b> ไปจนถึง <b>เก็บเหรียญที่ 5</b> (รวม 5 บรรทัด)',
+    starter: '# ภารกิจ: วนลูปเก็บเหรียญ 5 อัน\nfor i in range(1, 6):\n    print()\n',
+    hint: 'ในลูป ตัวแปร i จะเป็น 1,2,3,4,5 — ลอง <code>print("เก็บเหรียญที่", i)</code>',
+    xp: 120,
+    check: (out, code) => {
+      const lines = out.trim().split("\n").map(s => s.trim());
+      if (!/for\s+/.test(code)) return false;
+      if (lines.length !== 5) return false;
+      return lines.every((l, idx) => l.replace(/\s+/g, " ") === `เก็บเหรียญที่ ${idx + 1}`);
+    }
+  },
+  {
+    title: "เงื่อนไขเปิดประตูลับ",
+    desc: "ประตูลับจะเปิดก็ต่อเมื่อพลังกุญแจมากกว่า 5 เท่านั้น คำสั่ง if/else ช่วยให้โปรแกรมตัดสินใจได้",
+    goal: 'กำหนด <b>key = 7</b> ถ้า key มากกว่า 5 ให้พิมพ์ <b>ประตูเปิดแล้ว!</b> ไม่งั้นพิมพ์ <b>ประตูล็อกอยู่</b>',
+    starter: '# ภารกิจ: ใช้ if/else เปิดประตูลับ\nkey = 7\n\n',
+    hint: 'โครงสร้างคือ <code>if key > 5:</code> ตามด้วยบรรทัดที่ย่อหน้าเข้าไป แล้วต่อด้วย <code>else:</code>',
+    xp: 150,
+    check: (out, code) => out.trim() === "ประตูเปิดแล้ว!" && /if\s+/.test(code) && /else\s*:/.test(code)
+  }
+];
+
+/* ================= State ================= */
+let state = { user: null, level: 1, xp: 0, stage: 0, done: [] };
+const xpNeed = lv => Math.round(100 * Math.pow(lv, 1.5));
+
+/* ================= Elements ================= */
+const $ = id => document.getElementById(id);
+const codeEl = $("code"), outEl = $("out"), runBtn = $("runBtn");
+
+/* ================= API ================= */
+async function api(path, body) {
+  const res = await fetch(path, {
+    method: body ? "POST" : "GET",
+    headers: body ? { "Content-Type": "application/json" } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+    credentials: "same-origin"
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "เกิดข้อผิดพลาด");
+  return data;
+}
+
+function applySession(data) {
+  state.user = data.user;
+  state.xp = data.user.xp;
+  state.level = data.user.level;
+  state.done = (data.progress || [])
+    .filter(p => p.language === LANGUAGE)
+    .map(p => p.stage);
+  $("pname").textContent = data.user.name;
+  $("authBtn").textContent = "ออกจากระบบ";
+  $("authOverlay").classList.remove("show");
+  renderXP();
+  renderDots();
+}
+
+async function tryRestore() {
+  try {
+    const data = await api("/api/me");
+    applySession(data);
+  } catch {
+    $("authOverlay").classList.add("show");
+  }
+}
+
+/* ================= Auth UI ================= */
+let authMode = "login";
+function setAuthMode(mode) {
+  authMode = mode;
+  $("tabLogin").className = mode === "login" ? "on" : "";
+  $("tabRegister").className = mode === "register" ? "on" : "";
+  $("fieldName").style.display = mode === "register" ? "block" : "none";
+  $("authSubmit").textContent = mode === "login" ? "เข้าสู่ระบบ" : "สมัครและเริ่มเล่น";
+  $("authErr").classList.remove("show");
+}
+$("tabLogin").onclick = () => setAuthMode("login");
+$("tabRegister").onclick = () => setAuthMode("register");
+
+$("authSubmit").onclick = async () => {
+  const btn = $("authSubmit");
+  btn.disabled = true;
+  $("authErr").classList.remove("show");
+  try {
+    const body = {
+      email: $("inEmail").value,
+      password: $("inPass").value,
+      name: $("inName").value
+    };
+    const data = await api(authMode === "login" ? "/api/login" : "/api/register", body);
+    applySession(data);
+  } catch (e) {
+    $("authErr").textContent = e.message;
+    $("authErr").classList.add("show");
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+$("guestBtn").onclick = () => $("authOverlay").classList.remove("show");
+
+$("authBtn").onclick = async () => {
+  if (state.user) {
+    await api("/api/logout", {}).catch(() => {});
+    state = { user: null, level: 1, xp: 0, stage: 0, done: [] };
+    $("pname").textContent = "ผู้เยี่ยมชม";
+    $("authBtn").textContent = "เข้าสู่ระบบ";
+    renderXP(); renderStage();
+  }
+  $("authOverlay").classList.add("show");
+};
+
+[$("inEmail"), $("inPass"), $("inName")].forEach(el =>
+  el.addEventListener("keydown", e => { if (e.key === "Enter") $("authSubmit").click(); })
+);
+
+/* ================= Pyodide ================= */
+let pyodide = null;
+const bootMsgs = ["กำลังปลุกงูหลามให้ตื่น...", "กำลังโหลดเวทมนตร์ WebAssembly...", "เตรียมสนามฝึกโค้ด...", "เกือบเสร็จแล้ว..."];
+let bootIdx = 0;
+const bootTimer = setInterval(() => {
+  bootIdx = (bootIdx + 1) % bootMsgs.length;
+  $("bootStatus").textContent = bootMsgs[bootIdx];
+}, 1600);
+
+async function initPy() {
+  try {
+    pyodide = await loadPyodide();
+    runBtn.disabled = false;
+    runBtn.textContent = "▶ รันโค้ด";
+  } catch (e) {
+    $("bootStatus").textContent = "โหลด Python ไม่สำเร็จ ลองรีเฟรชหน้าอีกครั้งนะ";
+    runBtn.textContent = "โหลดไม่สำเร็จ";
+  } finally {
+    clearInterval(bootTimer);
+    $("boot").classList.add("hide");
+  }
+}
+
+/* ================= Render ================= */
+function renderStage() {
+  const L = LEVELS[state.stage];
+  $("stageTag").textContent = `🐍 PYTHON · STAGE ${state.stage + 1} / ${LEVELS.length}`;
+  $("mTitle").textContent = L.title;
+  $("mDesc").textContent = L.desc;
+  $("mGoal").innerHTML = "🎯 เป้าหมาย: " + L.goal;
+  $("mReward").textContent = `รางวัลเมื่อผ่านด่าน: ${L.xp} EXP`;
+  $("hintBox").innerHTML = L.hint;
+  $("hintBox").classList.remove("show");
+  $("fileName").textContent = `stage_${state.stage + 1}.py`;
+  codeEl.value = L.starter;
+  $("banner").className = "banner";
+  outEl.innerHTML = '<span class="empty">ยังไม่มีผลลัพธ์ — เขียนโค้ดแล้วกดรันดูสิ</span>';
+  say("พิมพ์โค้ดแล้วกด \"รันโค้ด\" ได้เลย เราเชียร์อยู่นะ!", "");
+  renderDots();
+}
+
+function renderDots() {
+  const d = $("dots");
+  d.innerHTML = "";
+  LEVELS.forEach((_, i) => {
+    const b = document.createElement("button");
+    b.className = "dot" + (i === state.stage ? " active" : "") + (state.done.includes(i) ? " done" : "");
+    b.textContent = state.done.includes(i) ? "✓" : i + 1;
+    b.onclick = () => { state.stage = i; renderStage(); };
+    d.appendChild(b);
+  });
+}
+
+function renderXP() {
+  const need = xpNeed(state.level);
+  $("lvlBadge").textContent = "LV." + state.level;
+  $("xpText").textContent = `${state.xp} / ${need}`;
+  $("xpFill").style.width = Math.min(100, (state.xp / need) * 100) + "%";
+}
+
+function say(msg, mood) {
+  const s = $("speech");
+  s.textContent = msg;
+  s.className = "speech " + mood;
+  const r = $("robot");
+  r.className = "robot";
+  if (mood === "ok") { void r.offsetWidth; r.classList.add("happy"); }
+  if (mood === "no") { void r.offsetWidth; r.classList.add("sad"); }
+}
+
+/* ================= Run code ================= */
+async function runCode() {
+  if (!pyodide) return;
+  runBtn.disabled = true;
+  runBtn.textContent = "⏳ กำลังรัน...";
+  let stdout = "", stderr = "";
+  pyodide.setStdout({ batched: s => stdout += s + "\n" });
+  pyodide.setStderr({ batched: s => stderr += s + "\n" });
+
+  const code = codeEl.value;
+  try {
+    await pyodide.runPythonAsync(code);
+  } catch (e) {
+    stderr += String(e.message || e);
+  }
+  runBtn.disabled = false;
+  runBtn.textContent = "▶ รันโค้ด";
+
+  if (stderr) {
+    outEl.innerHTML = "";
+    const p = document.createElement("pre");
+    p.className = "err";
+    p.textContent = friendlyError(stderr);
+    outEl.appendChild(p);
+  } else {
+    outEl.textContent = stdout || "(โปรแกรมทำงานเสร็จ แต่ไม่มีข้อความแสดงออกมา)";
+  }
+
+  const L = LEVELS[state.stage];
+  const banner = $("banner");
+  if (!stderr && L.check(stdout, code)) {
+    banner.className = "banner pass";
+    $("bannerText").textContent = "ภารกิจสำเร็จ!";
+    $("nextBtn").style.display = state.stage < LEVELS.length - 1 ? "inline-block" : "none";
+    say(pick(["เก่งมาก! โค้ดสวยเป๊ะเลย 🎉", "ผ่านฉลุย! ไปด่านต่อกันเถอะ", "สุดยอดโปรแกรมเมอร์!"]), "ok");
+    await recordPass();
+    renderDots();
+  } else {
+    banner.className = "banner fail";
+    $("bannerText").textContent = stderr ? "โค้ดมีข้อผิดพลาด ลองอ่านข้อความสีแดงด้านล่างดูนะ" : "ผลลัพธ์ยังไม่ตรงเป้าหมาย ลองเทียบกับภารกิจอีกครั้ง";
+    $("xpPop").textContent = "";
+    $("nextBtn").style.display = "none";
+    say(pick(["เกือบแล้ว! ลองอีกทีนะ", "ไม่เป็นไร ผิดคือครู 💪", "ลองกดดูคำใบ้ก็ได้นะ"]), "no");
+  }
+}
+
+async function recordPass() {
+  const stage = state.stage;
+  if (state.user) {
+    // ผู้ใช้ที่ล็อกอิน: ให้เซิร์ฟเวอร์คำนวณและบันทึก
+    try {
+      const r = await api("/api/complete", { language: LANGUAGE, stage });
+      if (r.first && !state.done.includes(stage)) state.done.push(stage);
+      const leveled = r.level > state.level;
+      state.xp = r.xp; state.level = r.level;
+      $("xpPop").textContent = `+${r.gained} EXP`;
+      renderXP();
+      if (leveled) setTimeout(showLevelUp, 700);
+    } catch (e) {
+      $("xpPop").textContent = "(บันทึกไม่สำเร็จ: " + e.message + ")";
+    }
+  } else {
+    // ผู้เยี่ยมชม: นับในหน้านี้เท่านั้น
+    const first = !state.done.includes(stage);
+    const gain = first ? LEVELS[stage].xp : 10;
+    if (first) state.done.push(stage);
+    $("xpPop").textContent = `+${gain} EXP (ยังไม่ถูกบันทึก — ล็อกอินเพื่อเก็บถาวร)`;
+    gainXPLocal(gain);
+  }
+}
+
+function friendlyError(err) {
+  const last = err.trim().split("\n").pop();
+  let tip = "";
+  if (/SyntaxError/.test(err)) tip = "\n\n💡 SyntaxError = พิมพ์ผิดไวยากรณ์ เช็ควงเล็บ เครื่องหมายคำพูด และเครื่องหมาย : ดูนะ";
+  else if (/IndentationError/.test(err)) tip = "\n\n💡 IndentationError = การย่อหน้าไม่ถูกต้อง บรรทัดใน if/for ต้องเว้นวรรคเข้าไป 4 ช่อง";
+  else if (/NameError/.test(err)) tip = "\n\n💡 NameError = ใช้ชื่อตัวแปรที่ยังไม่ได้สร้าง เช็คตัวสะกดดูนะ";
+  return last + tip;
+}
+
+/* ================= XP / Level (guest mode) ================= */
+function gainXPLocal(amount) {
+  state.xp += amount;
+  let leveled = false;
+  while (state.xp >= xpNeed(state.level)) {
+    state.xp -= xpNeed(state.level);
+    state.level++;
+    leveled = true;
+  }
+  renderXP();
+  if (leveled) setTimeout(showLevelUp, 700);
+}
+
+function showLevelUp() {
+  $("newLvl").textContent = state.level;
+  $("overlay").classList.add("show");
+  confetti();
+}
+
+function confetti() {
+  const colors = ["#ffb347", "#62e6ff", "#6ee7a0", "#ff6b81", "#c3a4ff"];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = colors[i % colors.length];
+    c.style.animationDuration = (1.6 + Math.random() * 1.6) + "s";
+    c.style.animationDelay = Math.random() * 0.4 + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+/* ================= Events ================= */
+runBtn.onclick = runCode;
+$("resetBtn").onclick = () => { codeEl.value = LEVELS[state.stage].starter; };
+$("hintBtn").onclick = () => $("hintBox").classList.toggle("show");
+$("nextBtn").onclick = () => { if (state.stage < LEVELS.length - 1) { state.stage++; renderStage(); } };
+$("closeOverlay").onclick = () => $("overlay").classList.remove("show");
+codeEl.addEventListener("keydown", e => {
+  if (e.key === "Tab") {
+    e.preventDefault();
+    const s = codeEl.selectionStart;
+    codeEl.value = codeEl.value.slice(0, s) + "    " + codeEl.value.slice(codeEl.selectionEnd);
+    codeEl.selectionStart = codeEl.selectionEnd = s + 4;
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") runCode();
+});
+
+/* ================= Init ================= */
+renderStage();
+renderXP();
+tryRestore();
+initPy();
+</script>
+</body>
+</html>
