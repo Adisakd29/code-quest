@@ -1,0 +1,239 @@
+/**
+ * Code Quest — server
+ * Express + PostgreSQL + JWT cookie auth
+ *
+ * Environment variables:
+ *   DATABASE_URL  — connection string ของ PostgreSQL (Railway ใส่ให้อัตโนมัติเมื่อ reference ตัว database)
+ *   JWT_SECRET    — สตริงลับสำหรับเซ็น token (ตั้งเองใน Railway Variables)
+ *   PORT          — Railway ใส่ให้อัตโนมัติ
+ */
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { Pool } = require("pg");
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+
+/* ---------------- Database ---------------- */
+let pool = null;
+if (process.env.DATABASE_URL) {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl:
+      process.env.DATABASE_SSL === "true"
+        ? { rejectUnauthorized: false }
+        : false,
+  });
+} else {
+  console.warn(
+    "⚠️  ไม่พบ DATABASE_URL — เกมยังเล่นแบบผู้เยี่ยมชมได้ แต่ระบบสมาชิกจะใช้ไม่ได้"
+  );
+}
+
+async function initDb() {
+  if (!pool) return;
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id            SERIAL PRIMARY KEY,
+      email         TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      display_name  TEXT NOT NULL,
+      xp            INTEGER NOT NULL DEFAULT 0,
+      level         INTEGER NOT NULL DEFAULT 1,
+      created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+    CREATE TABLE IF NOT EXISTS progress (
+      user_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      language  TEXT NOT NULL,
+      stage     INTEGER NOT NULL,
+      completed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      PRIMARY KEY (user_id, language, stage)
+    );
+  `);
+  console.log("✅ Database พร้อมใช้งาน");
+}
+
+/* ---------------- Game rules (server-side, กันโกง XP) ---------------- */
+const STAGE_XP = {
+  python: [50, 80, 120, 150], // XP ของแต่ละด่าน (index = stage)
+};
+const REPLAY_XP = 10;
+const xpNeed = (level) => Math.round(100 * Math.pow(level, 1.5));
+
+function applyXp(xp, level, gain) {
+  xp += gain;
+  let leveledUp = false;
+  while (xp >= xpNeed(level)) {
+    xp -= xpNeed(level);
+    level++;
+    leveledUp = true;
+  }
+  return { xp, level, leveledUp };
+}
+
+/* ---------------- Auth helpers ---------------- */
+function setToken(res, user) {
+  const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "30d" });
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  });
+}
+
+function auth(req, res, next) {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).json({ error: "ยังไม่ได้ล็อกอิน" });
+  try {
+    req.userId = jwt.verify(token, JWT_SECRET).id;
+    next();
+  } catch {
+    return res.status(401).json({ error: "เซสชันหมดอายุ กรุณาล็อกอินใหม่" });
+  }
+}
+
+function needDb(req, res, next) {
+  if (!pool)
+    return res
+      .status(503)
+      .json({ error: "เซิร์ฟเวอร์ยังไม่ได้เชื่อมต่อฐานข้อมูล" });
+  next();
+}
+
+/* ---------------- Routes ---------------- */
+app.post("/api/register", needDb, async (req, res) => {
+  try {
+    const { email, password, name } = req.body || {};
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return res.status(400).json({ error: "รูปแบบอีเมลไม่ถูกต้อง" });
+    if (!password || password.length < 6)
+      return res
+        .status(400)
+        .json({ error: "รหัสผ่านต้องยาวอย่างน้อย 6 ตัวอักษร" });
+    if (!name || !name.trim())
+      return res.status(400).json({ error: "กรุณาตั้งชื่อผู้เล่น" });
+
+    const hash = await bcrypt.hash(password, 10);
+    const { rows } = await pool.query(
+      `INSERT INTO users (email, password_hash, display_name)
+       VALUES ($1, $2, $3) RETURNING id, display_name, xp, level`,
+      [email.toLowerCase().trim(), hash, name.trim()]
+    );
+    setToken(res, rows[0]);
+    res.json({ user: publicUser(rows[0]), progress: [] });
+  } catch (e) {
+    if (e.code === "23505")
+      return res.status(409).json({ error: "อีเมลนี้ถูกใช้สมัครแล้ว" });
+    console.error(e);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในระบบ" });
+  }
+});
+
+app.post("/api/login", needDb, async (req, res) => {
+  try {
+    const { email, password } = req.body || {};
+    const { rows } = await pool.query(
+      `SELECT id, password_hash, display_name, xp, level FROM users WHERE email = $1`,
+      [(email || "").toLowerCase().trim()]
+    );
+    if (!rows.length || !(await bcrypt.compare(password || "", rows[0].password_hash)))
+      return res.status(401).json({ error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง" });
+
+    setToken(res, rows[0]);
+    const progress = await getProgress(rows[0].id);
+    res.json({ user: publicUser(rows[0]), progress });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในระบบ" });
+  }
+});
+
+app.post("/api/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ ok: true });
+});
+
+app.get("/api/me", needDb, auth, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT id, display_name, xp, level FROM users WHERE id = $1`,
+      [req.userId]
+    );
+    if (!rows.length) return res.status(401).json({ error: "ไม่พบผู้ใช้" });
+    const progress = await getProgress(req.userId);
+    res.json({ user: publicUser(rows[0]), progress });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในระบบ" });
+  }
+});
+
+/** บันทึกการผ่านด่าน — เซิร์ฟเวอร์เป็นคนคำนวณ XP เอง */
+app.post("/api/complete", needDb, auth, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { language, stage } = req.body || {};
+    const table = STAGE_XP[language];
+    if (!table || !Number.isInteger(stage) || stage < 0 || stage >= table.length)
+      return res.status(400).json({ error: "ด่านไม่ถูกต้อง" });
+
+    await client.query("BEGIN");
+    const ins = await client.query(
+      `INSERT INTO progress (user_id, language, stage)
+       VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING stage`,
+      [req.userId, language, stage]
+    );
+    const first = ins.rows.length > 0;
+    const gain = first ? table[stage] : REPLAY_XP;
+
+    const u = await client.query(
+      `SELECT xp, level FROM users WHERE id = $1 FOR UPDATE`,
+      [req.userId]
+    );
+    const next = applyXp(u.rows[0].xp, u.rows[0].level, gain);
+    await client.query(`UPDATE users SET xp = $1, level = $2 WHERE id = $3`, [
+      next.xp,
+      next.level,
+      req.userId,
+    ]);
+    await client.query("COMMIT");
+
+    res.json({ gained: gain, first, ...next });
+  } catch (e) {
+    await client.query("ROLLBACK");
+    console.error(e);
+    res.status(500).json({ error: "บันทึกความคืบหน้าไม่สำเร็จ" });
+  } finally {
+    client.release();
+  }
+});
+
+/* ---------------- Helpers ---------------- */
+function publicUser(u) {
+  return { name: u.display_name, xp: u.xp, level: u.level };
+}
+
+async function getProgress(userId) {
+  const { rows } = await pool.query(
+    `SELECT language, stage FROM progress WHERE user_id = $1`,
+    [userId]
+  );
+  return rows;
+}
+
+/* ---------------- Start ---------------- */
+initDb()
+  .catch((e) => console.error("Database init ล้มเหลว:", e.message))
+  .finally(() => {
+    app.listen(PORT, () =>
+      console.log(`🚀 Code Quest กำลังทำงานที่ http://localhost:${PORT}`)
+    );
+  });
