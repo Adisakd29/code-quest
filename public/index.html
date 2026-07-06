@@ -34,15 +34,18 @@
   .logo{font-size:13px;color:var(--cyan);letter-spacing:1px;text-shadow:0 0 12px rgba(98,230,255,.5);cursor:pointer}
   .logo span{color:var(--amber)}
   .player{display:flex;align-items:center;gap:10px;margin-left:auto;flex-wrap:wrap}
+  .id-chip{display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--ink);padding:4px 6px;border-radius:9px}
+  .id-chip:hover{background:var(--panel-2)}
   .avatar{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--cyan),#7c6cff);display:grid;place-items:center;font-size:16px}
   .pname{font-size:14px;font-weight:600;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .edit-hint{font-size:11px;color:var(--ink-dim)}
   .lvl-badge{font-size:9px;background:var(--amber);color:#3a2600;padding:6px 9px;border-radius:8px;box-shadow:0 0 0 2px rgba(255,179,71,.25);white-space:nowrap}
-  .xp-wrap{min-width:180px;flex:0 1 260px}
+  .xp-wrap{min-width:170px;flex:0 1 240px}
   .xp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-dim);margin-bottom:4px}
   .xp-bar{height:12px;background:#0b0e20;border:1px solid var(--line);border-radius:99px;overflow:hidden}
   .xp-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--amber),#ffd98a);box-shadow:0 0 10px rgba(255,179,71,.55);transition:width .8s cubic-bezier(.22,1,.36,1)}
-  .logout{background:none;border:1px solid var(--line);color:var(--ink-dim);font-family:inherit;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12.5px}
-  .logout:hover{color:var(--ink);border-color:var(--ink-dim)}
+  .hbtn{background:none;border:1px solid var(--line);color:var(--ink-dim);font-family:inherit;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;white-space:nowrap}
+  .hbtn:hover{color:var(--ink);border-color:var(--ink-dim)}
 
   /* ---------- Select screens ---------- */
   .screen{max-width:1000px;margin:0 auto;padding:30px 22px}
@@ -62,9 +65,7 @@
   .lang-card h3{font-size:19px;margin-bottom:6px}
   .lang-card p{color:var(--ink-dim);font-size:13.5px;line-height:1.7}
   .lang-card .meta{margin-top:14px;font-size:12.5px;color:var(--cyan)}
-  .lang-card.soon{opacity:.5;cursor:not-allowed}
-  .lang-card.soon:hover{transform:none;border-color:var(--line);box-shadow:none}
-  .soon-tag{display:inline-block;font-size:10px;background:var(--panel-2);border:1px solid var(--line);color:var(--ink-dim);padding:4px 8px;border-radius:6px;margin-top:14px}
+  .mystery-note{margin-top:22px;color:var(--ink-dim);font-size:13px;line-height:1.7}
 
   .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
   .topic-card{
@@ -83,6 +84,20 @@
   .mini-fill{height:100%;background:var(--green);border-radius:99px;transition:width .4s}
   .topic-card.complete{border-color:rgba(110,231,160,.5)}
   .topic-card.complete::after{content:"✓";position:absolute;top:12px;right:14px;color:var(--green);font-weight:700}
+  .topic-card.boss{border-color:rgba(255,179,71,.4);background:linear-gradient(180deg,var(--panel),#241d3a)}
+
+  /* ---------- Leaderboard ---------- */
+  .board{display:flex;flex-direction:column;gap:8px;max-width:640px}
+  .brow{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+  .brow .rk{width:44px;font-weight:700;color:var(--ink-dim);text-align:center;font-size:15px;flex-shrink:0}
+  .brow .rk.medal{font-size:22px}
+  .brow .bn{flex:1;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .brow .bl{font-size:9px;background:var(--amber);color:#3a2600;padding:5px 8px;border-radius:7px;white-space:nowrap}
+  .brow .bs{font-size:12.5px;color:var(--ink-dim);white-space:nowrap}
+  .brow.me{border-color:var(--amber);box-shadow:0 0 14px rgba(255,179,71,.18)}
+  .brow.me .bn::after{content:" (คุณ)";color:var(--amber);font-size:12.5px}
+  .my-rank{margin-top:16px;color:var(--ink-dim);font-size:14px;line-height:1.7}
+  .board-note{color:var(--ink-dim);font-size:14px;line-height:1.8}
 
   /* ---------- Game layout ---------- */
   main{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:20px;max-width:1200px;margin:0 auto;padding:22px}
@@ -160,7 +175,7 @@
   .confetti{position:fixed;top:-14px;width:10px;height:14px;z-index:60;animation:fall linear forwards;pointer-events:none}
   @keyframes fall{to{transform:translateY(105vh) rotate(660deg);opacity:.2}}
 
-  /* ---------- Auth ---------- */
+  /* ---------- Auth / Profile ---------- */
   .auth-card{width:min(400px,100%);background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:28px;animation:pop .4s cubic-bezier(.2,1.4,.4,1)}
   .auth-card .logo-mid{font-size:14px;color:var(--cyan);text-align:center;margin-bottom:6px;text-shadow:0 0 14px rgba(98,230,255,.5)}
   .auth-card .logo-mid span{color:var(--amber)}
@@ -172,13 +187,15 @@
   .field label{display:block;font-size:12.5px;color:var(--ink-dim);margin-bottom:5px}
   .field input{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;color:var(--ink);font-family:inherit;font-size:14.5px;padding:11px 13px;outline:none}
   .field input:focus{border-color:var(--cyan)}
-  .auth-err{display:none;color:var(--red);font-size:13px;background:rgba(255,107,129,.08);border:1px solid rgba(255,107,129,.35);border-radius:8px;padding:9px 12px;margin-bottom:12px;line-height:1.6}
-  .auth-err.show{display:block}
+  .form-msg{display:none;font-size:13px;border-radius:8px;padding:9px 12px;margin-bottom:12px;line-height:1.6}
+  .form-msg.err{display:block;color:var(--red);background:rgba(255,107,129,.08);border:1px solid rgba(255,107,129,.35)}
+  .form-msg.ok{display:block;color:var(--green);background:rgba(110,231,160,.08);border:1px solid rgba(110,231,160,.35)}
   .auth-submit{width:100%;background:linear-gradient(135deg,var(--cyan),#4db8e8);color:#04222e;font-weight:700;border:none;padding:12px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:15px;box-shadow:0 3px 0 #2a7ea3;margin-top:4px}
   .auth-submit:disabled{opacity:.6;cursor:wait;box-shadow:none}
   .guest{width:100%;background:none;border:1px dashed var(--line);color:var(--ink-dim);padding:11px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13.5px;margin-top:12px}
   .guest:hover{color:var(--ink);border-color:var(--ink-dim)}
   .sync-note{font-size:12px;color:var(--ink-dim);text-align:center;margin-top:14px;line-height:1.6}
+  .divider{font-size:12px;color:var(--ink-dim);margin:16px 0 10px;border-top:1px solid var(--line);padding-top:14px}
 
   /* ---------- Loading ---------- */
   .boot{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:100;transition:opacity .5s}
@@ -211,14 +228,14 @@
 <div class="overlay" id="authOverlay">
   <div class="auth-card">
     <div class="logo-mid pixel">CODE<span> QUEST</span></div>
-    <div class="sub">ล็อกอินเพื่อเก็บ EXP และความคืบหน้าไว้ในบัญชีของคุณ</div>
+    <div class="sub">ล็อกอินเพื่อเก็บ EXP ขึ้นตารางอันดับ และเล่นต่อได้ทุกอุปกรณ์</div>
     <div class="tabs">
       <button id="tabLogin" class="on">เข้าสู่ระบบ</button>
       <button id="tabRegister">สมัครสมาชิก</button>
     </div>
-    <div class="auth-err" id="authErr"></div>
+    <div class="form-msg" id="authErr"></div>
     <div class="field" id="fieldName" style="display:none">
-      <label for="inName">ชื่อผู้เล่น</label>
+      <label for="inName">ชื่อผู้เล่น (จะแสดงบนตารางอันดับ)</label>
       <input id="inName" type="text" maxlength="30" placeholder="เช่น นักผจญภัยสายโค้ด">
     </div>
     <div class="field">
@@ -231,33 +248,64 @@
     </div>
     <button class="auth-submit" id="authSubmit">เข้าสู่ระบบ</button>
     <button class="guest" id="guestBtn">เล่นแบบผู้เยี่ยมชมก่อน (ไม่บันทึกความคืบหน้า)</button>
-    <div class="sync-note">สมัครฟรี ใช้แค่อีเมลกับรหัสผ่าน — EXP จะตามคุณไปทุกอุปกรณ์</div>
+    <div class="sync-note">สมัครฟรี ใช้แค่อีเมลกับรหัสผ่าน</div>
+  </div>
+</div>
+
+<!-- Profile overlay -->
+<div class="overlay" id="profileOverlay">
+  <div class="auth-card">
+    <div class="logo-mid pixel">⚙️ โปรไฟล์</div>
+    <div class="sub">แก้ไขข้อมูลส่วนตัวของคุณ</div>
+    <div class="form-msg" id="pfMsg"></div>
+    <div class="field">
+      <label for="pfName">ชื่อผู้เล่น</label>
+      <input id="pfName" type="text" maxlength="30">
+    </div>
+    <div class="divider">เปลี่ยนรหัสผ่าน (เว้นว่างไว้ถ้าไม่ต้องการเปลี่ยน)</div>
+    <div class="field">
+      <label for="pfCur">รหัสผ่านปัจจุบัน</label>
+      <input id="pfCur" type="password" autocomplete="current-password">
+    </div>
+    <div class="field">
+      <label for="pfNew">รหัสผ่านใหม่</label>
+      <input id="pfNew" type="password" placeholder="อย่างน้อย 6 ตัวอักษร" autocomplete="new-password">
+    </div>
+    <button class="auth-submit" id="pfSave">บันทึก</button>
+    <button class="guest" id="pfCancel">ปิดหน้าต่างนี้</button>
   </div>
 </div>
 
 <header>
   <div class="logo pixel" id="homeBtn" title="กลับหน้าเลือกภาษา">CODE<span> QUEST</span></div>
   <div class="player">
-    <div class="avatar">🧑‍🚀</div>
-    <span class="pname" id="pname">ผู้เยี่ยมชม</span>
+    <button class="id-chip" id="profileBtn" title="แก้ไขโปรไฟล์">
+      <div class="avatar">🧑‍🚀</div>
+      <span>
+        <span class="pname" id="pname">ผู้เยี่ยมชม</span><br>
+        <span class="edit-hint" id="editHint">แตะเพื่อล็อกอิน</span>
+      </span>
+    </button>
     <div class="lvl-badge pixel" id="lvlBadge">LV.1</div>
     <div class="xp-wrap">
       <div class="xp-label"><span>EXP</span><span id="xpText">0 / 100</span></div>
       <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
     </div>
-    <button class="logout" id="authBtn">เข้าสู่ระบบ</button>
+    <button class="hbtn" id="boardBtn">🏆 อันดับ</button>
+    <button class="hbtn" id="authBtn">เข้าสู่ระบบ</button>
   </div>
 </header>
 
-<!-- ═══ Screen 1: เลือกภาษา ═══ -->
+<!-- ═══ Screen: เลือกภาษา ═══ -->
 <section class="screen" id="langScreen">
   <div class="sec-eyebrow pixel">SELECT LANGUAGE</div>
   <h1 class="sec-title">อยากผจญภัยในโลกของภาษาไหน?</h1>
   <p class="sec-sub">เลือกภาษาโปรแกรมที่อยากฝึก แล้วเลือกหัวข้อที่อยากเรียนได้ตามใจ</p>
   <div class="lang-grid" id="langGrid"></div>
+  <p class="mystery-note">✨ ภาษาใหม่กำลังจะมาเร็วๆ นี้... จะเป็นภาษาอะไรนั้น ยังเป็นความลับ</p>
 </section>
 
-<!-- ═══ Screen 2: เลือกหัวข้อ ═══ -->
+<!-- ═══ Screen: เลือกหัวข้อ ═══ -->
 <section class="screen hide" id="topicScreen">
   <button class="back" id="backToLang">← เปลี่ยนภาษา</button>
   <div class="sec-eyebrow pixel" id="topicEyebrow">PYTHON COURSE</div>
@@ -266,7 +314,17 @@
   <div class="topic-grid" id="topicGrid"></div>
 </section>
 
-<!-- ═══ Screen 3: เล่นเกม ═══ -->
+<!-- ═══ Screen: ตารางอันดับ ═══ -->
+<section class="screen hide" id="boardScreen">
+  <button class="back" id="backFromBoard">← กลับ</button>
+  <div class="sec-eyebrow pixel">LEADERBOARD</div>
+  <h1 class="sec-title">🏆 ตารางอันดับนักผจญภัย</h1>
+  <p class="sec-sub">จัดอันดับตามเลเวลและ EXP — ผ่านด่านให้มากเพื่อไต่ขึ้นไป!</p>
+  <div class="board" id="boardList"></div>
+  <div class="my-rank" id="myRank"></div>
+</section>
+
+<!-- ═══ Screen: เล่นเกม ═══ -->
 <main class="hide" id="gameScreen">
   <section class="card mission">
     <button class="back" id="backToTopic" style="margin-bottom:14px">← เลือกหัวข้ออื่น</button>
@@ -336,6 +394,9 @@
 <script>
 /* ═══════════════ เนื้อหาเกม ═══════════════
    ⚠️ ค่า xp ของแต่ละด่านต้องตรงกับ STAGE_XP ใน server.js */
+const eq = (out, s) => out.trim() === s;
+const lines = out => out.trim().split("\n").map(x => x.trim().replace(/\s+/g, " "));
+
 const COURSES = {
   python: {
     name: "Python", icon: "🐍",
@@ -352,19 +413,25 @@ const COURSES = {
             starter: '# ภารกิจ: แสดงข้อความ สวัสดี Python\nprint("")\n',
             hint: 'ใส่ข้อความไว้ในเครื่องหมายคำพูด เช่น <code>print("สวัสดี Python")</code>',
             xp: 30,
-            check: (out) => out.trim() === "สวัสดี Python"
+            check: (out) => eq(out, "สวัสดี Python")
           },
           {
             title: "ป้ายประกาศสามบรรทัด",
             desc: "print หนึ่งคำสั่งจะขึ้นบรรทัดใหม่ให้เสมอ ถ้าอยากได้หลายบรรทัด ก็ใช้ print หลายครั้ง",
-            goal: 'แสดงป้ายประกาศ 3 บรรทัด: บรรทัดแรก <b>ยินดีต้อนรับ</b> บรรทัดสอง <b>สู่โลกของ</b> บรรทัดสาม <b>Python</b>',
+            goal: 'แสดงป้ายประกาศ 3 บรรทัด: <b>ยินดีต้อนรับ</b> / <b>สู่โลกของ</b> / <b>Python</b>',
             starter: '# ภารกิจ: พิมพ์ป้ายประกาศ 3 บรรทัด\nprint("ยินดีต้อนรับ")\n\n',
             hint: 'เพิ่ม print อีก 2 บรรทัด: <code>print("สู่โลกของ")</code> และ <code>print("Python")</code>',
             xp: 40,
-            check: (out) => {
-              const l = out.trim().split("\n").map(s => s.trim());
-              return l.length === 3 && l[0] === "ยินดีต้อนรับ" && l[1] === "สู่โลกของ" && l[2] === "Python";
-            }
+            check: (out) => { const l = lines(out); return l.length === 3 && l[0] === "ยินดีต้อนรับ" && l[1] === "สู่โลกของ" && l[2] === "Python"; }
+          },
+          {
+            title: "\\n ขึ้นบรรทัดใหม่ในพริบตา",
+            desc: "รหัสพิเศษ \\n ในข้อความหมายถึง \"ขึ้นบรรทัดใหม่\" ทำให้ print ครั้งเดียวได้หลายบรรทัด",
+            goal: 'ใช้ print <b>คำสั่งเดียว</b> กับ \\n เพื่อแสดง <b>บรรทัดหนึ่ง</b> และ <b>บรรทัดสอง</b> คนละบรรทัด',
+            starter: '# ภารกิจ: สองบรรทัดจาก print เดียว\nprint("")\n',
+            hint: 'ลอง <code>print("บรรทัดหนึ่ง\\nบรรทัดสอง")</code> — \\n จะกลายเป็นการขึ้นบรรทัดใหม่',
+            xp: 40,
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "บรรทัดหนึ่ง" && l[1] === "บรรทัดสอง" && (code.match(/print/g) || []).length === 1 && code.includes("\\n"); }
           },
           {
             title: "พิมพ์หลายค่าพร้อมกัน",
@@ -373,7 +440,16 @@ const COURSES = {
             starter: '# ภารกิจ: พิมพ์ HP: 100 ด้วย print เดียว โดยคั่นค่าด้วย ,\nprint()\n',
             hint: 'ลอง <code>print("HP:", 100)</code> — สังเกตว่าตัวเลขไม่ต้องมีเครื่องหมายคำพูด',
             xp: 50,
-            check: (out, code) => out.trim() === "HP: 100" && code.includes(",")
+            check: (out, code) => eq(out, "HP: 100") && code.includes(",")
+          },
+          {
+            title: "เปลี่ยนตัวคั่นด้วย sep",
+            desc: "ปกติ print คั่นแต่ละค่าด้วยช่องว่าง แต่เราสั่งให้ใช้ตัวคั่นอื่นได้ด้วย sep= เช่น sep=\"-\"",
+            goal: 'ใช้ print กับ <b>sep="-"</b> แสดงวันที่ <b>2026-07-06</b> จากสามค่า "2026", "07", "06"',
+            starter: '# ภารกิจ: ประกอบวันที่ด้วยตัวคั่น -\nprint("2026", "07", "06")\n',
+            hint: 'เพิ่มท้ายวงเล็บ: <code>print("2026", "07", "06", sep="-")</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "2026-07-06") && /sep\s*=/.test(code)
           }
         ]
       },
@@ -396,8 +472,26 @@ const COURSES = {
             goal: 'สร้างตัวแปร <b>hp = 80</b> และ <b>potion = 25</b> แล้ว print ผลรวมของทั้งสอง (ต้องได้ <b>105</b>)',
             starter: '# ภารกิจ: ดื่มยาเพิ่มพลัง! รวม hp กับ potion\nhp = 80\npotion = 25\n\n',
             hint: 'พิมพ์ <code>print(hp + potion)</code> — Python จะคำนวณให้เอง',
+            xp: 40,
+            check: (out, code) => eq(out, "105") && /hp\s*=/.test(code) && /\+/.test(code)
+          },
+          {
+            title: "อัปเดตค่าในกล่อง",
+            desc: "ตัวแปรเปลี่ยนค่าได้ตลอด เช่น coins = coins - 3 คือ \"เอาค่าเดิมมาลบ 3 แล้วเก็บกลับที่เดิม\" (ย่อได้เป็น coins -= 3)",
+            goal: 'เริ่มด้วย <b>coins = 10</b> ซื้อของไป <b>3 เหรียญ</b> แล้วได้รางวัล <b>8 เหรียญ</b> จากนั้น print ยอดสุดท้าย (ต้องได้ <b>15</b>)',
+            starter: '# ภารกิจ: อัปเดตยอดเหรียญ\ncoins = 10\n# ซื้อของ -3\n\n# ได้รางวัล +8\n\nprint(coins)\n',
+            hint: 'สองบรรทัด: <code>coins = coins - 3</code> แล้ว <code>coins = coins + 8</code> (หรือใช้ -= และ +=)',
             xp: 50,
-            check: (out, code) => out.trim() === "105" && /hp\s*=/.test(code) && /\+/.test(code)
+            check: (out, code) => eq(out, "15") && (/coins\s*[+\-]=/.test(code) || /coins\s*=\s*coins/.test(code))
+          },
+          {
+            title: "แปลงชนิดข้อมูล",
+            desc: "\"12\" (ข้อความ) กับ 12 (ตัวเลข) ไม่เหมือนกัน! ถ้าอยากคำนวณต้องแปลงข้อความเป็นตัวเลขด้วย int() ก่อน",
+            goal: 'มี <b>age = "12"</b> เป็นข้อความ จงแปลงเป็นตัวเลข บวก 1 แล้ว print (ต้องได้ <b>13</b>)',
+            starter: '# ภารกิจ: ปีหน้าอายุเท่าไหร่?\nage = "12"\n# แปลงเป็นตัวเลขก่อนค่อยบวก\n\n',
+            hint: 'ลอง <code>print(int(age) + 1)</code> — int() แปลงข้อความเป็นจำนวนเต็ม',
+            xp: 50,
+            check: (out, code) => eq(out, "13") && /int\(/.test(code)
           },
           {
             title: "f-string เวทมนตร์แทรกค่า",
@@ -406,7 +500,58 @@ const COURSES = {
             starter: '# ภารกิจ: ใช้ f-string แทรกค่า level ลงในประโยค\nlevel = 5\nprint(f"")\n',
             hint: 'ลอง <code>print(f"ตอนนี้เลเวล {level} แล้ว")</code> — ตัวแปรใน {} จะถูกแทนที่ด้วยค่าจริง',
             xp: 60,
-            check: (out, code) => out.trim() === "ตอนนี้เลเวล 5 แล้ว" && /f["']/.test(code)
+            check: (out, code) => eq(out, "ตอนนี้เลเวล 5 แล้ว") && /f["']/.test(code)
+          }
+        ]
+      },
+      {
+        id: "string", icon: "🔤", title: "ข้อความ (String)",
+        blurb: "จัดการตัวอักษรอย่างเซียน — แปลงตัวใหญ่ ตัดคำ นับตัวอักษร ค้นหาคำ",
+        stages: [
+          {
+            title: "ตะโกนด้วย upper()",
+            desc: "String มี \"ท่าติดตัว\" เรียกว่า method เรียกใช้ด้วยจุดตามด้วยชื่อท่า เช่น .upper() แปลงเป็นตัวพิมพ์ใหญ่ทั้งหมด",
+            goal: 'มีตัวแปร <b>word = "victory"</b> จง print แบบตัวพิมพ์ใหญ่ทั้งหมด (ต้องได้ <b>VICTORY</b>)',
+            starter: '# ภารกิจ: ตะโกนคำว่าชัยชนะ!\nword = "victory"\n\n',
+            hint: 'ลอง <code>print(word.upper())</code>',
+            xp: 40,
+            check: (out, code) => eq(out, "VICTORY") && /\.upper\(\)/.test(code)
+          },
+          {
+            title: "นับความยาวคาถา",
+            desc: "len() บอกจำนวนตัวอักษรในข้อความ (ใช้นับจำนวนสมาชิกใน list ได้ด้วย — ฟังก์ชันสารพัดประโยชน์)",
+            goal: 'มีตัวแปร <b>spell = "abrakadabra"</b> จง print จำนวนตัวอักษรของคาถานี้ (ต้องได้ <b>11</b>)',
+            starter: '# ภารกิจ: คาถานี้ยาวกี่ตัวอักษร?\nspell = "abrakadabra"\n\n',
+            hint: 'ลอง <code>print(len(spell))</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "11") && /len\(/.test(code)
+          },
+          {
+            title: "ตัดข้อความ (Slicing)",
+            desc: "ใช้ [เริ่ม:จบ] ตัดเอาบางส่วนของข้อความ โดยนับจาก 0 และหยุดก่อนตำแหน่งจบ เช่น [0:3] ได้ 3 ตัวแรก",
+            goal: 'มีตัวแปร <b>code_name = "python-master"</b> จง print เฉพาะ <b>6 ตัวแรก</b> (ต้องได้ <b>python</b>)',
+            starter: '# ภารกิจ: ถอดรหัสลับ เอาเฉพาะส่วนแรก\ncode_name = "python-master"\n\n',
+            hint: 'ลอง <code>print(code_name[0:6])</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "python") && /\[\s*\d*\s*:\s*\d+\s*\]/.test(code)
+          },
+          {
+            title: "ค้นหาคำด้วย in",
+            desc: "คีย์เวิร์ด in ใช้เช็คว่ามีคำนี้อยู่ในข้อความไหม ให้คำตอบเป็น True/False — ใช้ใน if ได้เลย",
+            goal: 'มีประโยค <b>sentence = "มังกรเฝ้าสมบัติอยู่ในถ้ำ"</b> จง print ผลการเช็คว่ามีคำว่า <b>"มังกร"</b> อยู่ไหม (ต้องได้ <b>True</b>)',
+            starter: '# ภารกิจ: สแกนหามังกรในประโยค\nsentence = "มังกรเฝ้าสมบัติอยู่ในถ้ำ"\n\n',
+            hint: 'ลอง <code>print("มังกร" in sentence)</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "True") && /\bin\b/.test(code)
+          },
+          {
+            title: "ทำซ้ำข้อความด้วย *",
+            desc: "เครื่องหมาย * กับข้อความคือการทำซ้ำ เช่น \"ab\" * 3 ได้ \"ababab\" — เหมาะกับการสร้างลวดลายหรือเสียงหัวเราะ",
+            goal: 'มีตัวแปร <b>laugh = "ฮ่า"</b> จง print เสียงหัวเราะ 3 รอบติดกัน (ต้องได้ <b>ฮ่าฮ่าฮ่า</b>)',
+            starter: '# ภารกิจ: หัวเราะสามรอบรวด\nlaugh = "ฮ่า"\n\n',
+            hint: 'ลอง <code>print(laugh * 3)</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "ฮ่าฮ่าฮ่า") && /\*/.test(code)
           }
         ]
       },
@@ -421,7 +566,7 @@ const COURSES = {
             starter: '# ภารกิจ: หยิบของชิ้นแรกจากกระเป๋า\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
             hint: 'ตำแหน่งแรกคือ 0 — ลอง <code>print(items[0])</code>',
             xp: 50,
-            check: (out, code) => out.trim() === "ดาบ" && /\[0\]/.test(code)
+            check: (out, code) => eq(out, "ดาบ") && /\[0\]/.test(code)
           },
           {
             title: "เก็บของเพิ่มเข้ากระเป๋า",
@@ -429,8 +574,26 @@ const COURSES = {
             goal: 'เพิ่ม <b>"คบเพลิง"</b> เข้าไปใน items แล้ว print จำนวนของทั้งหมด (ต้องได้ <b>4</b>)',
             starter: '# ภารกิจ: เก็บคบเพลิงเข้ากระเป๋า แล้วนับของ\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
             hint: 'สองบรรทัด: <code>items.append("คบเพลิง")</code> แล้ว <code>print(len(items))</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "4") && /\.append\(/.test(code) && /len\(/.test(code)
+          },
+          {
+            title: "หยิบจากท้ายด้วยเลขติดลบ",
+            desc: "เคล็ดลับ Python: ตำแหน่ง -1 คือชิ้นสุดท้าย -2 คือรองสุดท้าย ไม่ต้องรู้ความยาว list ก็หยิบจากท้ายได้",
+            goal: 'จาก list เดิม จง print ของ<b>ชิ้นสุดท้าย</b>โดยใช้เลขติดลบ (ต้องได้ <b>ยาฟื้นพลัง</b>)',
+            starter: '# ภารกิจ: หยิบของชิ้นสุดท้ายแบบเซียน\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
+            hint: 'ลอง <code>print(items[-1])</code>',
             xp: 60,
-            check: (out, code) => out.trim() === "4" && /\.append\(/.test(code) && /len\(/.test(code)
+            check: (out, code) => eq(out, "ยาฟื้นพลัง") && /\[-1\]/.test(code)
+          },
+          {
+            title: "รวมพลังทั้งทีม",
+            desc: "sum() รวมตัวเลขทั้งหมดใน list ในคำสั่งเดียว (มี min() และ max() หาค่าน้อยสุด/มากสุดด้วยนะ)",
+            goal: 'มีพลังโจมตีของทีม <b>powers = [12, 30, 25]</b> จง print พลังรวมทั้งทีม (ต้องได้ <b>67</b>)',
+            starter: '# ภารกิจ: รวมพลังโจมตีของทั้งทีม\npowers = [12, 30, 25]\n\n',
+            hint: 'ลอง <code>print(sum(powers))</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "67") && /sum\(/.test(code)
           },
           {
             title: "บัตรประจำตัว (Dictionary)",
@@ -439,13 +602,22 @@ const COURSES = {
             starter: '# ภารกิจ: อ่านค่า hp จากบัตรตัวละคร\nplayer = {"name": "นักผจญภัย", "hp": 100}\n\n',
             hint: 'เข้าถึงค่าใน dict ด้วยชื่อช่อง: <code>print(player["hp"])</code>',
             xp: 80,
-            check: (out, code) => out.trim() === "100" && /\[\s*["']hp["']\s*\]/.test(code)
+            check: (out, code) => eq(out, "100") && /\[\s*["']hp["']\s*\]/.test(code)
+          },
+          {
+            title: "เพิ่มช่องใหม่ให้บัตร",
+            desc: "เพิ่มหรือแก้ข้อมูลใน dict ง่ายมาก แค่กำหนดค่าให้ช่องนั้นตรงๆ เช่น player[\"mp\"] = 50 ถ้าช่องยังไม่มีจะถูกสร้างใหม่ให้เอง",
+            goal: 'เพิ่มช่อง <b>"mp"</b> ค่า <b>50</b> เข้าไปใน player แล้ว print ค่า mp ออกมา (ต้องได้ <b>50</b>)',
+            starter: '# ภารกิจ: ปลดล็อกพลังเวท เพิ่ม mp ให้ตัวละคร\nplayer = {"name": "นักผจญภัย", "hp": 100}\n\n',
+            hint: 'สองบรรทัด: <code>player["mp"] = 50</code> แล้ว <code>print(player["mp"])</code>',
+            xp: 80,
+            check: (out, code) => eq(out, "50") && /\[\s*["']mp["']\s*\]\s*=/.test(code)
           }
         ]
       },
       {
         id: "operator", icon: "➗", title: "ตัวดำเนินการ (Operator)",
-        blurb: "เครื่องมือคำนวณและเปรียบเทียบ — หาเศษ หารปัดเศษ และตรรกะ and/or",
+        blurb: "เครื่องมือคำนวณและเปรียบเทียบ — หาเศษ ยกกำลัง และตรรกะ and/or",
         stages: [
           {
             title: "หารเอาเศษ กับหารปัดเศษ",
@@ -454,10 +626,16 @@ const COURSES = {
             starter: '# ภารกิจ: แบ่งเหรียญ 17 อันให้เพื่อน 5 คน\n# เหลือเศษกี่อัน? ได้คนละกี่อัน?\n\n',
             hint: 'สองบรรทัด: <code>print(17 % 5)</code> และ <code>print(17 // 5)</code>',
             xp: 40,
-            check: (out, code) => {
-              const l = out.trim().split("\n").map(s => s.trim());
-              return l.length === 2 && l[0] === "2" && l[1] === "3" && code.includes("%") && code.includes("//");
-            }
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "2" && l[1] === "3" && code.includes("%") && code.includes("//"); }
+          },
+          {
+            title: "ยกกำลังด้วย **",
+            desc: "เครื่องหมาย ** คือการยกกำลัง เช่น 2 ** 3 ได้ 8 — พลังของมันโตเร็วมาก ลองดู",
+            goal: 'จง print ค่า <b>2 ยกกำลัง 10</b> (ต้องได้ <b>1024</b>)',
+            starter: '# ภารกิจ: มังกรแยกร่างเท่าตัว 10 รอบ จะมีกี่ตัว?\n\n',
+            hint: 'ลอง <code>print(2 ** 10)</code>',
+            xp: 40,
+            check: (out, code) => eq(out, "1024") && code.includes("**")
           },
           {
             title: "เครื่องเปรียบเทียบ",
@@ -466,10 +644,7 @@ const COURSES = {
             starter: '# ภารกิจ: ให้ Python ตอบคำถามจริง/เท็จ\n# ระวัง: เท่ากับ ใช้ == (สองตัว) ไม่ใช่ =\n\n',
             hint: '<code>print(10 > 7)</code> และ <code>print(3 == 5)</code> — ไม่ต้องใส่เครื่องหมายคำพูด',
             xp: 50,
-            check: (out, code) => {
-              const l = out.trim().split("\n").map(s => s.trim());
-              return l.length === 2 && l[0] === "True" && l[1] === "False" && code.includes("==");
-            }
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "True" && l[1] === "False" && code.includes("=="); }
           },
           {
             title: "ตรรกะ and / or",
@@ -477,11 +652,17 @@ const COURSES = {
             goal: 'มีตัวแปร key และ torch อยู่แล้ว จง print <b>key and torch</b> แล้วตามด้วย <b>key or torch</b> (ต้องได้ <b>False</b> และ <b>True</b>)',
             starter: '# ภารกิจ: มีกุญแจแต่ไม่มีคบเพลิง จะเข้าถ้ำได้ไหม?\nkey = True\ntorch = False\n\n',
             hint: '<code>print(key and torch)</code> และ <code>print(key or torch)</code>',
+            xp: 50,
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "False" && l[1] === "True" && /\band\b/.test(code) && /\bor\b/.test(code); }
+          },
+          {
+            title: "ทางลัด += และ -=",
+            desc: "โปรแกรมเมอร์ตัวจริงชอบเขียนสั้น: gold += 50 คือเพิ่ม 50 และ gold -= 30 คือลด 30 — สั้นกว่า gold = gold + 50 เยอะ",
+            goal: 'เริ่มด้วย <b>gold = 100</b> ใช้ <b>+=</b> เพิ่ม 50 แล้วใช้ <b>-=</b> ลด 30 จากนั้น print (ต้องได้ <b>120</b>)',
+            starter: '# ภารกิจ: รับรางวัลแล้วจ่ายค่าที่พัก\ngold = 100\n\n',
+            hint: 'สองบรรทัด: <code>gold += 50</code> แล้ว <code>gold -= 30</code> แล้วค่อย print',
             xp: 60,
-            check: (out, code) => {
-              const l = out.trim().split("\n").map(s => s.trim());
-              return l.length === 2 && l[0] === "False" && l[1] === "True" && /\band\b/.test(code) && /\bor\b/.test(code);
-            }
+            check: (out, code) => eq(out, "120") && code.includes("+=") && code.includes("-=")
           }
         ]
       },
@@ -496,7 +677,7 @@ const COURSES = {
             starter: '# ภารกิจ: ใช้ if/else เปิดประตูลับ\nkey = 7\n\n',
             hint: 'โครงสร้าง: <code>if key > 5:</code> (ขึ้นบรรทัดใหม่ ย่อหน้า) <code>print(...)</code> แล้ว <code>else:</code> อีกชุด',
             xp: 50,
-            check: (out, code) => out.trim() === "ประตูเปิดแล้ว!" && /if\s+/.test(code) && /else\s*:/.test(code)
+            check: (out, code) => eq(out, "ประตูเปิดแล้ว!") && /if\s+/.test(code) && /else\s*:/.test(code)
           },
           {
             title: "ตัดเกรดด้วย elif",
@@ -504,8 +685,8 @@ const COURSES = {
             goal: 'กำหนด <b>score = 75</b> ถ้า ≥ 80 พิมพ์ <b>เก่งมาก</b> / ถ้า ≥ 50 พิมพ์ <b>ผ่าน</b> / นอกนั้นพิมพ์ <b>ลองใหม่</b> (คำตอบต้องได้ <b>ผ่าน</b>)',
             starter: '# ภารกิจ: ตัดเกรดคะแนนสอบเวทมนตร์\nscore = 75\n\n',
             hint: 'เรียงเป็น <code>if score >= 80:</code> → <code>elif score >= 50:</code> → <code>else:</code>',
-            xp: 60,
-            check: (out, code) => out.trim() === "ผ่าน" && /elif\s+/.test(code)
+            xp: 50,
+            check: (out, code) => eq(out, "ผ่าน") && /elif\s+/.test(code)
           },
           {
             title: "เงื่อนไขซ้อนด้วย and",
@@ -513,8 +694,26 @@ const COURSES = {
             goal: 'กำหนด <b>hp = 50</b> และ <b>has_key = True</b> ถ้า hp มากกว่า 0 <b>และ</b> has_key เป็นจริง พิมพ์ <b>ไปต่อได้!</b> ไม่งั้นพิมพ์ <b>ติดอยู่ที่เดิม</b>',
             starter: '# ภารกิจ: เช็คสองเงื่อนไขก่อนเข้าด่านต่อไป\nhp = 50\nhas_key = True\n\n',
             hint: 'เขียน <code>if hp > 0 and has_key:</code> — ตัวแปร True/False ใช้เดี่ยวๆ ในเงื่อนไขได้เลย',
+            xp: 60,
+            check: (out, code) => eq(out, "ไปต่อได้!") && /\band\b/.test(code) && /if\s+/.test(code)
+          },
+          {
+            title: "กลับค่าด้วย not",
+            desc: "not กลับความจริงเป็นเท็จและเท็จเป็นจริง เช่น not False ได้ True — อ่านเป็นภาษาคนได้ว่า \"ถ้าไม่...\"",
+            goal: 'กำหนด <b>is_locked = False</b> ถ้าประตู<b>ไม่</b>ล็อก (ใช้ not) พิมพ์ <b>เข้าไปได้</b> ไม่งั้นพิมพ์ <b>ต้องหากุญแจ</b>',
+            starter: '# ภารกิจ: ประตูไม่ล็อก ก็เข้าไปเลยสิ!\nis_locked = False\n\n',
+            hint: 'เขียน <code>if not is_locked:</code> — อ่านว่า "ถ้าไม่ล็อก"',
+            xp: 60,
+            check: (out, code) => eq(out, "เข้าไปได้") && /\bnot\b/.test(code)
+          },
+          {
+            title: "if ซ้อน if",
+            desc: "ใน if สามารถมี if อีกชั้นได้ (ย่อหน้าลึกเข้าไปอีกขั้น) ใช้เมื่อการตัดสินใจมีลำดับชั้น เช่น เช็คพลังก่อน แล้วค่อยเช็คเลเวล",
+            goal: 'กำหนด <b>hp = 70</b>, <b>level = 12</b> ถ้า hp > 50: เช็คต่อว่าถ้า level > 10 พิมพ์ <b>พร้อมสู้บอส!</b> ไม่งั้นพิมพ์ <b>ฝึกอีกนิด</b> / แต่ถ้า hp ไม่ถึง พิมพ์ <b>พักก่อน</b>',
+            starter: '# ภารกิจ: เช็คความพร้อมสองชั้นก่อนสู้บอส\nhp = 70\nlevel = 12\n\n',
+            hint: 'if ชั้นในต้องย่อหน้าลึกกว่าชั้นนอก: <code>if hp > 50:</code> แล้วข้างในมี <code>if level > 10:</code> กับ <code>else:</code> ของมันเอง',
             xp: 80,
-            check: (out, code) => out.trim() === "ไปต่อได้!" && /\band\b/.test(code) && /if\s+/.test(code)
+            check: (out, code) => eq(out, "พร้อมสู้บอส!") && (code.match(/if\s+/g) || []).length >= 2
           }
         ]
       },
@@ -529,10 +728,7 @@ const COURSES = {
             starter: '# ภารกิจ: วนลูปเก็บเหรียญ 5 อัน\nfor i in range(1, 6):\n    print()\n',
             hint: 'ในลูป ลอง <code>print("เก็บเหรียญที่", i)</code>',
             xp: 50,
-            check: (out, code) => {
-              const l = out.trim().split("\n").map(s => s.trim().replace(/\s+/g, " "));
-              return /for\s+/.test(code) && l.length === 5 && l.every((s, i) => s === `เก็บเหรียญที่ ${i + 1}`);
-            }
+            check: (out, code) => { const l = lines(out); return /for\s+/.test(code) && l.length === 5 && l.every((s, i) => s === `เก็บเหรียญที่ ${i + 1}`); }
           },
           {
             title: "รวมสมบัติทั้งหมด",
@@ -541,7 +737,7 @@ const COURSES = {
             starter: '# ภารกิจ: รวมค่าสมบัติ 1 ถึง 10\ntotal = 0\nfor i in range(1, 11):\n    # บวก i เข้าไปใน total\n\nprint(total)\n',
             hint: 'ในลูปเขียน <code>total = total + i</code> (หรือย่อเป็น <code>total += i</code>)',
             xp: 60,
-            check: (out, code) => out.trim() === "55" && /for\s+/.test(code) && /range\(/.test(code)
+            check: (out, code) => eq(out, "55") && /for\s+/.test(code) && /range\(/.test(code)
           },
           {
             title: "นับถอยหลังด้วย While",
@@ -549,11 +745,8 @@ const COURSES = {
             goal: 'ใช้ <b>while</b> นับถอยหลัง <b>3, 2, 1</b> (บรรทัดละเลข) แล้วปิดท้ายด้วย <b>ทะยานออกไป!</b>',
             starter: '# ภารกิจ: นับถอยหลังปล่อยจรวด\ncount = 3\nwhile count > 0:\n    print(count)\n    # อย่าลืมลดค่า count!\n\nprint("ทะยานออกไป!")\n',
             hint: 'ในลูปเพิ่ม <code>count = count - 1</code> (หรือ <code>count -= 1</code>) ไม่งั้นลูปไม่จบ',
-            xp: 80,
-            check: (out, code) => {
-              const l = out.trim().split("\n").map(s => s.trim());
-              return /while\s+/.test(code) && l.length === 4 && l[0] === "3" && l[1] === "2" && l[2] === "1" && l[3] === "ทะยานออกไป!";
-            }
+            xp: 60,
+            check: (out, code) => { const l = lines(out); return /while\s+/.test(code) && l.length === 4 && l[0] === "3" && l[1] === "2" && l[2] === "1" && l[3] === "ทะยานออกไป!"; }
           },
           {
             title: "กรองเฉพาะเลขคู่",
@@ -561,11 +754,26 @@ const COURSES = {
             goal: 'วนลูปเลข 1 ถึง 10 แล้ว print <b>เฉพาะเลขคู่</b> (ต้องได้ 2, 4, 6, 8, 10 บรรทัดละเลข)',
             starter: '# ภารกิจ: เดินเก็บเฉพาะเหรียญเลขคู่\nfor i in range(1, 11):\n    # print เฉพาะตอนที่ i เป็นเลขคู่\n\n',
             hint: 'ในลูปเช็ค <code>if i % 2 == 0:</code> แล้วค่อย <code>print(i)</code>',
+            xp: 80,
+            check: (out, code) => { const l = lines(out); return /for\s+/.test(code) && /%/.test(code) && l.join(",") === "2,4,6,8,10"; }
+          },
+          {
+            title: "หยุดทันทีด้วย break",
+            desc: "break สั่งให้ลูปหยุดกลางคันทันทีที่เจอ ใช้ตอน \"เจอสิ่งที่ตามหาแล้ว ไม่ต้องหาต่อ\" ประหยัดเวลาไปเยอะ",
+            goal: 'วนลูปเปิดหีบใน <b>chest</b> เมื่อเจอ <b>"กุญแจ"</b> ให้พิมพ์ <b>เจอกุญแจแล้ว!</b> แล้ว <b>break</b> ทันที (ผลลัพธ์ต้องมีแค่บรรทัดเดียว)',
+            starter: '# ภารกิจ: หากุญแจในหีบ เจอแล้วหยุดหาทันที\nchest = ["หิน", "ผ้า", "กุญแจ", "เหรียญ"]\nfor item in chest:\n    # ถ้า item คือกุญแจ ให้พิมพ์แล้ว break\n\n',
+            hint: 'ในลูป: <code>if item == "กุญแจ":</code> แล้วข้างในมี print กับ <code>break</code>',
+            xp: 80,
+            check: (out, code) => eq(out, "เจอกุญแจแล้ว!") && /\bbreak\b/.test(code)
+          },
+          {
+            title: "ลูปซ้อนลูป",
+            desc: "ลูปข้างในลูปอีกชั้น! ลูปนอกคุมแถว ลูปในคุมของในแต่ละแถว — นี่คือวิธีวาดตาราง กระดานเกม หรือแผนที่",
+            goal: 'ใช้ <b>ลูปซ้อนลูป</b> (for สองชั้น) วาดกำแพงดาว 3 แถว แถวละ 3 ดวง:<span class="fc">***\n***\n***</span>',
+            starter: '# ภารกิจ: ก่อกำแพงดาว 3x3 ด้วยลูปซ้อนลูป\nfor i in range(3):\n    row = ""\n    for j in range(3):\n        # ต่อ * เข้าไปใน row\n\n    print(row)\n',
+            hint: 'ในลูปชั้นใน: <code>row = row + "*"</code> (หรือ <code>row += "*"</code>) แล้ว print(row) อยู่ในลูปชั้นนอก',
             xp: 100,
-            check: (out, code) => {
-              const l = out.trim().split("\n").map(s => s.trim());
-              return /for\s+/.test(code) && /%/.test(code) && l.join(",") === "2,4,6,8,10";
-            }
+            check: (out, code) => { const l = lines(out); return l.length === 3 && l.every(s => s === "***") && (code.match(/for\s/g) || []).length >= 2; }
           }
         ]
       },
@@ -580,7 +788,7 @@ const COURSES = {
             starter: '# ภารกิจ: แปลงผังงานเป็นโค้ด\n\n',
             hint: 'เริ่มจาก <code>x = 10</code> แล้วใช้ if/else ตามเส้นทางในผัง — x เป็น 10 ซึ่งมากกว่า 5 ผลลัพธ์จึงควรเป็น "มากกว่า"',
             xp: 80,
-            check: (out, code) => out.trim() === "มากกว่า" && /if\s+/.test(code) && /x\s*=/.test(code)
+            check: (out, code) => eq(out, "มากกว่า") && /if\s+/.test(code) && /x\s*=/.test(code)
           },
           {
             title: "อ่านผังงานลูป",
@@ -588,11 +796,26 @@ const COURSES = {
             goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n      i = 1\n        │\n   ┌─ i <= 3 ? ◄──┐\n  ใช่          │\n   │              │\nพิมพ์ "รอบที่", i    │\n   │              │\n  i = i + 1 ──────┘\n\n  ไม่ → พิมพ์ "จบ"</span>',
             starter: '# ภารกิจ: แปลงผังงานลูปเป็นโค้ด\n\n',
             hint: 'ใช้ <code>while i <= 3:</code> ข้างในมี print กับ i = i + 1 แล้วค่อย print("จบ") นอกลูป — หรือใช้ for ก็ได้ถ้าผลลัพธ์ตรงกัน',
+            xp: 80,
+            check: (out) => { const l = lines(out); return l.length === 4 && l[0] === "รอบที่ 1" && l[1] === "รอบที่ 2" && l[2] === "รอบที่ 3" && l[3] === "จบ"; }
+          },
+          {
+            title: "ผังงานเงื่อนไขในลูป",
+            desc: "ผังนี้มีทั้งลูปและจุดตัดสินใจข้างใน — เส้นทาง \"ไม่\" ของเงื่อนไขจะข้ามการพิมพ์แล้ววนต่อเลย",
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n  วน i = 1 ถึง 5 ◄──────┐\n        │               │\n   i เป็นเลขคี่ ? ──ไม่──┤\n       ใช่              │\n        │               │\n     พิมพ์ i ────────────┘\n\n  ครบแล้ว → จบ</span>ผลลัพธ์ที่ถูกต้อง: 1, 3, 5 (บรรทัดละเลข)',
+            starter: '# ภารกิจ: แปลงผังงานเป็นโค้ด (เลขคี่คือหาร 2 เหลือเศษ 1)\n\n',
+            hint: '<code>for i in range(1, 6):</code> แล้วข้างใน <code>if i % 2 == 1:</code> ค่อย print(i)',
             xp: 100,
-            check: (out, code) => {
-              const l = out.trim().split("\n").map(s => s.trim().replace(/\s+/g, " "));
-              return l.length === 4 && l[0] === "รอบที่ 1" && l[1] === "รอบที่ 2" && l[2] === "รอบที่ 3" && l[3] === "จบ";
-            }
+            check: (out, code) => { const l = lines(out); return l.join(",") === "1,3,5" && /for\s+|while\s+/.test(code) && /if\s+/.test(code); }
+          },
+          {
+            title: "ผังงานสะสมค่า",
+            desc: "ผังงานแบบสะสม (accumulator) พบบ่อยมากในข้อสอบ: มีตัวแปรเก็บผลรวม แล้ววนบวกเพิ่มทีละรอบ ค่อยแสดงผลตอนจบ",
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n    total = 0\n        │\n  วน i = 1 ถึง 4 ◄──┐\n        │           │\n total = total + i*2 ┘\n\n  ครบแล้ว → พิมพ์ total</span>(ต้องได้ <b>20</b>)',
+            starter: '# ภารกิจ: แปลงผังงานสะสมค่าเป็นโค้ด\n\n',
+            hint: '<code>total = 0</code> → <code>for i in range(1, 5):</code> → <code>total += i * 2</code> → print(total) นอกลูป — ลองไล่มือ: 2+4+6+8 = 20',
+            xp: 100,
+            check: (out, code) => eq(out, "20") && /total\s*/.test(code) && /for\s+|while\s+/.test(code)
           }
         ]
       },
@@ -607,7 +830,7 @@ const COURSES = {
             starter: '# ภารกิจ: สร้างและเรียกใช้ฟังก์ชันแรก\ndef greet():\n    print("สวัสดีนักผจญภัย")\n\n# เรียกใช้ฟังก์ชันตรงนี้\n',
             hint: 'เรียกฟังก์ชันด้วยชื่อ + วงเล็บ: <code>greet()</code> (ไม่ต้องมี def)',
             xp: 60,
-            check: (out, code) => out.trim() === "สวัสดีนักผจญภัย" && /def\s+greet/.test(code)
+            check: (out, code) => eq(out, "สวัสดีนักผจญภัย") && /def\s+greet/.test(code)
           },
           {
             title: "รับค่าและส่งค่ากลับ",
@@ -615,32 +838,82 @@ const COURSES = {
             goal: 'สร้างฟังก์ชัน <b>double(x)</b> ที่ return ค่า x คูณ 2 แล้ว <b>print(double(21))</b> (ต้องได้ <b>42</b>)',
             starter: '# ภารกิจ: สร้างเวทเพิ่มพลังสองเท่า\ndef double(x):\n    # return ค่า x คูณ 2\n\nprint(double(21))\n',
             hint: 'ในฟังก์ชันเขียน <code>return x * 2</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "42") && /def\s+double/.test(code) && /return/.test(code)
+          },
+          {
+            title: "รับหลายค่าพร้อมกัน",
+            desc: "ฟังก์ชันรับ parameter ได้หลายตัว คั่นด้วยจุลภาค ทำให้ท่าไม้ตายของเรายืดหยุ่นขึ้นมาก",
+            goal: 'สร้างฟังก์ชัน <b>attack(name, dmg)</b> ที่พิมพ์ <b>{name} โจมตี {dmg} ดาเมจ</b> แล้วเรียก <b>attack("อัศวิน", 30)</b> (ต้องได้ <b>อัศวิน โจมตี 30 ดาเมจ</b>)',
+            starter: '# ภารกิจ: สร้างท่าโจมตีที่ใครก็ใช้ได้\ndef attack(name, dmg):\n    # พิมพ์ข้อความโจมตีด้วย f-string\n\nattack("อัศวิน", 30)\n',
+            hint: 'ในฟังก์ชัน: <code>print(f"{name} โจมตี {dmg} ดาเมจ")</code>',
             xp: 80,
-            check: (out, code) => out.trim() === "42" && /def\s+double/.test(code) && /return/.test(code)
+            check: (out, code) => eq(out, "อัศวิน โจมตี 30 ดาเมจ") && /def\s+attack\s*\(\s*\w+\s*,\s*\w+\s*\)/.test(code)
+          },
+          {
+            title: "ค่าเริ่มต้น (Default)",
+            desc: "กำหนดค่าเริ่มต้นให้ parameter ได้ เช่น def heal(amount=10) — ถ้าเรียกโดยไม่ส่งค่า จะใช้ 10 อัตโนมัติ",
+            goal: 'สร้างฟังก์ชัน <b>heal(amount=10)</b> ที่ return amount แล้ว print ผลของ <b>heal()</b> และ <b>heal(50)</b> (ต้องได้ <b>10</b> และ <b>50</b>)',
+            starter: '# ภารกิจ: ยาสามัญฟื้น 10 แต่ระบุเองก็ได้\n# สร้างฟังก์ชัน heal ที่มีค่าเริ่มต้น\n\nprint(heal())\nprint(heal(50))\n',
+            hint: '<code>def heal(amount=10):</code> แล้วข้างใน <code>return amount</code>',
+            xp: 80,
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "10" && l[1] === "50" && /def\s+heal\s*\(\s*\w+\s*=\s*10\s*\)/.test(code); }
           },
           {
             title: "ฟังก์ชัน + ลูป = คอมโบ",
-            desc: "ด่านสุดท้าย! รวมทุกอย่างที่เรียนมา: สร้างฟังก์ชันแล้วเรียกใช้ซ้ำๆ ในลูป นี่คือวิธีที่โปรแกรมจริงทำงาน",
+            desc: "รวมทุกอย่างที่เรียนมา: สร้างฟังก์ชันแล้วเรียกใช้ซ้ำๆ ในลูป นี่คือวิธีที่โปรแกรมจริงทำงาน",
             goal: 'สร้างฟังก์ชัน <b>power_up(lv)</b> ที่ return ค่า lv + 10 แล้วใช้ for loop เรียกกับเลข 1 ถึง 3 และ print ผลลัพธ์ (ต้องได้ <b>11, 12, 13</b> บรรทัดละเลข)',
-            starter: '# ภารกิจสุดท้าย: อัพพลังทีมทั้ง 3 คน\ndef power_up(lv):\n    return lv + 10\n\n# วนลูป 1 ถึง 3 แล้ว print(power_up(i))\n',
+            starter: '# ภารกิจ: อัพพลังทีมทั้ง 3 คน\ndef power_up(lv):\n    return lv + 10\n\n# วนลูป 1 ถึง 3 แล้ว print(power_up(i))\n',
             hint: '<code>for i in range(1, 4):</code> แล้วในลูป <code>print(power_up(i))</code>',
             xp: 100,
+            check: (out, code) => { const l = lines(out); return /def\s+power_up/.test(code) && /for\s+/.test(code) && l.join(",") === "11,12,13"; }
+          }
+        ]
+      },
+      {
+        id: "project", icon: "🏆", title: "ด่านบอส: รวมพลัง",
+        blurb: "โจทย์ใหญ่ที่ต้องใช้ทุกวิชาที่เรียนมา — ผ่านได้คือของจริง!",
+        boss: true,
+        stages: [
+          {
+            title: "บอสที่ 1: เวทกับดาบ",
+            desc: "โจทย์คลาสสิกระดับตำนาน (FizzBuzz)! ต้องใช้ลูป เงื่อนไข และตัวดำเนินการ % พร้อมกัน — ระวังลำดับการเช็คเงื่อนไขให้ดี",
+            goal: 'วนเลข 1 ถึง 15: ถ้าหารด้วย <b>ทั้ง 3 และ 5</b> ลงตัว พิมพ์ <b>เวทดาบ</b> / หาร 3 ลงตัว พิมพ์ <b>เวท</b> / หาร 5 ลงตัว พิมพ์ <b>ดาบ</b> / นอกนั้นพิมพ์ตัวเลขนั้น (บรรทัดละหนึ่งอย่าง)',
+            starter: '# ด่านบอส: เวทกับดาบ (FizzBuzz)\n# เคล็ดลับ: เช็คกรณี "หารทั้งคู่ลงตัว" ก่อนเสมอ!\nfor i in range(1, 16):\n    pass  # ลบ pass แล้วเขียนเงื่อนไขของคุณ\n',
+            hint: 'โครงสร้าง: <code>if i % 3 == 0 and i % 5 == 0:</code> → <code>elif i % 3 == 0:</code> → <code>elif i % 5 == 0:</code> → <code>else: print(i)</code>',
+            xp: 120,
             check: (out, code) => {
-              const l = out.trim().split("\n").map(s => s.trim());
-              return /def\s+power_up/.test(code) && /for\s+/.test(code) && l.join(",") === "11,12,13";
+              const expect = ["1","2","เวท","4","ดาบ","เวท","7","8","เวท","ดาบ","11","เวท","13","14","เวทดาบ"];
+              return lines(out).join("|") === expect.join("|") && /for\s+/.test(code);
+            }
+          },
+          {
+            title: "บอสที่ 2: ตัดเกรดทั้งชั้น",
+            desc: "รวมฟังก์ชัน + ลูป + เงื่อนไข: สร้างเครื่องตัดเกรดหนึ่งครั้ง แล้วใช้กับนักเรียนทุกคนด้วยลูป — นี่แหละพลังของฟังก์ชัน",
+            goal: 'มี <b>scores = [45, 82, 60, 95, 30]</b> จงสร้างฟังก์ชัน <b>grade(s)</b> ที่ return <b>ผ่าน</b> ถ้า s ≥ 50 ไม่งั้น return <b>ไม่ผ่าน</b> แล้ววนลูป print ผลของทุกคน (ต้องได้ ไม่ผ่าน, ผ่าน, ผ่าน, ผ่าน, ไม่ผ่าน)',
+            starter: '# ด่านบอส: ตัดเกรดนักเรียนทั้งชั้น\nscores = [45, 82, 60, 95, 30]\n\ndef grade(s):\n    # return "ผ่าน" หรือ "ไม่ผ่าน"\n\n# วนลูป scores แล้ว print(grade(...))\n',
+            hint: 'ในฟังก์ชัน: <code>if s >= 50: return "ผ่าน"</code> ไม่งั้น <code>return "ไม่ผ่าน"</code> แล้ววน <code>for s in scores: print(grade(s))</code>',
+            xp: 150,
+            check: (out, code) => {
+              const expect = ["ไม่ผ่าน","ผ่าน","ผ่าน","ผ่าน","ไม่ผ่าน"];
+              return lines(out).join("|") === expect.join("|") && /def\s+grade/.test(code) && /for\s+/.test(code);
+            }
+          },
+          {
+            title: "บอสใหญ่: ร้านยาปริศนา",
+            desc: "ด่านสุดท้ายของคอร์ส! จำลองการเดินซื้อของจริง: มีเงินจำกัด เดินดูราคาทีละชิ้น ซื้อได้ก็ซื้อ ไม่พอก็บอกตรงๆ — ใช้ลูป เงื่อนไข ตัวแปรสะสม และ f-string ครบทุกท่า",
+            goal: 'มี <b>gold = 120</b> และ <b>prices = [30, 50, 80]</b> วนดูราคาทีละชิ้น: ถ้าเงินพอ (gold ≥ price) ให้หักเงินแล้วพิมพ์ <b>ซื้อยาราคา {price}</b> / ถ้าไม่พอพิมพ์ <b>เงินไม่พอ</b> / จบแล้วพิมพ์ <b>เหลือเงิน {gold}</b><span class="fc">ผลที่ถูกต้อง:\nซื้อยาราคา 30\nซื้อยาราคา 50\nเงินไม่พอ\nเหลือเงิน 40</span>',
+            starter: '# ด่านบอสใหญ่: ร้านยาปริศนา\ngold = 120\nprices = [30, 50, 80]\n\nfor price in prices:\n    pass  # เช็คเงิน ซื้อ หรือบอกว่าไม่พอ\n\n# จบลูปแล้ว พิมพ์เงินที่เหลือ\n',
+            hint: 'ในลูป: <code>if gold >= price:</code> → <code>gold -= price</code> และ <code>print(f"ซื้อยาราคา {price}")</code> / else พิมพ์ "เงินไม่พอ" — ปิดท้ายนอกลูปด้วย <code>print(f"เหลือเงิน {gold}")</code>',
+            xp: 200,
+            check: (out, code) => {
+              const expect = ["ซื้อยาราคา 30","ซื้อยาราคา 50","เงินไม่พอ","เหลือเงิน 40"];
+              return lines(out).join("|") === expect.join("|") && /for\s+/.test(code) && /if\s+/.test(code);
             }
           }
         ]
       }
     ]
-  },
-  javascript: {
-    name: "JavaScript", icon: "🟨", comingSoon: true,
-    tagline: "ภาษาแห่งโลกเว็บ ทุกเว็บไซต์ที่คุณใช้มี JavaScript อยู่เบื้องหลัง"
-  },
-  cpp: {
-    name: "C++", icon: "⚙️", comingSoon: true,
-    tagline: "ภาษาสายพลัง เร็วแรงระดับเกม AAA และระบบปฏิบัติการ"
   }
 };
 
@@ -658,6 +931,7 @@ const codeEl = $("code"), outEl = $("out"), runBtn = $("runBtn");
 function showScreen(name) {
   $("langScreen").classList.toggle("hide", name !== "lang");
   $("topicScreen").classList.toggle("hide", name !== "topic");
+  $("boardScreen").classList.toggle("hide", name !== "board");
   $("gameScreen").classList.toggle("hide", name !== "game");
   window.scrollTo(0, 0);
 }
@@ -667,18 +941,16 @@ function renderLangs() {
   g.innerHTML = "";
   for (const [id, c] of Object.entries(COURSES)) {
     const el = document.createElement("button");
-    el.className = "lang-card" + (c.comingSoon ? " soon" : "");
-    const topicCount = c.topics ? c.topics.length : 0;
-    const stageCount = c.topics ? c.topics.reduce((n, t) => n + t.stages.length, 0) : 0;
+    el.className = "lang-card";
+    const topicCount = c.topics.length;
+    const stageCount = c.topics.reduce((n, t) => n + t.stages.length, 0);
     el.innerHTML = `
       <div class="icon">${c.icon}</div>
       <h3>${c.name}</h3>
       <p>${c.tagline}</p>
-      ${c.comingSoon
-        ? `<span class="soon-tag">🔒 เร็วๆ นี้</span>`
-        : `<div class="meta">${topicCount} หัวข้อ · ${stageCount} ด่าน →</div>`}
+      <div class="meta">${topicCount} หัวข้อ · ${stageCount} ด่าน →</div>
     `;
-    if (!c.comingSoon) el.onclick = () => { state.lang = id; renderTopics(); showScreen("topic"); };
+    el.onclick = () => { state.lang = id; renderTopics(); showScreen("topic"); };
     g.appendChild(el);
   }
 }
@@ -694,9 +966,9 @@ function renderTopics() {
     const total = t.stages.length;
     const totalXp = t.stages.reduce((n, s) => n + s.xp, 0);
     const el = document.createElement("button");
-    el.className = "topic-card" + (doneCount === total ? " complete" : "");
+    el.className = "topic-card" + (doneCount === total ? " complete" : "") + (t.boss ? " boss" : "");
     el.innerHTML = `
-      <div class="t-num pixel">TOPIC ${String(idx + 1).padStart(2, "0")}</div>
+      <div class="t-num pixel">${t.boss ? "FINAL" : "TOPIC " + String(idx + 1).padStart(2, "0")}</div>
       <div class="t-head"><span class="icon">${t.icon}</span><h3>${t.title}</h3></div>
       <p>${t.blurb}</p>
       <div class="t-meta">
@@ -714,6 +986,41 @@ function renderTopics() {
     };
     g.appendChild(el);
   });
+}
+
+/* ═══════════════ Leaderboard ═══════════════ */
+async function openBoard() {
+  showScreen("board");
+  $("boardList").innerHTML = '<div class="board-note">กำลังโหลดตารางอันดับ...</div>';
+  $("myRank").textContent = "";
+  try {
+    const d = await api("/api/leaderboard");
+    const list = $("boardList");
+    list.innerHTML = "";
+    if (!d.top.length) {
+      list.innerHTML = '<div class="board-note">ยังไม่มีใครขึ้นกระดาน — สมัครสมาชิกแล้วเป็นคนแรกสิ!</div>';
+    }
+    const medals = ["🥇", "🥈", "🥉"];
+    d.top.forEach((r, i) => {
+      const row = document.createElement("div");
+      row.className = "brow" + (r.isMe ? " me" : "");
+      row.innerHTML = `
+        <span class="rk ${i < 3 ? "medal" : ""}">${i < 3 ? medals[i] : "#" + (i + 1)}</span>
+        <span class="bn"></span>
+        <span class="bl pixel">LV.${r.level}</span>
+        <span class="bs">⭐ ${r.stages} ด่าน</span>
+      `;
+      row.querySelector(".bn").textContent = r.name;
+      list.appendChild(row);
+    });
+    if (d.me) {
+      $("myRank").textContent = `อันดับของคุณตอนนี้: #${d.me.rank} (LV.${d.me.level})`;
+    } else if (!state.user) {
+      $("myRank").textContent = "ล็อกอินเพื่อร่วมจัดอันดับกับนักผจญภัยคนอื่น";
+    }
+  } catch (e) {
+    $("boardList").innerHTML = `<div class="board-note">โหลดตารางอันดับไม่ได้: ${e.message}</div>`;
+  }
 }
 
 /* ═══════════════ API ═══════════════ */
@@ -735,6 +1042,7 @@ function applySession(data) {
   state.level = data.user.level;
   state.done = new Set((data.progress || []).map(p => doneKey(p.language, p.topic, p.stage)));
   $("pname").textContent = data.user.name;
+  $("editHint").textContent = "แตะเพื่อแก้ไขโปรไฟล์";
   $("authBtn").textContent = "ออกจากระบบ";
   $("authOverlay").classList.remove("show");
   renderXP();
@@ -759,7 +1067,7 @@ function setAuthMode(mode) {
   $("tabRegister").className = mode === "register" ? "on" : "";
   $("fieldName").style.display = mode === "register" ? "block" : "none";
   $("authSubmit").textContent = mode === "login" ? "เข้าสู่ระบบ" : "สมัครและเริ่มเล่น";
-  $("authErr").classList.remove("show");
+  $("authErr").className = "form-msg";
 }
 $("tabLogin").onclick = () => setAuthMode("login");
 $("tabRegister").onclick = () => setAuthMode("register");
@@ -767,14 +1075,14 @@ $("tabRegister").onclick = () => setAuthMode("register");
 $("authSubmit").onclick = async () => {
   const btn = $("authSubmit");
   btn.disabled = true;
-  $("authErr").classList.remove("show");
+  $("authErr").className = "form-msg";
   try {
     const body = { email: $("inEmail").value, password: $("inPass").value, name: $("inName").value };
     const data = await api(authMode === "login" ? "/api/login" : "/api/register", body);
     applySession(data);
   } catch (e) {
     $("authErr").textContent = e.message;
-    $("authErr").classList.add("show");
+    $("authErr").className = "form-msg err";
   } finally {
     btn.disabled = false;
   }
@@ -787,6 +1095,7 @@ $("authBtn").onclick = async () => {
     await api("/api/logout", {}).catch(() => {});
     state = { user: null, level: 1, xp: 0, lang: null, topic: null, stage: 0, done: new Set() };
     $("pname").textContent = "ผู้เยี่ยมชม";
+    $("editHint").textContent = "แตะเพื่อล็อกอิน";
     $("authBtn").textContent = "เข้าสู่ระบบ";
     renderXP(); renderLangs(); showScreen("lang");
   }
@@ -797,9 +1106,51 @@ $("authBtn").onclick = async () => {
   el.addEventListener("keydown", e => { if (e.key === "Enter") $("authSubmit").click(); })
 );
 
+/* ═══════════════ Profile UI ═══════════════ */
+$("profileBtn").onclick = () => {
+  if (!state.user) { $("authOverlay").classList.add("show"); return; }
+  $("pfName").value = state.user.name;
+  $("pfCur").value = "";
+  $("pfNew").value = "";
+  $("pfMsg").className = "form-msg";
+  $("profileOverlay").classList.add("show");
+};
+$("pfCancel").onclick = () => $("profileOverlay").classList.remove("show");
+
+$("pfSave").onclick = async () => {
+  const btn = $("pfSave");
+  btn.disabled = true;
+  $("pfMsg").className = "form-msg";
+  try {
+    const body = { name: $("pfName").value };
+    if ($("pfNew").value) {
+      body.currentPassword = $("pfCur").value;
+      body.newPassword = $("pfNew").value;
+    }
+    const d = await api("/api/profile", body);
+    state.user.name = d.user.name;
+    $("pname").textContent = d.user.name;
+    $("pfMsg").textContent = "บันทึกเรียบร้อยแล้ว ✓";
+    $("pfMsg").className = "form-msg ok";
+    $("pfCur").value = ""; $("pfNew").value = "";
+    setTimeout(() => $("profileOverlay").classList.remove("show"), 900);
+  } catch (e) {
+    $("pfMsg").textContent = e.message;
+    $("pfMsg").className = "form-msg err";
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+/* ═══════════════ Navigation ═══════════════ */
 $("homeBtn").onclick = () => { renderLangs(); showScreen("lang"); };
 $("backToLang").onclick = () => { renderLangs(); showScreen("lang"); };
 $("backToTopic").onclick = () => { renderTopics(); showScreen("topic"); };
+$("boardBtn").onclick = openBoard;
+$("backFromBoard").onclick = () => {
+  if (state.lang && state.topic) { renderTopics(); showScreen("topic"); }
+  else { renderLangs(); showScreen("lang"); }
+};
 
 /* ═══════════════ Pyodide ═══════════════ */
 let pyodide = null;
@@ -928,7 +1279,7 @@ async function recordPass() {
       if (r.first) state.done.add(key);
       const leveled = r.level > state.level;
       state.xp = r.xp; state.level = r.level;
-      $("xpPop").textContent = `+${r.gained} EXP`;
+      $("xpPop").textContent = r.gained > 0 ? `+${r.gained} EXP` : "ด่านนี้เคยผ่านแล้ว — ไม่ได้ EXP ซ้ำ";
       renderXP();
       if (leveled) setTimeout(showLevelUp, 700);
     } catch (e) {
@@ -936,10 +1287,14 @@ async function recordPass() {
     }
   } else {
     const first = !state.done.has(key);
-    const gain = first ? levels()[state.stage].xp : 10;
-    if (first) state.done.add(key);
-    $("xpPop").textContent = `+${gain} EXP (ยังไม่ถูกบันทึก — ล็อกอินเพื่อเก็บถาวร)`;
-    gainXPLocal(gain);
+    if (first) {
+      state.done.add(key);
+      const gain = levels()[state.stage].xp;
+      $("xpPop").textContent = `+${gain} EXP (ยังไม่ถูกบันทึก — ล็อกอินเพื่อเก็บถาวร)`;
+      gainXPLocal(gain);
+    } else {
+      $("xpPop").textContent = "ด่านนี้เคยผ่านแล้ว — ไม่ได้ EXP ซ้ำ";
+    }
   }
 }
 
@@ -950,6 +1305,8 @@ function friendlyError(err) {
   else if (/IndentationError/.test(err)) tip = "\n\n💡 IndentationError = การย่อหน้าไม่ถูกต้อง บรรทัดใน if/for ต้องเว้นวรรคเข้าไป 4 ช่อง";
   else if (/NameError/.test(err)) tip = "\n\n💡 NameError = ใช้ชื่อตัวแปรที่ยังไม่ได้สร้าง เช็คตัวสะกดดูนะ";
   else if (/TypeError/.test(err)) tip = "\n\n💡 TypeError = ชนิดข้อมูลไม่เข้ากัน เช่น เอาข้อความ + ตัวเลขตรงๆ ไม่ได้ ลองใช้ f-string หรือคั่นด้วย , ใน print";
+  else if (/IndexError/.test(err)) tip = "\n\n💡 IndexError = ตำแหน่งที่ขอเกินขนาดของ list — อย่าลืมว่าเริ่มนับจาก 0";
+  else if (/KeyError/.test(err)) tip = "\n\n💡 KeyError = ไม่มีช่องชื่อนี้ใน dictionary เช็คตัวสะกดของ key ดูนะ";
   return last + tip;
 }
 
