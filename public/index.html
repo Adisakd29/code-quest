@@ -24,6 +24,11 @@
   }
   .pixel{font-family:'Press Start 2P',monospace}
   .hide{display:none !important}
+  .ver-warn{
+    display:none;background:#3a2600;border-bottom:1px solid var(--amber);color:var(--amber);
+    font-size:13px;padding:10px 18px;line-height:1.7;text-align:center;
+  }
+  .ver-warn.show{display:block}
 
   /* ---------- Top bar ---------- */
   header{
@@ -275,6 +280,8 @@
     <button class="guest" id="pfCancel">ปิดหน้าต่างนี้</button>
   </div>
 </div>
+
+<div class="ver-warn" id="verWarn">⚠️ เซิร์ฟเวอร์กับหน้าเกมเป็นคนละเวอร์ชันกัน — การบันทึก EXP อาจผิดพลาด กรุณา push โค้ดขึ้น GitHub ให้ครบทุกไฟล์ (โดยเฉพาะ server.js) แล้วรอ Railway deploy ใหม่</div>
 
 <header>
   <div class="logo pixel" id="homeBtn" title="กลับหน้าเลือกภาษา">CODE<span> QUEST</span></div>
@@ -1370,8 +1377,18 @@ codeEl.addEventListener("keydown", e => {
 });
 
 /* ═══════════════ Init ═══════════════ */
+const CONTENT_VERSION = 3; // ต้องตรงกับ CONTENT_VERSION ใน server.js
+async function checkVersion() {
+  try {
+    const r = await fetch("/api/version");
+    if (!r.ok) { $("verWarn").classList.add("show"); return; } // เซิร์ฟเวอร์เก่าไม่มี endpoint นี้ = ไม่ตรงแน่นอน
+    const d = await r.json();
+    if (d.version !== CONTENT_VERSION) $("verWarn").classList.add("show");
+  } catch { /* เปิดเป็นไฟล์ตรงๆ ไม่มีเซิร์ฟเวอร์ — ข้ามได้ */ }
+}
 renderLangs();
 renderXP();
+checkVersion();
 tryRestore();
 initPy();
 </script>
