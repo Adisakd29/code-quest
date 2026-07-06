@@ -77,7 +77,7 @@ async function initDb() {
  * เวอร์ชันเนื้อหา — ต้องตรงกับ CONTENT_VERSION ใน public/index.html
  * ถ้าไม่ตรง หน้าเกมจะแสดงแถบเตือนว่า deploy ไม่ครบทุกไฟล์
  */
-const CONTENT_VERSION = 3;
+const CONTENT_VERSION = 4;
 
 /**
  * XP ของแต่ละด่าน: STAGE_XP[ภาษา][หัวข้อ][ด่าน]
@@ -85,19 +85,26 @@ const CONTENT_VERSION = 3;
  */
 const STAGE_XP = {
   python: {
-    print:         [30, 40, 40, 50, 50],
-    variable:      [40, 40, 50, 50, 60],
-    string:        [40, 50, 50, 60, 60],
-    datastructure: [50, 50, 60, 60, 80, 80],
-    operator:      [40, 40, 50, 50, 60],
-    ifelse:        [50, 50, 60, 60, 80],
-    loop:          [50, 60, 60, 80, 80, 100],
-    flowchart:     [80, 80, 100, 100],
-    function:      [60, 60, 80, 80, 100],
-    project:       [120, 150, 200],
+    print:         [30, 40, 40, 50, 50, 50, 60],
+    variable:      [40, 40, 50, 50, 60, 60, 60],
+    string:        [40, 50, 50, 60, 60, 60, 80],
+    datastructure: [50, 50, 60, 60, 80, 80, 60, 80],
+    operator:      [40, 40, 50, 50, 60, 50, 60],
+    ifelse:        [50, 50, 60, 60, 80, 60, 80],
+    loop:          [50, 60, 60, 80, 80, 100, 60, 80, 100],
+    flowchart:     [80, 80, 100, 100, 100, 100],
+    function:      [60, 60, 80, 80, 100, 80, 100],
+    project:       [120, 150, 200, 150, 200],
   },
 };
 const xpNeed = (level) => Math.round(100 * Math.pow(level, 1.5));
+
+/** EXP สะสมทั้งหมด = EXP ที่ใช้ผ่านเลเวลก่อนๆ + EXP ปัจจุบัน (ใช้โชว์บน leaderboard) */
+function totalXpOf(level, xp) {
+  let t = xp;
+  for (let l = 1; l < level; l++) t += xpNeed(l);
+  return t;
+}
 
 function applyXp(xp, level, gain) {
   xp += gain;
@@ -304,6 +311,7 @@ app.get("/api/leaderboard", needDb, optionalAuth, async (req, res) => {
           name: r.rows[0].display_name,
           level: r.rows[0].level,
           xp: r.rows[0].xp,
+          totalXp: totalXpOf(r.rows[0].level, r.rows[0].xp),
         };
     }
     res.json({
@@ -311,6 +319,7 @@ app.get("/api/leaderboard", needDb, optionalAuth, async (req, res) => {
         name: r.display_name,
         level: r.level,
         xp: r.xp,
+        totalXp: totalXpOf(r.level, r.xp),
         stages: r.stages,
         isMe: req.userId === r.id,
       })),
