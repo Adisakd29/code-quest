@@ -74,22 +74,29 @@ async function initDb() {
 
 /* ---------------- Game rules (server-side, กันโกง XP) ---------------- */
 /**
+ * เวอร์ชันเนื้อหา — ต้องตรงกับ CONTENT_VERSION ใน public/index.html
+ * ถ้าไม่ตรง หน้าเกมจะแสดงแถบเตือนว่า deploy ไม่ครบทุกไฟล์
+ */
+const CONTENT_VERSION = 3;
+
+/**
  * XP ของแต่ละด่าน: STAGE_XP[ภาษา][หัวข้อ][ด่าน]
  * ⚠️ ต้องตรงกับค่า xp ในเนื้อหาฝั่งเกม (public/index.html)
  */
 const STAGE_XP = {
   python: {
-    print:         [30, 40, 50],
-    variable:      [40, 50, 60],
-    datastructure: [50, 60, 80],
-    operator:      [40, 50, 60],
-    ifelse:        [50, 60, 80],
-    loop:          [50, 60, 80, 100],
-    flowchart:     [80, 100],
-    function:      [60, 80, 100],
+    print:         [30, 40, 40, 50, 50],
+    variable:      [40, 40, 50, 50, 60],
+    string:        [40, 50, 50, 60, 60],
+    datastructure: [50, 50, 60, 60, 80, 80],
+    operator:      [40, 40, 50, 50, 60],
+    ifelse:        [50, 50, 60, 60, 80],
+    loop:          [50, 60, 60, 80, 80, 100],
+    flowchart:     [80, 80, 100, 100],
+    function:      [60, 60, 80, 80, 100],
+    project:       [120, 150, 200],
   },
 };
-const REPLAY_XP = 10;
 const xpNeed = (level) => Math.round(100 * Math.pow(level, 1.5));
 
 function applyXp(xp, level, gain) {
@@ -129,6 +136,15 @@ function needDb(req, res, next) {
     return res
       .status(503)
       .json({ error: "เซิร์ฟเวอร์ยังไม่ได้เชื่อมต่อฐานข้อมูล" });
+  next();
+}
+
+/** เหมือน auth แต่ไม่บังคับ — ใช้กับหน้า leaderboard ที่ดูได้ทั้งสมาชิกและผู้เยี่ยมชม */
+function optionalAuth(req, res, next) {
+  const token = req.cookies.token;
+  if (token) {
+    try { req.userId = jwt.verify(token, JWT_SECRET).id; } catch {}
+  }
   next();
 }
 
@@ -216,7 +232,23 @@ app.post("/api/complete", needDb, auth, async (req, res) => {
       [req.userId, language, topic, stage]
     );
     const first = ins.rows.length > 0;
-    const gain = first ? table[stage] : REPLAY_XP;
+
+    // ด่านที่เคยผ่านแล้ว เล่นซ้ำไม่ได้ EXP — กันการกดรันซ้ำเพื่อฟาร์ม
+    if (!first) {
+      await client.query("COMMIT");
+      const u = await client.query(
+        `SELECT xp, level FROM users WHERE id = $1`,
+        [req.userId]
+      );
+      return res.json({
+        gained: 0,
+        first: false,
+        xp: u.rows[0].xp,
+        level: u.rows[0].level,
+        leveledUp: false,
+      });
+    }
+    const gain = table[stage];
 
     const u = await client.query(
       `SELECT xp, level FROM users WHERE id = $1 FOR UPDATE`,
@@ -237,6 +269,101 @@ app.post("/api/complete", needDb, auth, async (req, res) => {
     res.status(500).json({ error: "บันทึกความคืบหน้าไม่สำเร็จ" });
   } finally {
     client.release();
+  }
+});
+
+/** เช็คเวอร์ชันเนื้อหาของเซิร์ฟเวอร์ — ใช้ตรวจว่า deploy ครบทุกไฟล์ */
+app.get("/api/version", (req, res) => {
+  res.json({ version: CONTENT_VERSION });
+});
+
+/** ตารางอันดับ: เรียงตามเลเวล → XP → จำนวนด่านที่ผ่าน */
+app.get("/api/leaderboard", needDb, optionalAuth, async (req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT u.id, u.display_name, u.level, u.xp, COUNT(p.stage)::int AS stages
+      FROM users u
+      LEFT JOIN progress p ON p.user_id = u.id
+      GROUP BY u.id
+      ORDER BY u.level DESC, u.xp DESC, stages DESC, u.created_at ASC
+      LIMIT 20
+    `);
+    let me = null;
+    if (req.userId) {
+      const r = await pool.query(
+        `SELECT rnk, display_name, level, xp FROM (
+           SELECT id, display_name, level, xp,
+                  RANK() OVER (ORDER BY level DESC, xp DESC) AS rnk
+           FROM users
+         ) t WHERE id = $1`,
+        [req.userId]
+      );
+      if (r.rows.length)
+        me = {
+          rank: Number(r.rows[0].rnk),
+          name: r.rows[0].display_name,
+          level: r.rows[0].level,
+          xp: r.rows[0].xp,
+        };
+    }
+    res.json({
+      top: rows.map((r) => ({
+        name: r.display_name,
+        level: r.level,
+        xp: r.xp,
+        stages: r.stages,
+        isMe: req.userId === r.id,
+      })),
+      me,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "โหลดตารางอันดับไม่สำเร็จ" });
+  }
+});
+
+/** แก้ไขข้อมูลส่วนตัว: เปลี่ยนชื่อ และ/หรือ เปลี่ยนรหัสผ่าน */
+app.post("/api/profile", needDb, auth, async (req, res) => {
+  try {
+    const { name, currentPassword, newPassword } = req.body || {};
+    const { rows } = await pool.query(
+      `SELECT password_hash FROM users WHERE id = $1`,
+      [req.userId]
+    );
+    if (!rows.length) return res.status(401).json({ error: "ไม่พบผู้ใช้" });
+
+    if (newPassword) {
+      const ok = await bcrypt.compare(currentPassword || "", rows[0].password_hash);
+      if (!ok)
+        return res.status(401).json({ error: "รหัสผ่านปัจจุบันไม่ถูกต้อง" });
+      if (newPassword.length < 6)
+        return res
+          .status(400)
+          .json({ error: "รหัสผ่านใหม่ต้องยาวอย่างน้อย 6 ตัวอักษร" });
+      const hash = await bcrypt.hash(newPassword, 10);
+      await pool.query(`UPDATE users SET password_hash = $1 WHERE id = $2`, [
+        hash,
+        req.userId,
+      ]);
+    }
+
+    if (name !== undefined) {
+      if (!name || !name.trim())
+        return res.status(400).json({ error: "กรุณาตั้งชื่อผู้เล่น" });
+      await pool.query(`UPDATE users SET display_name = $1 WHERE id = $2`, [
+        name.trim().slice(0, 30),
+        req.userId,
+      ]);
+    }
+
+    const u = await pool.query(
+      `SELECT display_name, xp, level FROM users WHERE id = $1`,
+      [req.userId]
+    );
+    res.json({ user: publicUser(u.rows[0]) });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "บันทึกข้อมูลไม่สำเร็จ" });
   }
 });
 
