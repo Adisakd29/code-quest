@@ -77,7 +77,7 @@ async function initDb() {
  * เวอร์ชันเนื้อหา — ต้องตรงกับ CONTENT_VERSION ใน public/index.html
  * ถ้าไม่ตรง หน้าเกมจะแสดงแถบเตือนว่า deploy ไม่ครบทุกไฟล์
  */
-const CONTENT_VERSION = 5;
+const CONTENT_VERSION = 6;
 
 /**
  * XP ของแต่ละด่าน: STAGE_XP[ภาษา][หัวข้อ][ด่าน]
