@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Code Quest — เกมฝึกเขียนโปรแกรม</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Press+Start+2P&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Press+Start+2P&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -72,30 +72,53 @@
   </div>
 </div>
 
-<div class="ver-warn" id="verWarn">⚠️ เซิร์ฟเวอร์กับหน้าเกมเป็นคนละเวอร์ชันกัน — การบันทึก EXP อาจผิดพลาด กรุณา push โค้ดขึ้น GitHub ให้ครบทุกไฟล์ (โดยเฉพาะ server.js) แล้วรอ Railway deploy ใหม่</div>
+<div class="ver-warn" id="verWarn">⚠️ เซิร์ฟเวอร์กับหน้าเกมเป็นคนละเวอร์ชันกัน — การบันทึก EXP อาจผิดพลาด กรุณา push โค้ดขึ้น GitHub ให้ครบทุกไฟล์ แล้วรอ Railway deploy ใหม่</div>
 
 <header>
-  <div class="logo pixel" id="homeBtn" title="กลับหน้าเลือกภาษา">CODE<span> QUEST</span></div>
-  <div class="player">
-    <button class="id-chip" id="profileBtn" title="แก้ไขโปรไฟล์">
-      <div class="avatar">🧑‍🚀</div>
-      <span>
-        <span class="pname" id="pname">ผู้เยี่ยมชม</span><br>
+  <div class="hrow">
+    <div class="logo pixel" id="homeBtn" title="กลับหน้าแผนที่ด่าน">CODE<span> QUEST</span></div>
+    <nav class="tabbar">
+      <button class="tab on" id="tabLearn">เรียน</button>
+      <button class="tab" id="boardBtn">อันดับ</button>
+      <button class="tab" id="profileBtn">โปรไฟล์</button>
+    </nav>
+    <button class="user-chip" id="userChip" title="แก้ไขโปรไฟล์">
+      <span class="avatar">🧑‍🚀</span>
+      <span class="uc-txt">
+        <span class="pname" id="pname">ผู้เยี่ยมชม</span>
         <span class="edit-hint" id="editHint">แตะเพื่อล็อกอิน</span>
       </span>
     </button>
-    <div class="lvl-badge pixel" id="lvlBadge">LV.1</div>
-    <div class="xp-wrap">
-      <div class="xp-label"><span>EXP</span><span id="xpText">0 / 100</span></div>
-      <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
-    </div>
-    <button class="hbtn" id="boardBtn">🏆 อันดับ</button>
     <button class="hbtn" id="authBtn">เข้าสู่ระบบ</button>
+  </div>
+  <div class="chips">
+    <div class="chip"><i class="ico coin-ico"></i><span id="chipXp">0</span>&nbsp;EXP</div>
+    <div class="chip"><span class="lvl-badge pixel" id="lvlBadge">LV.1</span></div>
+    <div class="chip chip-bar">
+      <div class="xp-wrap">
+        <div class="xp-label"><span>เลเวลถัดไป</span><span id="xpText">0 / 100</span></div>
+        <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+      </div>
+    </div>
+    <div class="chip"><i class="ico star-ico"></i><span id="chipStages">0</span>&nbsp;ด่าน</div>
   </div>
 </header>
 
+<!-- ═══ Screen: แผนที่ด่าน (หน้าหลัก) ═══ -->
+<section class="screen hide" id="learnScreen">
+  <button class="path-card" id="pathCard" title="แตะเพื่อเปลี่ยนหัวข้อ">
+    <div class="ph-top">
+      <span class="ph-eyebrow" id="phEyebrow">PYTHON</span>
+      <span class="ph-change">เปลี่ยนหัวข้อ ▾</span>
+    </div>
+    <h2 class="ph-title" id="phTitle"></h2>
+    <div class="ph-bar"><i id="phFill"></i></div>
+  </button>
+  <div class="path-wrap" id="pathWrap"></div>
+</section>
+
 <!-- ═══ Screen: เลือกภาษา ═══ -->
-<section class="screen" id="langScreen">
+<section class="screen hide" id="langScreen">
   <div class="sec-eyebrow pixel">SELECT LANGUAGE</div>
   <h1 class="sec-title">อยากผจญภัยในโลกของภาษาไหน?</h1>
   <p class="sec-sub">เลือกภาษาโปรแกรมที่อยากฝึก แล้วเลือกหัวข้อที่อยากเรียนได้ตามใจ</p>
@@ -114,7 +137,7 @@
 
 <!-- ═══ Screen: บทเรียน ═══ -->
 <section class="screen hide" id="lessonScreen">
-  <button class="back" id="backFromLesson">← กลับไปเลือกหัวข้อ</button>
+  <button class="back" id="backFromLesson">← กลับ</button>
   <div class="sec-eyebrow pixel">LESSON</div>
   <h1 class="sec-title" id="lsTitle"></h1>
   <p class="sec-sub" id="lsBlurb"></p>
@@ -127,7 +150,7 @@
   <button class="back" id="backFromBoard">← กลับ</button>
   <div class="sec-eyebrow pixel">LEADERBOARD</div>
   <h1 class="sec-title">🏆 ตารางอันดับนักผจญภัย</h1>
-  <p class="sec-sub">จัดอันดับตามเลเวลและ EXP — ผ่านด่านให้มากเพื่อไต่ขึ้นไป!</p>
+  <p class="sec-sub">จัดอันดับตามเลเวลและ EXP สะสม — ผ่านด่านให้มากเพื่อไต่ขึ้นไป!</p>
   <div class="board" id="boardList"></div>
   <div class="my-rank" id="myRank"></div>
 </section>
@@ -135,7 +158,7 @@
 <!-- ═══ Screen: เล่นเกม ═══ -->
 <main class="hide" id="gameScreen">
   <section class="card mission">
-    <button class="back" id="backToTopic" style="margin-bottom:14px">← เลือกหัวข้ออื่น</button>
+    <button class="back" id="backToTopic" style="margin-bottom:14px">← แผนที่ด่าน</button>
     <button class="back" id="lessonBtn" style="margin-bottom:14px;margin-left:8px">📖 ทบทวนบทเรียน</button>
     <div class="stage-tag pixel" id="stageTag"></div>
     <h2 id="mTitle"></h2>
@@ -149,16 +172,16 @@
     <div class="robot-zone">
       <div class="robot" id="robot">
         <svg width="86" height="92" viewBox="0 0 86 92" fill="none" aria-hidden="true">
-          <rect x="18" y="20" width="50" height="40" rx="10" fill="#2e3563"/>
-          <rect x="18" y="20" width="50" height="40" rx="10" stroke="#62e6ff" stroke-width="2"/>
-          <rect x="27" y="32" width="12" height="12" rx="3" fill="#62e6ff"/>
-          <rect x="47" y="32" width="12" height="12" rx="3" fill="#62e6ff"/>
-          <rect x="34" y="50" width="18" height="4" rx="2" fill="#ffb347"/>
-          <line x1="43" y1="20" x2="43" y2="8" stroke="#62e6ff" stroke-width="2"/>
-          <circle cx="43" cy="6" r="4" fill="#ffb347"/>
-          <rect x="26" y="64" width="34" height="18" rx="7" fill="#22284f" stroke="#2e3563" stroke-width="2"/>
-          <rect x="10" y="62" width="10" height="6" rx="3" fill="#62e6ff"/>
-          <rect x="66" y="62" width="10" height="6" rx="3" fill="#62e6ff"/>
+          <rect x="18" y="20" width="50" height="40" rx="10" fill="#e9e4fb"/>
+          <rect x="18" y="20" width="50" height="40" rx="10" stroke="#7b5cf0" stroke-width="2.5"/>
+          <rect x="27" y="32" width="12" height="12" rx="3" fill="#7b5cf0"/>
+          <rect x="47" y="32" width="12" height="12" rx="3" fill="#7b5cf0"/>
+          <rect x="34" y="50" width="18" height="4" rx="2" fill="#f5b942"/>
+          <line x1="43" y1="20" x2="43" y2="8" stroke="#7b5cf0" stroke-width="2.5"/>
+          <circle cx="43" cy="6" r="4" fill="#f5b942"/>
+          <rect x="26" y="64" width="34" height="18" rx="7" fill="#f3f1fd" stroke="#cfc3f5" stroke-width="2"/>
+          <rect x="10" y="62" width="10" height="6" rx="3" fill="#7b5cf0"/>
+          <rect x="66" y="62" width="10" height="6" rx="3" fill="#7b5cf0"/>
         </svg>
       </div>
       <div class="speech" id="speech"></div>
@@ -170,11 +193,12 @@
   <section class="card editor-card">
     <div class="editor-head">
       <div class="traffic">
-        <i style="background:#ff6b81"></i><i style="background:#ffb347"></i><i style="background:#6ee7a0"></i>
+        <i style="background:#ef5b6f"></i><i style="background:#f5b942"></i><i style="background:#27c07d"></i>
       </div>
       <span class="filename" id="fileName">stage_1.py</span>
       <div class="actions">
         <button class="ghost" id="resetBtn">รีเซ็ต</button>
+        <button class="ghost" id="runOwnBtn" disabled title="รันโดยพิมพ์ค่า input เอง (ไม่ตรวจคำตอบ)">⌨ ป้อนเอง</button>
         <button class="run" id="runBtn" disabled>▶ กำลังโหลด...</button>
       </div>
     </div>

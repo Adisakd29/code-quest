@@ -1042,11 +1042,15 @@ const codeEl = $("code"), outEl = $("out"), runBtn = $("runBtn");
 
 /* ═══════════════ Screens ═══════════════ */
 function showScreen(name) {
+  $("learnScreen").classList.toggle("hide", name !== "learn");
   $("langScreen").classList.toggle("hide", name !== "lang");
   $("topicScreen").classList.toggle("hide", name !== "topic");
   $("lessonScreen").classList.toggle("hide", name !== "lesson");
   $("boardScreen").classList.toggle("hide", name !== "board");
   $("gameScreen").classList.toggle("hide", name !== "game");
+  const learnLike = ["learn", "game", "lesson", "topic", "lang"].includes(name);
+  $("tabLearn").classList.toggle("on", learnLike);
+  $("boardBtn").classList.toggle("on", name === "board");
   window.scrollTo(0, 0);
 }
 
@@ -1091,10 +1095,101 @@ function renderTopics() {
       </div>
       <div class="mini-bar"><div class="mini-fill" style="width:${(doneCount / total) * 100}%"></div></div>
     `;
-    el.onclick = () => openLesson(t);
+    el.onclick = () => {
+      state.topic = t.id;
+      try { localStorage.setItem("cq_topic", t.id); } catch {}
+      if (lessonRead(t.id)) goLearn();
+      else openLesson(t);
+    };
     g.appendChild(el);
   });
 }
+
+/* ═══════════════ แผนที่ด่าน (หน้าหลัก) ═══════════════ */
+function topicIndex() {
+  return COURSES[state.lang].topics.findIndex(t => t.id === state.topic);
+}
+function pickDefaultTopic() {
+  const ts = COURSES[state.lang].topics;
+  let saved = null;
+  try { saved = localStorage.getItem("cq_topic"); } catch {}
+  if (saved && ts.some(t => t.id === saved)) return saved;
+  const firstUndone = ts.find(t => t.stages.some((_, s) => !state.done.has(doneKey(state.lang, t.id, s))));
+  return (firstUndone || ts[0]).id;
+}
+function goLearn() {
+  if (!state.lang) state.lang = "python";
+  if (!state.topic) state.topic = pickDefaultTopic();
+  try { localStorage.setItem("cq_topic", state.topic); } catch {}
+  renderLearn();
+  showScreen("learn");
+}
+function renderLearn() {
+  const ts = COURSES[state.lang].topics, t = curTopic(), idx = topicIndex();
+  const total = t.stages.length;
+  const done = t.stages.filter((_, s) => state.done.has(doneKey(state.lang, t.id, s))).length;
+  $("phEyebrow").textContent = COURSES[state.lang].name.toUpperCase() + " · หัวข้อ " + (idx + 1) + "/" + ts.length;
+  $("phTitle").textContent = (idx + 1) + ". " + t.title;
+  $("phFill").style.width = (done / total * 100) + "%";
+  renderPath();
+}
+function lessonRead(id) {
+  try { return JSON.parse(localStorage.getItem("cq_lessons") || "[]").includes(id); } catch { return false; }
+}
+function markLessonRead(id) {
+  try {
+    const s = new Set(JSON.parse(localStorage.getItem("cq_lessons") || "[]"));
+    s.add(id);
+    localStorage.setItem("cq_lessons", JSON.stringify([...s]));
+  } catch {}
+}
+function renderPath() {
+  const wrap = $("pathWrap"), t = curTopic(), total = t.stages.length;
+  const W = Math.min(wrap.clientWidth || 520, 600), GAP = 106, TOP = 60, n = total + 1;
+  const H = TOP + (n - 1) * GAP + 70;
+  const xs = [0.5, 0.75, 0.5, 0.25];
+  const pts = [];
+  for (let i = 0; i < n; i++) pts.push([Math.round(xs[i % 4] * W), TOP + i * GAP]);
+  let d = "M " + pts[0][0] + " " + pts[0][1];
+  for (let i = 1; i < n; i++) {
+    const x = pts[i][0], y = pts[i][1], px = pts[i - 1][0], py = pts[i - 1][1];
+    d += " C " + px + " " + (py + GAP / 2) + ", " + x + " " + (y - GAP / 2) + ", " + x + " " + y;
+  }
+  wrap.style.height = H + "px";
+  wrap.innerHTML = '<svg class="path-svg" width="' + W + '" height="' + H + '"><path d="' + d + '" fill="none" stroke="#d9cef7" stroke-width="10" stroke-linecap="round"/></svg>';
+  const CHECK = '<svg viewBox="0 0 24 24" width="27" height="27" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const BOOK = '<svg class="n-ico" viewBox="0 0 24 24" width="25" height="25" fill="none"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v15H5.5c-.8 0-1.5-.7-1.5-1.5v-12zM20 5.5c0-.8-.7-1.5-1.5-1.5H13v15h5.5c.8 0 1.5-.7 1.5-1.5v-12z" fill="currentColor"/></svg>';
+  const firstUndone = t.stages.findIndex((_, s) => !state.done.has(doneKey(state.lang, t.id, s)));
+  const read = lessonRead(t.id);
+  function mk(x, y, cls, inner, title) {
+    const b = document.createElement("button");
+    b.className = "node " + cls;
+    b.style.left = x + "px";
+    b.style.top = y + "px";
+    b.innerHTML = inner;
+    if (title) b.title = title;
+    return b;
+  }
+  const ln = mk(pts[0][0], pts[0][1], "lesson " + (read ? "done" : "now"), read ? CHECK : BOOK, "บทเรียน: " + t.title);
+  ln.onclick = () => openLesson(t);
+  wrap.appendChild(ln);
+  t.stages.forEach((st, i) => {
+    const isDone = state.done.has(doneKey(state.lang, t.id, i));
+    const isNow = i === firstUndone;
+    let inner = isDone ? CHECK : '<span class="n-num">' + (i + 1) + '</span>';
+    if (isNow) {
+      const doneCount = t.stages.filter((_, s) => state.done.has(doneKey(state.lang, t.id, s))).length;
+      const R = 35, C = 2 * Math.PI * R, p = doneCount / total;
+      inner = '<svg class="ring" viewBox="0 0 80 80"><circle cx="40" cy="40" r="35" fill="none" stroke="#ece7fb" stroke-width="6"/><circle cx="40" cy="40" r="35" fill="none" stroke="#7b5cf0" stroke-width="6" stroke-linecap="round" stroke-dasharray="' + (C * p) + ' ' + C + '" transform="rotate(-90 40 40)"/></svg><span class="n-num">' + (i + 1) + '</span>';
+    }
+    const b = mk(pts[i + 1][0], pts[i + 1][1], isDone ? "done" : (isNow ? "now" : "todo"), inner, "ด่าน " + (i + 1) + ": " + st.title);
+    b.onclick = () => { state.stage = i; renderStage(); showScreen("game"); };
+    wrap.appendChild(b);
+  });
+}
+window.addEventListener("resize", () => {
+  if (!$("learnScreen").classList.contains("hide")) renderPath();
+});
 
 /* ═══════════════ Lesson ═══════════════ */
 let lessonTopic = null;
@@ -1128,14 +1223,16 @@ function openLesson(t) {
 function startExercises() {
   const t = lessonTopic;
   if (!t) return;
+  markLessonRead(t.id);
   state.topic = t.id;
+  try { localStorage.setItem("cq_topic", t.id); } catch {}
   const firstUndone = t.stages.findIndex((_, s) => !state.done.has(doneKey(state.lang, t.id, s)));
   state.stage = firstUndone === -1 ? 0 : firstUndone;
   renderStage();
   showScreen("game");
 }
 $("lsStart").onclick = startExercises;
-$("backFromLesson").onclick = () => { renderTopics(); showScreen("topic"); };
+$("backFromLesson").onclick = () => { if (state.topic) goLearn(); else { renderTopics(); showScreen("topic"); } };
 
 /* ═══════════════ Leaderboard ═══════════════ */
 async function openBoard() {
@@ -1199,7 +1296,7 @@ function applySession(data) {
   $("authOverlay").classList.remove("show");
   renderXP();
   renderLangs();
-  showScreen("lang");
+  goLearn();
 }
 
 async function tryRestore() {
@@ -1240,7 +1337,7 @@ $("authSubmit").onclick = async () => {
   }
 };
 
-$("guestBtn").onclick = () => { $("authOverlay").classList.remove("show"); showScreen("lang"); };
+$("guestBtn").onclick = () => { $("authOverlay").classList.remove("show"); goLearn(); };
 
 $("authBtn").onclick = async () => {
   if (state.user) {
@@ -1249,7 +1346,7 @@ $("authBtn").onclick = async () => {
     $("pname").textContent = "ผู้เยี่ยมชม";
     $("editHint").textContent = "แตะเพื่อล็อกอิน";
     $("authBtn").textContent = "เข้าสู่ระบบ";
-    renderXP(); renderLangs(); showScreen("lang");
+    renderXP(); renderLangs(); goLearn();
   }
   $("authOverlay").classList.add("show");
 };
@@ -1295,13 +1392,16 @@ $("pfSave").onclick = async () => {
 };
 
 /* ═══════════════ Navigation ═══════════════ */
-$("homeBtn").onclick = () => { renderLangs(); showScreen("lang"); };
+$("homeBtn").onclick = goLearn;
+$("tabLearn").onclick = goLearn;
+$("pathCard").onclick = () => { renderTopics(); showScreen("topic"); };
+$("userChip").onclick = () => $("profileBtn").click();
 $("backToLang").onclick = () => { renderLangs(); showScreen("lang"); };
-$("backToTopic").onclick = () => { renderTopics(); showScreen("topic"); };
+$("backToTopic").onclick = goLearn;
 $("lessonBtn").onclick = () => openLesson(curTopic());
 $("boardBtn").onclick = openBoard;
 $("backFromBoard").onclick = () => {
-  if (state.lang && state.topic) { renderTopics(); showScreen("topic"); }
+  if (state.lang && state.topic) goLearn();
   else { renderLangs(); showScreen("lang"); }
 };
 
@@ -1318,6 +1418,7 @@ async function initPy() {
   try {
     pyodide = await loadPyodide();
     runBtn.disabled = false;
+    $("runOwnBtn").disabled = false;
     runBtn.textContent = "▶ รันโค้ด";
   } catch (e) {
     $("bootStatus").textContent = "โหลด Python ไม่สำเร็จ ลองรีเฟรชหน้าอีกครั้งนะ";
@@ -1367,11 +1468,18 @@ function renderDots() {
   });
 }
 
+function totalXpLocal() {
+  let t = state.xp;
+  for (let l = 1; l < state.level; l++) t += xpNeed(l);
+  return t;
+}
 function renderXP() {
   const need = xpNeed(state.level);
   $("lvlBadge").textContent = "LV." + state.level;
-  $("xpText").textContent = `${state.xp} / ${need}`;
+  $("xpText").textContent = state.xp + " / " + need;
   $("xpFill").style.width = Math.min(100, (state.xp / need) * 100) + "%";
+  $("chipXp").textContent = fmt(totalXpLocal());
+  $("chipStages").textContent = fmt(state.done.size);
 }
 
 function say(msg, mood) {
@@ -1398,9 +1506,10 @@ function updateHintBtn() {
 }
 
 /* ═══════════════ Run code ═══════════════ */
-async function runCode() {
+async function runCode(ownInput) {
   if (!pyodide) return;
   runBtn.disabled = true;
+  $("runOwnBtn").disabled = true;
   runBtn.textContent = "⏳ กำลังรัน...";
   let stdout = "", stderr = "";
   pyodide.setStdout({ batched: s => stdout += s + "\n" });
@@ -1408,20 +1517,33 @@ async function runCode() {
 
   const code = codeEl.value;
   try {
-    // จำลองการป้อนข้อมูล: input() จะอ่านค่าจากคิวที่โจทย์กำหนด (stdin) ตามลำดับ
-    const stdinVals = levels()[state.stage].stdin || [];
-    await pyodide.runPythonAsync(
-      "import builtins, json\n" +
-      "_game_inputs = json.loads(" + JSON.stringify(JSON.stringify(stdinVals)) + ")\n" +
-      "def _game_input(prompt=\"\"):\n" +
-      "    return str(_game_inputs.pop(0)) if _game_inputs else \"\"\n" +
-      "builtins.input = _game_input\n"
-    );
+    if (ownInput) {
+      // โหมดป้อนเอง: input() เด้งกล่องให้ผู้เล่นพิมพ์ค่าเองจริงๆ
+      await pyodide.runPythonAsync(
+        "import builtins\n" +
+        "from js import window\n" +
+        "def _game_input(prompt=\"\"):\n" +
+        "    v = window.prompt(str(prompt) if prompt else \"ป้อนข้อมูล:\")\n" +
+        "    return \"\" if v is None else str(v)\n" +
+        "builtins.input = _game_input\n"
+      );
+    } else {
+      // โหมดตรวจคำตอบ: input() อ่านค่าจากคิวที่โจทย์กำหนด (stdin) ตามลำดับ
+      const stdinVals = levels()[state.stage].stdin || [];
+      await pyodide.runPythonAsync(
+        "import builtins, json\n" +
+        "_game_inputs = json.loads(" + JSON.stringify(JSON.stringify(stdinVals)) + ")\n" +
+        "def _game_input(prompt=\"\"):\n" +
+        "    return str(_game_inputs.pop(0)) if _game_inputs else \"\"\n" +
+        "builtins.input = _game_input\n"
+      );
+    }
     await pyodide.runPythonAsync(code);
   } catch (e) {
     stderr += String(e.message || e);
   }
   runBtn.disabled = false;
+  $("runOwnBtn").disabled = false;
   runBtn.textContent = "▶ รันโค้ด";
 
   if (stderr) {
@@ -1432,6 +1554,12 @@ async function runCode() {
     outEl.appendChild(p);
   } else {
     outEl.textContent = stdout || "(โปรแกรมทำงานเสร็จ แต่ไม่มีข้อความแสดงออกมา)";
+  }
+
+  if (ownInput) {
+    $("banner").className = "banner";
+    say("โหมดป้อนเอง — ผลลัพธ์ขึ้นกับค่าที่คุณพิมพ์ จึงไม่ตรวจคำตอบและไม่ได้ EXP", "");
+    return;
   }
 
   const L = levels()[state.stage];
@@ -1531,7 +1659,8 @@ function confetti() {
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
 /* ═══════════════ Events ═══════════════ */
-runBtn.onclick = runCode;
+runBtn.onclick = () => runCode(false);
+$("runOwnBtn").onclick = () => runCode(true);
 $("resetBtn").onclick = () => { codeEl.value = levels()[state.stage].starter; };
 $("hintBtn").onclick = () => $("hintBox").classList.toggle("show");
 $("nextBtn").onclick = () => {
@@ -1539,8 +1668,7 @@ $("nextBtn").onclick = () => {
     state.stage++;
     renderStage();
   } else {
-    renderTopics();
-    showScreen("topic");
+    goLearn();
   }
 };
 $("closeOverlay").onclick = () => $("overlay").classList.remove("show");
@@ -1551,11 +1679,11 @@ codeEl.addEventListener("keydown", e => {
     codeEl.value = codeEl.value.slice(0, s) + "    " + codeEl.value.slice(codeEl.selectionEnd);
     codeEl.selectionStart = codeEl.selectionEnd = s + 4;
   }
-  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") runCode();
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") runCode(false);
 });
 
 /* ═══════════════ Init ═══════════════ */
-const CONTENT_VERSION = 5; // ต้องตรงกับ CONTENT_VERSION ใน server.js
+const CONTENT_VERSION = 6; // ต้องตรงกับ CONTENT_VERSION ใน server.js
 async function checkVersion() {
   try {
     const r = await fetch("/api/version");
