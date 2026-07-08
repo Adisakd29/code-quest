@@ -777,7 +777,7 @@ const COURSES = {
         id: "flowchart", icon: "🧭", title: "Flowchart สู่โค้ด",
         blurb: "อ่านผังงานให้เป็น แล้วแปลงเป็นโค้ด — ทักษะออกแบบโปรแกรมก่อนลงมือเขียน",
         lesson: [
-          { h: "สัญลักษณ์หลักของผังงาน", p: "วงรี = เริ่ม/จบ &nbsp;•&nbsp; สี่เหลี่ยม = คำสั่ง/ประมวลผล &nbsp;•&nbsp; ข้าวหลามตัด (?) = จุดตัดสินใจ แยกเป็นทาง ใช่/ไม่ &nbsp;•&nbsp; ลูกศร = ลำดับการทำงาน" },
+          { h: "สัญลักษณ์มาตรฐานของผังงาน", p: 'แต่ละรูปทรงมีความหมายตายตัว จำ 5 ตัวนี้ได้ก็อ่านผังงานได้ทุกแบบ ลูกศรคือลำดับการทำงาน:<span class="fc-slot" data-flow="legend"></span>' },
           { h: "แปลงผังเป็นโค้ด", p: "ข้าวหลามตัดหนึ่งลูก = <code>if</code> หนึ่งตัว ส่วนเส้นที่วนกลับขึ้นไป = ลูป (<code>while</code> หรือ <code>for</code>) — ไล่ตามลูกศรทีละก้าว แล้วเขียนโค้ดตามลำดับนั้นเป๊ะๆ" },
           { h: "เทคนิคไล่มือ (trace)", p: "จดค่าตัวแปรทุกครั้งที่ผ่านกล่องคำสั่ง แล้วเดินตามเส้นจนถึงจบ — ถ้าไล่มือแล้วได้ผลลัพธ์ตรงกับที่โจทย์บอก โค้ดที่เขียนตามผังก็จะถูกด้วย นี่คือทักษะที่ข้อสอบชอบวัดที่สุด" }
         ],
@@ -785,7 +785,7 @@ const COURSES = {
           {
             title: "อ่านผังงานเงื่อนไข",
             desc: "Flowchart คือแผนภาพแสดงลำดับการทำงานของโปรแกรม สี่เหลี่ยมคือคำสั่ง ข้าวหลามตัด (?) คือจุดตัดสินใจที่แยกเป็นสองทาง จงอ่านผังแล้วเขียนโค้ดให้ตรงเป๊ะ",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n     x = 10\n        │\n   ┌─ x > 5 ? ─┐\n  ใช่          ไม่\n   │            │\nพิมพ์ "มากกว่า"   พิมพ์ "น้อยกว่า"\n   └─────┬─────┘\n        จบ</span>',
+            goal: 'เขียนโค้ดตามผังงานนี้ให้ตรงเป๊ะ:<span class="fc-slot" data-flow="fc0"></span>',
             starter: '# ภารกิจ: แปลงผังงานเป็นโค้ด\n\n',
             hint: 'เริ่มจาก <code>x = 10</code> แล้วใช้ if/else ตามเส้นทางในผัง — x เป็น 10 ซึ่งมากกว่า 5 ผลลัพธ์จึงควรเป็น "มากกว่า"',
             xp: 80,
@@ -794,7 +794,7 @@ const COURSES = {
           {
             title: "อ่านผังงานลูป",
             desc: "ผังงานที่มีเส้นวนกลับขึ้นไปคือลูป! ตามเส้นดูว่าอะไรถูกทำซ้ำ และเงื่อนไขไหนที่ทำให้หลุดออกจากลูป",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n      i = 1\n        │\n   ┌─ i <= 3 ? ◄──┐\n  ใช่          │\n   │              │\nพิมพ์ "รอบที่", i    │\n   │              │\n  i = i + 1 ──────┘\n\n  ไม่ → พิมพ์ "จบ"</span>',
+            goal: 'เขียนโค้ดตามผังงานนี้ (สังเกตเส้นที่วนกลับขึ้นไป):<span class="fc-slot" data-flow="fc1"></span>',
             starter: '# ภารกิจ: แปลงผังงานลูปเป็นโค้ด\n\n',
             hint: 'ใช้ <code>while i <= 3:</code> ข้างในมี print กับ i = i + 1 แล้วค่อย print("จบ") นอกลูป — หรือใช้ for ก็ได้ถ้าผลลัพธ์ตรงกัน',
             xp: 80,
@@ -803,7 +803,7 @@ const COURSES = {
           {
             title: "ผังงานเงื่อนไขในลูป",
             desc: "ผังนี้มีทั้งลูปและจุดตัดสินใจข้างใน — เส้นทาง \"ไม่\" ของเงื่อนไขจะข้ามการพิมพ์แล้ววนต่อเลย",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n  วน i = 1 ถึง 5 ◄──────┐\n        │               │\n   i เป็นเลขคี่ ? ──ไม่──┤\n       ใช่              │\n        │               │\n     พิมพ์ i ────────────┘\n\n  ครบแล้ว → จบ</span>ผลลัพธ์ที่ถูกต้อง: 1, 3, 5 (บรรทัดละเลข)',
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc2"></span>ผลลัพธ์ที่ถูกต้อง: 1, 3, 5 (บรรทัดละเลข)',
             starter: '# ภารกิจ: แปลงผังงานเป็นโค้ด (เลขคี่คือหาร 2 เหลือเศษ 1)\n\n',
             hint: '<code>for i in range(1, 6):</code> แล้วข้างใน <code>if i % 2 == 1:</code> ค่อย print(i)',
             xp: 100,
@@ -812,7 +812,7 @@ const COURSES = {
           {
             title: "ผังงานสะสมค่า",
             desc: "ผังงานแบบสะสม (accumulator) พบบ่อยมากในข้อสอบ: มีตัวแปรเก็บผลรวม แล้ววนบวกเพิ่มทีละรอบ ค่อยแสดงผลตอนจบ",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">      เริ่ม\n        │\n    total = 0\n        │\n  วน i = 1 ถึง 4 ◄──┐\n        │           │\n total = total + i*2 ┘\n\n  ครบแล้ว → พิมพ์ total</span>(ต้องได้ <b>20</b>)',
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc3"></span>(ต้องได้ <b>20</b>)',
             starter: '# ภารกิจ: แปลงผังงานสะสมค่าเป็นโค้ด\n\n',
             hint: '<code>total = 0</code> → <code>for i in range(1, 5):</code> → <code>total += i * 2</code> → print(total) นอกลูป — ลองไล่มือ: 2+4+6+8 = 20',
             xp: 100,
@@ -821,7 +821,7 @@ const COURSES = {
           {
             title: "ผังงานหาค่ามากสุด",
             desc: "ผังงานยอดฮิตในข้อสอบ: ตัวแปร best เก็บแชมป์ปัจจุบัน วนเทียบทีละตัว ใครมากกว่าก็ขึ้นแท่นแทน",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">        เริ่ม\n          │\n      best = 0\n          │\n วน s ใน [40, 75, 60] ◄──┐\n          │              │\n     s > best ? ──ไม่────┤\n         ใช่             │\n          │              │\n      best = s ──────────┘\n\n   ครบแล้ว → พิมพ์ best</span>(ต้องได้ <b>75</b>)',
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc4"></span>(ต้องได้ <b>75</b>)',
             starter: '# ภารกิจ: หาคะแนนสูงสุดตามผังงาน\nscores = [40, 75, 60]\n\n',
             hint: '<code>best = 0</code> → <code>for s in scores:</code> → <code>if s > best:</code> → <code>best = s</code> → print(best) นอกลูป',
             xp: 100,
@@ -830,7 +830,7 @@ const COURSES = {
           {
             title: "ผังงานใช้พลังงาน",
             desc: "ผัง while ในสถานการณ์จริง: มีพลังงานจำกัด ทำซ้ำจนพลังไม่พอแล้วค่อยจบ — ไล่มือค่าพลังงานทุกรอบให้ดี",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">        เริ่ม\n          │\n     energy = 10\n          │\n   energy >= 4 ? ◄──┐\n         ใช่        │\n          │         │\n     พิมพ์ "โจมตี"    │\n          │         │\n   energy -= 4 ─────┘\n\n  ไม่ → พิมพ์ "หมดแรง"</span>',
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc5"></span>',
             starter: '# ภารกิจ: โจมตีจนกว่าจะหมดแรง\n\n',
             hint: '<code>while energy >= 4:</code> ข้างในพิมพ์กับลดพลัง — ไล่มือ: 10 → 6 → 2 หยุด (โจมตีได้ 2 ครั้ง)',
             xp: 100,
@@ -839,7 +839,7 @@ const COURSES = {
           {
             title: "ผังงานก้าวทีละสอง",
             desc: "ผังลูปที่ตัวนับเพิ่มทีละ 2 — สังเกตกล่องอัปเดตค่าให้ดีว่าเพิ่มเท่าไหร่ต่อรอบ แล้วเขียนตามให้ตรง",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc">        เริ่ม\n          │\n        i = 2\n          │\n     i <= 8 ? ◄──┐\n         ใช่     │\n          │      │\n       พิมพ์ i    │\n          │      │\n     i = i + 2 ──┘\n\n    ไม่ → จบ</span>(ต้องได้ 2, 4, 6, 8 บรรทัดละเลข)',
+            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc6"></span>(ต้องได้ 2, 4, 6, 8 บรรทัดละเลข)',
             starter: '# ภารกิจ: เดินก้าวละสองช่องตามผัง\n\n',
             hint: '<code>while i <= 8:</code> ข้างในพิมพ์แล้ว <code>i += 2</code> — หรือใช้ <code>range(2, 9, 2)</code> ก็ได้',
             xp: 100,
@@ -1105,6 +1105,175 @@ function renderTopics() {
   });
 }
 
+/* FC-BEGIN ═══════════ Flowchart graphics (SVG) ═══════════ */
+const FC = (() => {
+  const FONT = "font-family:'JetBrains Mono','IBM Plex Sans Thai',sans-serif;font-size:12.5px;font-weight:600";
+  const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const tw = s => { let w = 0; for (const ch of String(s)) { if (/[\u0e31\u0e33-\u0e3a\u0e47-\u0e4e]/.test(ch)) continue; w += ch.charCodeAt(0) > 127 ? 10 : 7.6; } return w; };
+  const CX = 180, W = 372, RX = 316, LX = 44;
+
+  function node(type, cy, txt, cx) {
+    cx = cx || CX;
+    const dec = type === "dec", loop = type === "loop";
+    const w = Math.max(dec ? 132 : (loop ? 150 : 88), tw(txt) + (dec ? 72 : (loop ? 54 : 34)));
+    const h = dec ? 58 : 38, x = cx - w / 2, y = cy - h / 2;
+    let s = "";
+    if (type === "start" || type === "end")
+      s = '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="19" fill="#e9e4fb" stroke="#7b5cf0" stroke-width="2"/>';
+    else if (type === "proc")
+      s = '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="5" fill="#ffffff" stroke="#7b5cf0" stroke-width="2"/>';
+    else if (type === "io")
+      s = '<path d="M ' + (x + 13) + ' ' + y + ' H ' + (x + w) + ' L ' + (x + w - 13) + ' ' + (y + h) + ' H ' + x + ' Z" fill="#ecfaf3" stroke="#27c07d" stroke-width="2"/>';
+    else if (dec)
+      s = '<path d="M ' + cx + ' ' + y + ' L ' + (x + w) + ' ' + cy + ' L ' + cx + ' ' + (y + h) + ' L ' + x + ' ' + cy + ' Z" fill="#fff4dd" stroke="#f5b942" stroke-width="2"/>';
+    else if (loop)
+      s = '<path d="M ' + (x + 14) + ' ' + y + ' H ' + (x + w - 14) + ' L ' + (x + w) + ' ' + cy + ' L ' + (x + w - 14) + ' ' + (y + h) + ' H ' + (x + 14) + ' L ' + x + ' ' + cy + ' Z" fill="#e8f6fd" stroke="#3fb6e8" stroke-width="2"/>';
+    s += '<text x="' + cx + '" y="' + (cy + 4.5) + '" text-anchor="middle" style="' + FONT + '" fill="#2c2b3d">' + esc(txt) + '</text>';
+    return { s, w, h };
+  }
+  const line = (d, mark) => '<path d="' + d + '" fill="none" stroke="#8b89a3" stroke-width="2"' + (mark ? ' marker-end="url(#fcArw)"' : '') + '/>';
+  const lbl = (x, y, t, col) => '<text x="' + x + '" y="' + y + '" text-anchor="middle" style="' + FONT + ';font-size:12px" fill="' + (col || "#8b89a3") + '">' + esc(t) + '</text>';
+  const wrapSvg = (parts, h) =>
+    '<svg width="' + W + '" height="' + h + '" viewBox="0 0 ' + W + ' ' + h + '" xmlns="http://www.w3.org/2000/svg">' +
+    '<defs><marker id="fcArw" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#8b89a3"/></marker></defs>' +
+    parts.join("") + '</svg>';
+
+  /** ผังแบบแยกสองทาง: เริ่ม → กำหนดค่า → ตัดสินใจ → ใช่/ไม่ → จบ */
+  function branchFlow(pre, q, yesNode, noNode) {
+    const out = [];
+    let y = 32;
+    let n = node("start", y, "เริ่ม"); out.push(n.s);
+    let prev = y + n.h / 2;
+    for (const p of pre) {
+      y = prev + 19 + 24;
+      n = node("proc", y, p);
+      out.push(line("M " + CX + " " + prev + " V " + (y - n.h / 2), true), n.s);
+      prev = y + n.h / 2;
+    }
+    y = prev + 29 + 24;
+    const dn = node("dec", y, q);
+    out.push(line("M " + CX + " " + prev + " V " + (y - dn.h / 2), true), dn.s);
+    const decCy = y, lv = CX - dn.w / 2, rv = CX + dn.w / 2;
+    const by = decCy + 84, xl = CX - 96, xr = CX + 96;
+    const yn = node(yesNode.o ? "io" : "proc", by, yesNode.o || yesNode.p, xl);
+    const nn = node(noNode.o ? "io" : "proc", by, noNode.o || noNode.p, xr);
+    out.push(line("M " + lv + " " + decCy + " H " + xl + " V " + (by - yn.h / 2), true), yn.s);
+    out.push(line("M " + rv + " " + decCy + " H " + xr + " V " + (by - nn.h / 2), true), nn.s);
+    out.push(lbl((lv + xl) / 2, decCy - 7, "ใช่", "#157a4c"), lbl((rv + xr) / 2, decCy - 7, "ไม่", "#c03649"));
+    const jy = by + yn.h / 2 + 22;
+    out.push(line("M " + xl + " " + (by + yn.h / 2) + " V " + jy + " H " + CX));
+    out.push(line("M " + xr + " " + (by + nn.h / 2) + " V " + jy + " H " + CX));
+    y = jy + 42;
+    n = node("end", y, "จบ");
+    out.push(line("M " + CX + " " + jy + " V " + (y - n.h / 2), true), n.s);
+    return wrapSvg(out, y + n.h / 2 + 14);
+  }
+
+  /** ผังแบบวนลูป: head เป็นข้าวหลามตัด (while) หรือหกเหลี่ยม (for) มีเส้นวนกลับด้านขวา ทางออกด้านซ้าย */
+  function loopFlow(o) {
+    const out = [];
+    let y = 32;
+    let n = node("start", y, "เริ่ม"); out.push(n.s);
+    let prev = y + n.h / 2;
+    for (const p of (o.pre || [])) {
+      y = prev + 19 + 24;
+      n = node("proc", y, p.p || p.o);
+      out.push(line("M " + CX + " " + prev + " V " + (y - n.h / 2), true), n.s);
+      prev = y + n.h / 2;
+    }
+    const isDec = !!o.head.dec;
+    y = prev + (isDec ? 29 : 19) + 26;
+    const hd = node(isDec ? "dec" : "loop", y, o.head.dec || o.head.loop);
+    out.push(line("M " + CX + " " + prev + " V " + (y - hd.h / 2), true), hd.s);
+    const headCy = y, headBottom = y + hd.h / 2;
+    prev = headBottom;
+    let yesShown = false;
+    for (const item of (o.body || [])) {
+      if (item.d) {
+        y = prev + 29 + 24;
+        const d2 = node("dec", y, item.d);
+        out.push(line("M " + CX + " " + prev + " V " + (y - d2.h / 2), true), d2.s);
+        if (!yesShown && isDec) { out.push(lbl(CX + 13, (prev + y - d2.h / 2) / 2, "ใช่", "#157a4c")); yesShown = true; }
+        const dcy = y, dlv = CX - d2.w / 2;
+        y = dcy + 84;
+        const yn = node(item.yes.o ? "io" : "proc", y, item.yes.o || item.yes.p);
+        out.push(line("M " + CX + " " + (dcy + d2.h / 2) + " V " + (y - yn.h / 2), true), yn.s);
+        out.push(lbl(CX + 13, (dcy + d2.h / 2 + y - yn.h / 2) / 2, "ใช่", "#157a4c"));
+        const jy = y + yn.h / 2 + 18;
+        out.push(line("M " + dlv + " " + dcy + " H " + (CX - 112) + " V " + jy + " H " + CX));
+        out.push(lbl((dlv + CX - 112) / 2, dcy - 7, "ไม่", "#c03649"));
+        out.push(line("M " + CX + " " + (y + yn.h / 2) + " V " + jy));
+        prev = jy;
+      } else {
+        y = prev + 19 + 24;
+        n = node(item.o ? "io" : "proc", y, item.o || item.p);
+        out.push(line("M " + CX + " " + prev + " V " + (y - n.h / 2), true), n.s);
+        if (!yesShown && isDec) { out.push(lbl(CX + 13, (prev + y - n.h / 2) / 2, "ใช่", "#157a4c")); yesShown = true; }
+        prev = y + n.h / 2;
+      }
+    }
+    // เส้นวนกลับด้านขวา เข้าที่มุมขวาของ head
+    const backY = prev + 18;
+    out.push(line("M " + CX + " " + prev + " V " + backY + " H " + RX + " V " + headCy + " L " + (CX + hd.w / 2 + 3) + " " + headCy, true));
+    // ทางออกด้านซ้ายของ head
+    const exitTop = backY + 44;
+    out.push(line("M " + (CX - hd.w / 2) + " " + headCy + " H " + LX + " V " + exitTop + " H " + CX + " V " + (exitTop + 12), false));
+    out.push(lbl((CX - hd.w / 2 + LX) / 2, headCy - 7, o.no || "ไม่", "#c03649"));
+    prev = exitTop + 12;
+    y = prev;
+    for (const item of (o.exit || [])) {
+      y = prev + 19 + 12;
+      n = node(item.o ? "io" : "proc", y, item.o || item.p);
+      out.push(line("M " + CX + " " + prev + " V " + (y - n.h / 2), true), n.s);
+      prev = y + n.h / 2;
+    }
+    y = prev + 19 + 20;
+    n = node("end", y, "จบ");
+    out.push(line("M " + CX + " " + prev + " V " + (y - n.h / 2), true), n.s);
+    return wrapSvg(out, y + n.h / 2 + 14);
+  }
+
+  /** ตารางสัญลักษณ์สำหรับบทเรียน */
+  function legend() {
+    const rows = [
+      ["start", "เริ่ม / จบ", "จุดเริ่มต้นและจุดสิ้นสุดของโปรแกรม"],
+      ["proc", "x = 10", "ประมวลผล / กำหนดค่า"],
+      ["io", "พิมพ์ x", "รับหรือแสดงผลข้อมูล (print, input)"],
+      ["dec", "x > 5 ?", "ตัดสินใจ — แยกทางเป็น ใช่ / ไม่"],
+      ["loop", "วน i = 1 ถึง 5", "วนลูปตามจำนวนรอบ"],
+    ];
+    const out = [];
+    let y = 36;
+    for (const [type, txt, descTxt] of rows) {
+      const n = node(type, y, txt, 92);
+      out.push(n.s);
+      out.push('<text x="176" y="' + (y + 4.5) + '" style="' + FONT + ';font-weight:500;font-size:13px" fill="#5d5b74">' + esc(descTxt) + '</text>');
+      y += 70;
+    }
+    return '<svg width="480" height="' + (y - 20) + '" viewBox="0 0 480 ' + (y - 20) + '" xmlns="http://www.w3.org/2000/svg">' + out.join("") + '</svg>';
+  }
+
+  const FLOWS = {
+    legend,
+    fc0: () => branchFlow(["x = 10"], "x > 5 ?", { o: 'พิมพ์ "มากกว่า"' }, { o: 'พิมพ์ "น้อยกว่า"' }),
+    fc1: () => loopFlow({ pre: [{ p: "i = 1" }], head: { dec: "i <= 3 ?" }, body: [{ o: 'พิมพ์ "รอบที่", i' }, { p: "i = i + 1" }], exit: [{ o: 'พิมพ์ "จบ"' }] }),
+    fc2: () => loopFlow({ head: { loop: "วน i = 1 ถึง 5" }, body: [{ d: "i เป็นเลขคี่ ?", yes: { o: "พิมพ์ i" } }], no: "ครบแล้ว" }),
+    fc3: () => loopFlow({ pre: [{ p: "total = 0" }], head: { loop: "วน i = 1 ถึง 4" }, body: [{ p: "total = total + i*2" }], exit: [{ o: "พิมพ์ total" }], no: "ครบแล้ว" }),
+    fc4: () => loopFlow({ pre: [{ p: "best = 0" }], head: { loop: "วน s ใน [40, 75, 60]" }, body: [{ d: "s > best ?", yes: { p: "best = s" } }], exit: [{ o: "พิมพ์ best" }], no: "ครบแล้ว" }),
+    fc5: () => loopFlow({ pre: [{ p: "energy = 10" }], head: { dec: "energy >= 4 ?" }, body: [{ o: 'พิมพ์ "โจมตี"' }, { p: "energy = energy - 4" }], exit: [{ o: 'พิมพ์ "หมดแรง"' }] }),
+    fc6: () => loopFlow({ pre: [{ p: "i = 2" }], head: { dec: "i <= 8 ?" }, body: [{ o: "พิมพ์ i" }, { p: "i = i + 2" }] }),
+  };
+
+  function fill(root) {
+    root.querySelectorAll(".fc-slot").forEach(el => {
+      const f = FLOWS[el.dataset.flow];
+      if (f) el.innerHTML = f();
+    });
+  }
+  return { fill, FLOWS };
+})();
+/* FC-END */
+
 /* ═══════════════ แผนที่ด่าน (หน้าหลัก) ═══════════════ */
 function topicIndex() {
   return COURSES[state.lang].topics.findIndex(t => t.id === state.topic);
@@ -1216,6 +1385,7 @@ function openLesson(t) {
     }
     box.appendChild(d);
   });
+  FC.fill(box);
   const doneCount = t.stages.filter((_, s) => state.done.has(doneKey(state.lang, t.id, s))).length;
   $("lsStart").textContent = doneCount > 0 ? "อ่านจบแล้ว ทำแบบฝึกหัดต่อ →" : "เข้าใจแล้ว เริ่มทำแบบฝึกหัด →";
   showScreen("lesson");
@@ -1442,7 +1612,8 @@ function renderStage() {
   } else {
     $("stdinBox").classList.add("hide");
   }
-  $("mReward").textContent = `รางวัลเมื่อผ่านด่าน: ${L.xp} EXP`;
+  FC.fill($("mGoal"));
+  $("mReward").textContent = "รางวัลเมื่อผ่านด่าน: " + L.xp + " EXP";
   $("hintBox").innerHTML = L.hint;
   $("hintBox").classList.remove("show");
   attempts = 0;
