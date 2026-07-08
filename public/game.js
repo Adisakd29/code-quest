@@ -18,7 +18,12 @@ const ICONS = {
   function: '<svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="10" fill="#1b2040" stroke="#6ee7a0" stroke-width="3"/><path d="M29 13c-3.4 0-4.6 2.2-4.6 5.4v11.2c0 3.2-1.2 5.4-4.6 5.4" stroke="#6ee7a0" stroke-width="3.6" stroke-linecap="round" fill="none"/><path d="M17 24h11" stroke="#ffb347" stroke-width="3.6" stroke-linecap="round"/><circle cx="35" cy="14" r="2.4" fill="#62e6ff"/></svg>',
   project: '<svg viewBox="0 0 48 48" fill="none"><path d="M14 6h20v11c0 7.2-4.2 12.5-10 12.5S14 24.2 14 17V6z" fill="#ffb347"/><path d="M14 9H7c.3 6.5 3.2 9.8 8.4 10.8M34 9h7c-.3 6.5-3.2 9.8-8.4 10.8" stroke="#e09a2f" stroke-width="3" fill="none"/><rect x="21" y="29" width="6" height="7" fill="#e09a2f"/><rect x="13" y="36" width="22" height="6.5" rx="2.2" fill="#9aa2d8"/><path d="M24 11l1.7 3.4 3.8.6-2.8 2.7.7 3.8-3.4-1.8-3.4 1.8.7-3.8-2.8-2.7 3.8-.6L24 11z" fill="#fff3d6"/></svg>'
 };
-const iconFor = k => ICONS[k] || "";
+ICONS.c = '<svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="11" fill="#2b5ea7"/><path d="M31 18.5c-1.8-2.2-4.3-3.5-7-3.5-5 0-9 4-9 9s4 9 9 9c2.7 0 5.2-1.3 7-3.5" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/></svg>';
+ICONS.cintro = '<svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="11" fill="#e9e4fb" stroke="#7b5cf0" stroke-width="2.5"/><path d="M30 18c-1.6-2-3.8-3.2-6.3-3.2-4.5 0-8.2 3.7-8.2 8.2s3.7 8.2 8.2 8.2c2.5 0 4.7-1.2 6.3-3.2" stroke="#7b5cf0" stroke-width="4.5" stroke-linecap="round" fill="none"/><circle cx="36" cy="13" r="5" fill="#f5b942"/><path d="M34.2 13l1.3 1.3 2.3-2.6" stroke="#5a3c00" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>';
+ICONS.cvs = '<svg viewBox="0 0 48 48" fill="none"><rect x="4" y="8" width="40" height="27" rx="4" fill="#1b1a2e" stroke="#8a7cf0" stroke-width="2.5"/><path d="M10 15l6 5.5-6 5.5" stroke="#62e6ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="20" y="24" width="12" height="3" rx="1.5" fill="#f5b942"/><rect x="17" y="38" width="14" height="3" rx="1.5" fill="#9aa2d8"/><rect x="21" y="35" width="6" height="4" fill="#9aa2d8"/></svg>';
+ICONS.cptr = '<svg viewBox="0 0 48 48" fill="none"><rect x="4" y="16" width="16" height="16" rx="4" fill="#e9e4fb" stroke="#7b5cf0" stroke-width="2.5"/><circle cx="12" cy="24" r="3" fill="#7b5cf0"/><path d="M20 24h13" stroke="#f5b942" stroke-width="4" stroke-linecap="round"/><path d="M30 17l9 7-9 7v-14z" fill="#f5b942"/><rect x="36" y="16" width="8" height="16" rx="3" fill="#ecfaf3" stroke="#27c07d" stroke-width="2.5"/></svg>';
+const ICON_ALIAS = { concept: "flowchart", ctypes: "variable", coper: "operator", cio: "input", cctrl: "ifelse", carray: "datastructure", cfunc: "function" };
+const iconFor = k => ICONS[k] || ICONS[ICON_ALIAS[k]] || "";
 const fmt = n => (n || 0).toLocaleString("th-TH");
 
 const COURSES = {
@@ -1026,6 +1031,579 @@ const COURSES = {
         ]
       }
     ]
+  },
+  c: {
+    name: "C", icon: "🅲",
+    tagline: "รากฐานของทุกภาษา — เร็ว ตรงไปตรงมา และใกล้ชิดหน่วยความจำที่สุด เรียนครบ 10 หน่วยตามหลักสูตร",
+    topics: [
+      {
+        id: "cintro", icon: "🅲", title: "หน่วยที่ 1: แนะนำภาษาซี",
+        blurb: "รู้จักภาษาแม่ของโลกโปรแกรมมิ่ง และโครงสร้างโปรแกรม C ที่ถูกต้อง",
+        lesson: [
+          { h: "ภาษาซีคืออะไร", p: "ภาษาโปรแกรมยุคบุกเบิก (ค.ศ. 1972 โดย Dennis Ritchie) ที่ยังทรงพลังถึงทุกวันนี้ — ระบบปฏิบัติการ เกม และอุปกรณ์ฝังตัวส่วนใหญ่เขียนด้วย C และเป็นต้นแบบของ C++, Java, JavaScript, Python แทบทุกภาษาที่คุณจะได้เจอ" },
+          { h: "โครงสร้างโปรแกรม C", p: "ทุกโปรแกรมเริ่มที่ฟังก์ชัน <b>main</b> โค้ดอยู่ในปีกกา { } และทุกคำสั่งต้องปิดท้ายด้วย <b>;</b> เสมอ — ลืม ; คือ error อันดับหนึ่งของมือใหม่", code: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello!\");\n    return 0;\n}" },
+          { h: "printf ไม่ขึ้นบรรทัดใหม่ให้เอง", p: "ต่างจาก print ของ Python — printf จะพิมพ์ต่อบรรทัดเดิมเสมอ ต้องใส่ <b>\\n</b> เองเมื่ออยากขึ้นบรรทัดใหม่", code: "printf(\"บรรทัดแรก\\nบรรทัดสอง\");" },
+          { h: "คอมเมนต์", p: "<code>//</code> คอมเมนต์บรรทัดเดียว และ <code>/* ... */</code> คอมเมนต์หลายบรรทัด — คอมไพเลอร์ข้ามส่วนนี้ทั้งหมด ใช้จดโน้ตหรือปิดโค้ดชั่วคราว" }
+        ],
+        stages: [
+          {
+            title: "Hello, C!",
+            desc: "ธรรมเนียมของโปรแกรมเมอร์ทุกคน: โปรแกรมแรกต้องทักทายโลก — สังเกตโครงสร้าง #include, main, ปีกกา และ ; ให้ดี",
+            goal: 'ทำให้โปรแกรมแสดงข้อความ <b>Hello, C!</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    // เติมข้อความในเครื่องหมายคำพูด\n    printf(\"\");\n    return 0;\n}\n",
+            hint: 'เติมข้อความ: <code>printf("Hello, C!");</code>',
+            xp: 30,
+            check: (out, code) => eq(out, "Hello, C!") && /printf/.test(code)
+          },
+          {
+            title: "เครื่องหมาย ; ที่หายไป",
+            desc: "โค้ดนี้คอมไพล์ไม่ผ่านเพราะลืม ; สองจุด — ลองกดรันดู error แล้วแก้ให้ถูก (ทุกคำสั่งใน C ต้องจบด้วย ;)",
+            goal: 'แก้โค้ดให้รันผ่าน และได้ผลลัพธ์ <b>สวัสดีภาษาซี</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    printf(\"สวัสดี\")\n    printf(\"ภาษาซี\")\n    return 0;\n}\n",
+            hint: 'เติม <code>;</code> ท้ายคำสั่ง printf ทั้งสองบรรทัด',
+            xp: 40,
+            check: (out) => eq(out, "สวัสดีภาษาซี")
+          },
+          {
+            title: "ขึ้นบรรทัดใหม่ด้วย \\n",
+            desc: "printf ไม่ขึ้นบรรทัดใหม่ให้เอง! ใช้รหัส \\n ในข้อความเพื่อบอกให้ขึ้นบรรทัดใหม่ตรงนั้น",
+            goal: 'ใช้ printf <b>คำสั่งเดียว</b> แสดง 2 บรรทัด: <b>C คือ</b> และ <b>รากฐานของทุกภาษา</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    printf(\"\");\n    return 0;\n}\n",
+            hint: 'ลอง <code>printf("C คือ\\nรากฐานของทุกภาษา");</code>',
+            xp: 40,
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "C คือ" && l[1] === "รากฐานของทุกภาษา" && (code.match(/printf/g) || []).length === 1 && code.includes("\\n"); }
+          },
+          {
+            title: "คอมเมนต์กู้โลก",
+            desc: "มีบรรทัดที่ไม่ใช่ภาษา C ปนอยู่ ทำให้คอมไพล์พัง — ใช้ // ปิดบรรทัดนั้นเป็นคอมเมนต์ โปรแกรมจะกลับมาทำงานได้",
+            goal: 'ทำให้โปรแกรมรันผ่านโดย<b>ไม่ลบ</b>บรรทัดที่พัง (ใช้คอมเมนต์) และได้ผลลัพธ์ <b>โปรแกรมทำงานแล้ว</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    บรรทัดนี้ไม่ใช่ภาษา C เลยทำให้พัง\n    printf(\"โปรแกรมทำงานแล้ว\");\n    return 0;\n}\n",
+            hint: 'เติม <code>//</code> หน้าบรรทัดที่พัง คอมไพเลอร์จะข้ามให้',
+            xp: 50,
+            check: (out, code) => eq(out, "โปรแกรมทำงานแล้ว") && /\/\//.test(code)
+          },
+          {
+            title: "เขียนเองทั้งโครง",
+            desc: "ถึงเวลาพิสูจน์: เขียนโปรแกรม C ที่สมบูรณ์ด้วยตัวเองทั้งหมด ตั้งแต่ main จนถึง return 0",
+            goal: 'เขียนโปรแกรมสมบูรณ์ที่แสดงข้อความ <b>จบหน่วยที่ 1</b> (ต้องมี int main และ return 0)',
+            starter: "#include <stdio.h>\n\n",
+            hint: 'โครง: <code>int main() {</code> → printf → <code>return 0;</code> → <code>}</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "จบหน่วยที่ 1") && /int\s+main/.test(code) && /return\s+0/.test(code)
+          }
+        ]
+      },
+      {
+        id: "cvs", icon: "🖥️", title: "หน่วยที่ 2: โปรแกรม Visual Studio 2022",
+        blurb: "ใช้เครื่องมือระดับมืออาชีพ: สร้างโปรเจกต์ Build/Run และอ่าน Error List ให้เป็น",
+        lesson: [
+          { h: "สร้างโปรเจกต์แรกใน Visual Studio 2022", p: "เปิดโปรแกรม → <b>Create a new project</b> → เลือก <b>Empty Project</b> (C++) → ตั้งชื่อโปรเจกต์ → คลิกขวาที่ <b>Source Files</b> ใน Solution Explorer → Add → New Item → ตั้งชื่อไฟล์ลงท้ายด้วย <b>.c</b> (สำคัญมาก! ถ้าลงท้าย .cpp จะถูกคอมไพล์เป็น C++)" },
+          { h: "Build และ Run", p: "<b>Ctrl+Shift+B</b> = Build (คอมไพล์อย่างเดียว ยังไม่รัน) • <b>F5</b> = รันแบบดีบัก • <b>Ctrl+F5</b> = รันแบบไม่ดีบัก — หน้าต่างผลลัพธ์จะค้างไว้ให้อ่าน เหมาะกับการทดสอบโปรแกรม" },
+          { h: "อ่าน Error List ให้เป็น", p: "เมื่อ Build ไม่ผ่าน หน้าต่าง <b>Error List</b> จะบอกไฟล์ บรรทัด และสาเหตุ เช่น <code>error C2143: syntax error: missing ';'</code> — ดับเบิลคลิกที่ error เพื่อกระโดดไปบรรทัดนั้นได้ทันที ในเกมนี้ช่องผลลัพธ์จะแสดงข้อความ error แบบเดียวกัน" },
+          { h: "Error กับ Warning ต่างกัน", p: "<b>Error</b> = คอมไพล์ไม่ผ่าน ต้องแก้เท่านั้น • <b>Warning</b> = คอมไพล์ผ่านแต่เสี่ยงบั๊ก เช่น C4700: uninitialized variable (ใช้ตัวแปรก่อนกำหนดค่า) — โปรแกรมเมอร์ที่ดีเก็บ warning ให้หมดด้วย" }
+        ],
+        stages: [
+          {
+            title: "แก้ error: missing ';'",
+            desc: "จำลองสถานการณ์จริง: Error List ฟ้อง \"error C2143: syntax error: missing ';'\" — อ่านข้อความ error ในช่องผลลัพธ์ แล้วแก้ตามที่มันบอก",
+            goal: 'แก้โค้ดให้ Build ผ่าน และได้ผลลัพธ์ <b>Build สำเร็จ!</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    printf(\"Build สำเร็จ!\")\n    return 0;\n}\n",
+            hint: 'error บอกว่าขาด ; — เติมท้ายบรรทัด printf',
+            xp: 40,
+            check: (out) => eq(out, "Build สำเร็จ!")
+          },
+          {
+            title: "error: undeclared identifier",
+            desc: "error ยอดฮิตอันดับสอง: ใช้ตัวแปรที่ยังไม่ได้ประกาศ (C2065: undeclared identifier) — C ต้องประกาศตัวแปรก่อนใช้เสมอ",
+            goal: 'ประกาศตัวแปร <b>score</b> ให้ถูกต้อง (ค่า 100) แล้วได้ผลลัพธ์ <b>คะแนน 100</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    // ประกาศตัวแปร score ตรงนี้\n\n    printf(\"คะแนน %d\", score);\n    return 0;\n}\n",
+            hint: 'ประกาศพร้อมค่า: <code>int score = 100;</code>',
+            xp: 40,
+            check: (out, code) => eq(out, "คะแนน 100") && /int\s+score/.test(code)
+          },
+          {
+            title: "กำจัด warning",
+            desc: "โค้ดนี้ Build ผ่านใน Visual Studio แต่มี warning C4700: ใช้ตัวแปร x โดยยังไม่กำหนดค่า — ค่าที่ได้จะมั่วไม่แน่นอน",
+            goal: 'กำหนดค่า <b>x = 7</b> ก่อนนำไปใช้ ให้ได้ผลลัพธ์ <b>ค่า x = 7</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int x;\n    // กำหนดค่าให้ x ก่อนใช้\n\n    printf(\"ค่า x = %d\", x);\n    return 0;\n}\n",
+            hint: 'เติม <code>x = 7;</code> ก่อนบรรทัด printf',
+            xp: 50,
+            check: (out, code) => eq(out, "ค่า x = 7") && /x\s*=\s*7/.test(code)
+          },
+          {
+            title: "รันแบบ Ctrl+F5",
+            desc: "โปรแกรม console ที่ดีมักพิมพ์ข้อความปิดท้ายให้ผู้ใช้รู้ว่าจบแล้ว — ฝึกจัดระเบียบผลลัพธ์ให้เหมือนโปรแกรมจริงใน Visual Studio",
+            goal: 'แสดงผล 2 บรรทัด: <b>ผลลัพธ์: 42</b> และ <b>กด Enter เพื่อปิดหน้าต่าง...</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int answer = 42;\n\n    return 0;\n}\n",
+            hint: 'printf สองครั้ง อย่าลืม \\n ท้ายบรรทัดแรก และใช้ %d กับ answer',
+            xp: 50,
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "ผลลัพธ์: 42" && l[1] === "กด Enter เพื่อปิดหน้าต่าง..." && /%d/.test(code); }
+          }
+        ]
+      },
+      {
+        id: "concept", icon: "🧭", title: "หน่วยที่ 3: แนวคิดในการเขียนโปรแกรม",
+        blurb: "Input → Process → Output, อัลกอริทึม, ซูโดโค้ด และการไล่มือ — คิดก่อนเขียน",
+        lesson: [
+          { h: "Input → Process → Output", p: "ทุกโปรแกรมคือ 3 ขั้นตอน: <b>รับข้อมูลเข้า → ประมวลผล → แสดงผลลัพธ์</b> ก่อนเขียนโค้ดทุกครั้ง ตอบให้ได้ว่าโจทย์นี้ Input คืออะไร Process ทำอะไร และ Output หน้าตาแบบไหน" },
+          { h: "อัลกอริทึมและซูโดโค้ด", p: "อัลกอริทึม = ลำดับขั้นตอนแก้ปัญหา นิยมร่างเป็น<b>ซูโดโค้ด</b> (ภาษาคนกึ่งโค้ด) ก่อน แล้วค่อยแปลงเป็นภาษา C ทีละบรรทัด", code: "เริ่ม\n  x <- 10\n  x <- x * 2\n  แสดงค่า x\nจบ" },
+          { h: "ไล่มือ (Trace) ก่อนรัน", p: "จดค่าตัวแปรบนกระดาษทีละบรรทัด — ถ้าไล่มือแล้วได้ผลตรงที่คาด โค้ดมักถูก เทคนิคนี้ใช้หาบั๊กได้ตลอดชีวิตการเป็นโปรแกรมเมอร์ และเป็นข้อสอบยอดฮิต" }
+        ],
+        stages: [
+          {
+            title: "I-P-O ครบสามขั้น",
+            desc: "ฝึกมองโปรแกรมเป็น 3 ขั้น: Input คือค่า a กับ b / Process คือการบวก / Output คือแสดงผลรวม",
+            goal: 'กำหนด <b>a = 5</b>, <b>b = 3</b> ประมวลผลรวม แล้วแสดง <b>ผลรวม = 8</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a = 5;\n    int b = 3;\n    // Process + Output\n\n    return 0;\n}\n",
+            hint: '<code>printf("ผลรวม = %d", a + b);</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "ผลรวม = 8") && /\+/.test(code)
+          },
+          {
+            title: "แปลงซูโดโค้ดเป็น C",
+            desc: "อ่านซูโดโค้ดแล้วแปลงเป็นภาษา C ทีละบรรทัด — ทักษะข้อสอบสุดคลาสสิก",
+            goal: 'แปลงซูโดโค้ดนี้เป็นภาษา C:<span class="fc">เริ่ม\n  x <- 10\n  x <- x * 2\n  แสดงค่า x\nจบ</span>(ต้องได้ <b>20</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n\n    return 0;\n}\n",
+            hint: '<code>int x = 10;</code> → <code>x = x * 2;</code> → <code>printf("%d", x);</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "20") && /x\s*=/.test(code)
+          },
+          {
+            title: "แตกปัญหาเป็นขั้นตอน",
+            desc: "โจทย์: หาพื้นที่สามเหลี่ยม — แตกเป็นขั้น: รู้ฐานกับสูง → ใช้สูตร (ฐาน × สูง) / 2 → แสดงผล",
+            goal: 'กำหนด <b>base = 10</b>, <b>height = 4</b> คำนวณตามสูตร แล้วแสดง <b>พื้นที่ = 20</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int base = 10;\n    int height = 4;\n\n    return 0;\n}\n",
+            hint: '<code>printf("พื้นที่ = %d", base * height / 2);</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "พื้นที่ = 20") && /\*/.test(code) && /\/\s*2/.test(code)
+          },
+          {
+            title: "ไล่มือให้แม่น",
+            desc: "เขียนโค้ดตามขั้นตอน แล้วไล่มือทีละบรรทัดก่อนกดรัน: x เริ่ม 3 → บวก 4 → คูณ 2 — ได้เท่าไหร่?",
+            goal: 'เขียนตามลำดับ: x = 3 → x = x + 4 → x = x * 2 → แสดง <b>x สุดท้าย = 14</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int x = 3;\n\n    return 0;\n}\n",
+            hint: 'สองบรรทัดอัปเดตค่า แล้ว <code>printf("x สุดท้าย = %d", x);</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "x สุดท้าย = 14") && /x\s*=\s*x/.test(code)
+          }
+        ]
+      },
+      {
+        id: "ctypes", icon: "📦", title: "หน่วยที่ 4: ตัวแปรกับชนิดของข้อมูล",
+        blurb: "int, float, double, char และรหัสรูปแบบ %d %f %c — เลือกชนิดให้ถูกกับงาน",
+        lesson: [
+          { h: "4 ชนิดข้อมูลหลัก", p: "<b>int</b> จำนวนเต็ม • <b>float / double</b> ทศนิยม (double ละเอียดกว่า) • <b>char</b> ตัวอักษรตัวเดียวในเครื่องหมาย ' ' — ประกาศ: ชนิด ชื่อ = ค่า;", code: "int age = 15;\nfloat price = 19.5;\nchar grade = 'A';" },
+          { h: "รหัสรูปแบบใน printf", p: "<b>%d</b> = int • <b>%f</b> = float/double (ปกติ 6 ตำแหน่ง ใช้ <b>%.2f</b> คุมเหลือ 2 ตำแหน่ง) • <b>%c</b> = char • <b>%s</b> = ข้อความ", code: "printf(\"อายุ %d ปี\", age);\nprintf(\"ราคา %.2f บาท\", price);" },
+          { h: "กับดักการหารจำนวนเต็ม", p: "int หาร int ได้ int เสมอ — เศษถูกตัดทิ้ง! เช่น 7 / 2 = 3 ไม่ใช่ 3.5 ต้องแปลงชนิด (casting) ด้วย (float) ก่อน", code: "int a = 7, b = 2;\nprintf(\"%.1f\", (float)a / b);  // 3.5" }
+        ],
+        stages: [
+          {
+            title: "จำนวนเต็มกับ %d",
+            desc: "ประกาศตัวแปร int แล้วแสดงผลด้วยรหัส %d ในตำแหน่งที่อยากให้ค่าปรากฏ",
+            goal: 'ประกาศ <b>int age = 15</b> แล้วแสดง <b>อายุ 15 ปี</b> ด้วย %d',
+            starter: "#include <stdio.h>\n\nint main() {\n\n    return 0;\n}\n",
+            hint: '<code>int age = 15;</code> แล้ว <code>printf("อายุ %d ปี", age);</code>',
+            xp: 40,
+            check: (out, code) => eq(out, "อายุ 15 ปี") && /%d/.test(code) && /int\s+age/.test(code)
+          },
+          {
+            title: "ทศนิยมกับ %.2f",
+            desc: "%f เฉยๆ จะได้ทศนิยม 6 ตำแหน่ง (19.500000) — ใช้ %.2f เพื่อคุมให้เหลือ 2 ตำแหน่งแบบราคาสินค้า",
+            goal: 'ประกาศ <b>float price = 19.5</b> แล้วแสดง <b>ราคา 19.50 บาท</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    float price = 19.5;\n\n    return 0;\n}\n",
+            hint: '<code>printf("ราคา %.2f บาท", price);</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "ราคา 19.50 บาท") && /%\.2f/.test(code)
+          },
+          {
+            title: "ตัวอักษรกับ %c",
+            desc: "char เก็บตัวอักษรตัวเดียวในเครื่องหมายคำพูดเดี่ยว ' ' และแสดงผลด้วย %c",
+            goal: "ประกาศ <b>char grade = 'A'</b> แล้วแสดง <b>ได้เกรด A</b>",
+            starter: "#include <stdio.h>\n\nint main() {\n\n    return 0;\n}\n",
+            hint: "<code>char grade = 'A';</code> แล้ว <code>printf(\"ได้เกรด %c\", grade);</code>",
+            xp: 50,
+            check: (out, code) => eq(out, "ได้เกรด A") && /%c/.test(code) && /'A'/.test(code)
+          },
+          {
+            title: "หลายค่าใน printf เดียว",
+            desc: "printf รับหลายค่าได้ — รหัส % ตัวแรกจับคู่ค่าแรก ตัวสองจับคู่ค่าสอง เรียงตามลำดับ",
+            goal: 'กำหนด <b>w = 7</b>, <b>h = 4</b> แล้วใช้ printf เดียวแสดง <b>กว้าง 7 สูง 4 พื้นที่ 28</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int w = 7;\n    int h = 4;\n\n    return 0;\n}\n",
+            hint: '<code>printf("กว้าง %d สูง %d พื้นที่ %d", w, h, w * h);</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "กว้าง 7 สูง 4 พื้นที่ 28") && (code.match(/%d/g) || []).length >= 3
+          },
+          {
+            title: "casting แก้หารเศษหาย",
+            desc: "7/2 ใน C ได้ 3 เพราะ int หาร int! ใส่ (float) หน้าตัวใดตัวหนึ่งเพื่อบังคับให้คิดแบบทศนิยม",
+            goal: 'กำหนด <b>a = 7</b>, <b>b = 2</b> แสดง 2 บรรทัด: ผลหารแบบ int (<b>3</b>) และแบบ casting เป็น float ทศนิยม 1 ตำแหน่ง (<b>3.5</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a = 7;\n    int b = 2;\n    printf(\"%d\\n\", a / b);\n    // บรรทัดสอง: casting เป็น float\n\n    return 0;\n}\n",
+            hint: '<code>printf("%.1f", (float)a / b);</code>',
+            xp: 60,
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "3" && l[1] === "3.5" && /\(float\)/.test(code); }
+          }
+        ]
+      },
+      {
+        id: "coper", icon: "➗", title: "หน่วยที่ 5: โอเปอเรเตอร์และการดำเนินการ",
+        blurb: "เลขคณิต หารเอาเศษ ++/-- และตรรกะแบบ C ที่คำตอบคือ 1 กับ 0",
+        lesson: [
+          { h: "เลขคณิต + - * / %", p: "เหมือนคณิตศาสตร์ แต่จำไว้: <b>int / int ได้ int</b> (17/5 = 3) และ <b>%</b> คือหารเอาเศษ (17%5 = 2) — คู่นี้ออกข้อสอบทุกปี" },
+          { h: "++ และ --", p: "<b>x++</b> เพิ่ม 1, <b>x--</b> ลด 1 • ตำแหน่งสำคัญ: <b>++x</b> เพิ่มก่อนแล้วค่อยใช้ค่า ส่วน <b>x++</b> ใช้ค่าเดิมก่อนแล้วค่อยเพิ่ม", code: "int x = 5;\nprintf(\"%d\", ++x);  // 6\nprintf(\"%d\", x++);  // 6 (หลังบรรทัดนี้ x = 7)" },
+          { h: "เปรียบเทียบและตรรกะได้ 1/0", p: "C ไม่มีค่า True/False — ผลเปรียบเทียบคือ <b>1</b> (จริง) กับ <b>0</b> (เท็จ) • <b>&&</b> และ • <b>||</b> หรือ • <b>!</b> ไม่", code: "printf(\"%d\", 10 > 7);   // 1\nprintf(\"%d\", 1 && 0);   // 0" }
+        ],
+        stages: [
+          {
+            title: "ครบสี่ตัวดำเนินการ",
+            desc: "ลองเลขคณิตพื้นฐานทั้งสี่ — ดูผลการหารให้ดี 17/5 ใน C ไม่ได้ 3.4 นะ!",
+            goal: 'กำหนด <b>a = 17</b>, <b>b = 5</b> แสดงผล a+b, a-b, a*b, a/b บรรทัดละค่า (ต้องได้ <b>22, 12, 85, 3</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a = 17;\n    int b = 5;\n    printf(\"%d\\n\", a + b);\n\n    return 0;\n}\n",
+            hint: 'เพิ่มอีก 3 บรรทัดตามแบบ — บรรทัดสุดท้าย <code>printf("%d\\n", a / b);</code> จะได้ 3 เพราะ int หาร int',
+            xp: 40,
+            check: (out) => { const l = lines(out); return l.join(",") === "22,12,85,3"; }
+          },
+          {
+            title: "หารเอาเศษ %",
+            desc: "% ให้เศษจากการหาร — ใช้เช็คเลขคู่คี่ วนรอบ แจกของ สารพัดประโยชน์ (ใน printf ถ้าอยากพิมพ์เครื่องหมาย % ต้องเขียน %%)",
+            goal: 'แสดงเศษจากการหาร <b>17 % 5</b> ในรูปแบบ <b>เศษ = 2</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n\n    return 0;\n}\n",
+            hint: '<code>printf("เศษ = %d", 17 % 5);</code>',
+            xp: 40,
+            check: (out, code) => eq(out, "เศษ = 2") && /17\s*%\s*5/.test(code)
+          },
+          {
+            title: "เพิ่มลดด้วย ++ และ --",
+            desc: "x++ กับ x-- คือทางลัดเพิ่ม/ลดทีละ 1 ที่เจอทุกลูปในโลก C",
+            goal: 'กำหนด <b>x = 5</b> ใช้ <b>x++</b> แล้วแสดงค่า จากนั้นใช้ <b>x--</b> สองครั้ง แล้วแสดงค่า (ต้องได้ <b>6</b> และ <b>4</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int x = 5;\n    x++;\n    printf(\"%d\\n\", x);\n    // ลดสองครั้ง แล้วแสดงผล\n\n    return 0;\n}\n",
+            hint: '<code>x--;</code> สองบรรทัด แล้ว <code>printf("%d\\n", x);</code>',
+            xp: 50,
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "6" && l[1] === "4" && /\+\+/.test(code) && /--/.test(code); }
+          },
+          {
+            title: "++x ต่างกับ x++ ยังไง",
+            desc: "โจทย์วัดความเข้าใจสุดฮิต: ++x เพิ่มก่อนใช้ / x++ ใช้ก่อนเพิ่ม — ไล่มือให้ดีก่อนรัน",
+            goal: 'กำหนด <b>x = 5</b> แสดง 3 บรรทัด: ค่า <b>++x</b>, ค่า <b>x++</b>, แล้วค่า <b>x</b> (ต้องได้ <b>6, 6, 7</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int x = 5;\n    printf(\"%d\\n\", ++x);\n\n    return 0;\n}\n",
+            hint: 'ต่อด้วย <code>printf("%d\\n", x++);</code> และ <code>printf("%d\\n", x);</code>',
+            xp: 60,
+            check: (out, code) => { const l = lines(out); return l.join(",") === "6,6,7" && /\+\+x/.test(code) && /x\+\+/.test(code); }
+          },
+          {
+            title: "ตรรกะแบบ C: 1 กับ 0",
+            desc: "C ตอบจริง/เท็จเป็นตัวเลข: 1 คือจริง 0 คือเท็จ — พิมพ์ผลเปรียบเทียบออกมาดูเลย",
+            goal: 'แสดงผล 4 บรรทัด: <b>10 > 7</b>, <b>5 == 3</b>, <b>1 && 0</b>, <b>1 || 0</b> (ต้องได้ <b>1, 0, 0, 1</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    printf(\"%d\\n\", 10 > 7);\n\n    return 0;\n}\n",
+            hint: 'อีก 3 บรรทัด: <code>5 == 3</code>, <code>1 && 0</code>, <code>1 || 0</code> ใน printf แบบเดียวกัน',
+            xp: 60,
+            check: (out, code) => { const l = lines(out); return l.join(",") === "1,0,0,1" && /&&/.test(code) && /\|\|/.test(code); }
+          }
+        ]
+      },
+      {
+        id: "cio", icon: "⌨️", title: "หน่วยที่ 6: การรับและแสดงผลข้อมูล",
+        blurb: "scanf คู่หูของ printf — รับข้อมูลจากผู้ใช้ด้วย %d %f %c %s และเครื่องหมาย &",
+        lesson: [
+          { h: "scanf — รับข้อมูลเข้าโปรแกรม", p: "รูปแบบเหมือน printf แต่ต้องส่ง <b>ที่อยู่</b> ของตัวแปรด้วยเครื่องหมาย <b>&</b> เสมอ (ลืม & คือบั๊กยอดฮิตอันดับหนึ่งของ scanf)", code: "int x;\nscanf(\"%d\", &x);\nprintf(\"ได้ค่า %d\", x);" },
+          { h: "ทำไมต้องมี &", p: "scanf ต้องรู้ว่าจะเอาค่าไปวางไว้ <b>ตรงไหน</b> ในหน่วยความจำ — & อ่านว่า \"ที่อยู่ของ\" (จะเข้าใจลึกสุดๆ ในหน่วยพอยน์เตอร์) ข้อยกเว้นเดียวคือชื่ออาร์เรย์ char สำหรับ %s ซึ่งเป็นที่อยู่อยู่แล้ว จึงไม่ต้องใส่ &" },
+          { h: "รับได้ทุกชนิด", p: "<b>%d</b> จำนวนเต็ม • <b>%f</b> ทศนิยม (float) • <b>%c</b> ตัวอักษร • <b>%s</b> ข้อความ (หยุดที่ช่องว่าง) — ในเกมนี้ระบบจะป้อนค่าให้ตามกล่อง ⌨️ หรือกดปุ่ม \"⌨ ป้อนเอง\" เพื่อพิมพ์ค่าจริงด้วยตัวเอง" }
+        ],
+        stages: [
+          {
+            title: "scanf ครั้งแรก",
+            desc: "รับจำนวนเต็มด้วย scanf(\"%d\", &x) — สังเกตเครื่องหมาย & หน้าตัวแปร ลืมเมื่อไหร่โปรแกรมพังเมื่อนั้น",
+            goal: 'รับตัวเลขหนึ่งค่า แล้วแสดง <b>คุณพิมพ์ 7</b> (ระบบป้อน "7")',
+            starter: "#include <stdio.h>\n\nint main() {\n    int x;\n    scanf(\"%d\", &x);\n\n    return 0;\n}\n",
+            hint: '<code>printf("คุณพิมพ์ %d", x);</code>',
+            xp: 50,
+            stdin: ["7"],
+            check: (out, code) => eq(out, "คุณพิมพ์ 7") && /scanf/.test(code) && /&\s*x/.test(code)
+          },
+          {
+            title: "รับสองค่ามาบวกกัน",
+            desc: "scanf รับหลายค่าได้ในครั้งเดียว scanf(\"%d %d\", &a, &b) หรือจะเรียกสองครั้งก็ได้ผลเหมือนกัน",
+            goal: 'รับจำนวนเต็ม 2 ค่า แล้วแสดง <b>รวม = 42</b> (ระบบป้อน "12" และ "30")',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a, b;\n\n    return 0;\n}\n",
+            hint: '<code>scanf("%d %d", &a, &b);</code> แล้ว <code>printf("รวม = %d", a + b);</code>',
+            xp: 50,
+            stdin: ["12", "30"],
+            check: (out, code) => eq(out, "รวม = 42") && /&\s*a/.test(code) && /&\s*b/.test(code)
+          },
+          {
+            title: "รับทศนิยมด้วย %f",
+            desc: "รับ float ใช้ %f ใน scanf และแสดงผลแบบเงินด้วย %.2f ใน printf",
+            goal: 'รับราคาสินค้า (float) แล้วแสดง <b>จ่าย 19.50 บาท</b> (ระบบป้อน "19.5")',
+            starter: "#include <stdio.h>\n\nint main() {\n    float price;\n\n    return 0;\n}\n",
+            hint: '<code>scanf("%f", &price);</code> แล้ว <code>printf("จ่าย %.2f บาท", price);</code>',
+            xp: 60,
+            stdin: ["19.5"],
+            check: (out, code) => eq(out, "จ่าย 19.50 บาท") && /scanf/.test(code) && /%\.2f/.test(code)
+          },
+          {
+            title: "รับตัวอักษรด้วย %c",
+            desc: "รับตัวอักษรตัวเดียวด้วย %c — เก็บในตัวแปร char",
+            goal: 'รับเกรดหนึ่งตัวอักษร แล้วแสดง <b>ได้เกรด B</b> (ระบบป้อน "B")',
+            starter: "#include <stdio.h>\n\nint main() {\n    char grade;\n\n    return 0;\n}\n",
+            hint: '<code>scanf("%c", &grade);</code> แล้ว <code>printf("ได้เกรด %c", grade);</code>',
+            xp: 60,
+            stdin: ["B"],
+            check: (out, code) => eq(out, "ได้เกรด B") && /%c/.test(code)
+          },
+          {
+            title: "รับข้อความด้วย %s",
+            desc: "ข้อความใน C คืออาร์เรย์ของ char — ประกาศ char name[20] แล้วรับด้วย %s (ชื่ออาร์เรย์ไม่ต้องใส่ & เพราะเป็นที่อยู่อยู่แล้ว)",
+            goal: 'รับชื่อผู้เล่น แล้วแสดง <b>สวัสดี Mali</b> (ระบบป้อน "Mali")',
+            starter: "#include <stdio.h>\n\nint main() {\n    char name[20];\n\n    return 0;\n}\n",
+            hint: '<code>scanf("%s", name);</code> แล้ว <code>printf("สวัสดี %s", name);</code>',
+            xp: 80,
+            stdin: ["Mali"],
+            check: (out, code) => eq(out, "สวัสดี Mali") && /char\s+\w+\s*\[/.test(code) && /%s/.test(code)
+          }
+        ]
+      },
+      {
+        id: "cctrl", icon: "🚦", title: "หน่วยที่ 7: คำสั่งควบคุม",
+        blurb: "if/else, switch-case และลูป for/while — สอนโปรแกรมให้ตัดสินใจและทำซ้ำ",
+        lesson: [
+          { h: "if / else if / else", p: "เงื่อนไขอยู่ในวงเล็บ ( ) และบล็อกคำสั่งอยู่ในปีกกา { } — เช็คจากบนลงล่าง เข้าทางแรกที่เป็นจริง", code: "if (score >= 50) {\n    printf(\"ผ่าน\");\n} else {\n    printf(\"ไม่ผ่าน\");\n}" },
+          { h: "switch-case", p: "เลือกทางตามค่าที่แน่นอน (เมนู ตัวเลือก ระดับ) — <b>อย่าลืม break;</b> ท้ายแต่ละ case ไม่งั้นจะไหลทะลุลงไปทำ case ถัดไปด้วย", code: "switch (menu) {\n    case 1: printf(\"กาแฟ\"); break;\n    case 2: printf(\"ชาเย็น\"); break;\n    default: printf(\"น้ำเปล่า\");\n}" },
+          { h: "ลูป for / while / do-while", p: "<b>for</b>(เริ่ม; เงื่อนไข; อัปเดต) เหมาะกับรู้จำนวนรอบ • <b>while</b> เช็คก่อนทำ • <b>do-while</b> ทำก่อนเช็ค (ได้อย่างน้อย 1 รอบเสมอ)", code: "for (int i = 1; i <= 5; i++) {\n    printf(\"%d\\n\", i);\n}" }
+        ],
+        stages: [
+          {
+            title: "ประตู if/else",
+            desc: "เงื่อนไขแรกของคุณในภาษา C — วงเล็บครอบเงื่อนไข ปีกกาครอบคำสั่ง",
+            goal: 'กำหนด <b>score = 75</b> ถ้า ≥ 50 แสดง <b>ผ่าน</b> ไม่งั้นแสดง <b>ไม่ผ่าน</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int score = 75;\n\n    return 0;\n}\n",
+            hint: '<code>if (score >= 50) { printf("ผ่าน"); } else { printf("ไม่ผ่าน"); }</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "ผ่าน") && /if\s*\(/.test(code) && /else/.test(code)
+          },
+          {
+            title: "บันไดเกรด else if",
+            desc: "หลายช่วงคะแนนใช้ else if ต่อกันเป็นบันได — เช็คจากมากไปน้อยเสมอ",
+            goal: 'กำหนด <b>score = 75</b>: ≥80 <b>เกรด A</b> / ≥70 <b>เกรด B</b> / ≥60 <b>เกรด C</b> / นอกนั้น <b>เกรด F</b> (คำตอบต้องได้ <b>เกรด B</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int score = 75;\n\n    return 0;\n}\n",
+            hint: '<code>if (score >= 80) ... else if (score >= 70) ... else if (score >= 60) ... else ...</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "เกรด B") && /else\s+if/.test(code)
+          },
+          {
+            title: "เมนูเครื่องดื่ม switch",
+            desc: "ค่าตายตัวหลายทางเลือก = งานของ switch — จบทุก case ด้วย break; ไม่งั้นไหลทะลุ!",
+            goal: 'กำหนด <b>menu = 2</b> ใช้ switch: 1 = <b>กาแฟ</b>, 2 = <b>ชาเย็น</b>, 3 = <b>โกโก้</b>, อื่นๆ = <b>น้ำเปล่า</b> (คำตอบต้องได้ <b>ชาเย็น</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int menu = 2;\n\n    return 0;\n}\n",
+            hint: '<code>switch (menu) { case 1: printf("กาแฟ"); break; case 2: ... default: ... }</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "ชาเย็น") && /switch\s*\(/.test(code) && /break/.test(code)
+          },
+          {
+            title: "ลูป for นับรอบ",
+            desc: "for ของ C รวมสามอย่างในบรรทัดเดียว: ค่าเริ่ม เงื่อนไข และการอัปเดต — จำโครง for (int i = 1; i <= n; i++) ให้ขึ้นใจ",
+            goal: 'ใช้ for แสดง <b>รอบที่ 1</b> ถึง <b>รอบที่ 5</b> (บรรทัดละรอบ)',
+            starter: "#include <stdio.h>\n\nint main() {\n\n    return 0;\n}\n",
+            hint: '<code>for (int i = 1; i <= 5; i++) { printf("รอบที่ %d\\n", i); }</code>',
+            xp: 60,
+            check: (out, code) => { const l = lines(out); return l.length === 5 && l.every((s, i) => s === "รอบที่ " + (i + 1)) && /for\s*\(/.test(code); }
+          },
+          {
+            title: "while นับถอยหลัง",
+            desc: "while วนตราบใดที่เงื่อนไขจริง — ต้องมีบรรทัดลดค่าข้างใน ไม่งั้นวนไม่จบ",
+            goal: 'ใช้ <b>while</b> นับถอยหลัง <b>3, 2, 1</b> (บรรทัดละเลข) ปิดท้ายด้วย <b>เริ่ม!</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int n = 3;\n\n    printf(\"เริ่ม!\");\n    return 0;\n}\n",
+            hint: '<code>while (n > 0) { printf("%d\\n", n); n--; }</code>',
+            xp: 60,
+            check: (out, code) => { const l = lines(out); return l.join(",") === "3,2,1,เริ่ม!" && /while\s*\(/.test(code); }
+          },
+          {
+            title: "for + if กรองเลขคู่",
+            desc: "รวมพลังลูปกับเงื่อนไข: วน 1 ถึง 10 แล้วเลือกพิมพ์เฉพาะตัวที่หาร 2 ลงตัว",
+            goal: 'แสดงเฉพาะ<b>เลขคู่</b>ตั้งแต่ 1 ถึง 10 (ต้องได้ 2, 4, 6, 8, 10 บรรทัดละเลข)',
+            starter: "#include <stdio.h>\n\nint main() {\n    for (int i = 1; i <= 10; i++) {\n        // พิมพ์เฉพาะเลขคู่\n    }\n    return 0;\n}\n",
+            hint: 'ในลูป: <code>if (i % 2 == 0) { printf("%d\\n", i); }</code>',
+            xp: 80,
+            check: (out, code) => { const l = lines(out); return l.join(",") === "2,4,6,8,10" && /for\s*\(/.test(code) && /%\s*2/.test(code); }
+          }
+        ]
+      },
+      {
+        id: "carray", icon: "🗂️", title: "หน่วยที่ 8: อาร์เรย์",
+        blurb: "ตู้ล็อกเกอร์หลายช่องในชื่อเดียว — ประกาศ เข้าถึง แก้ไข และวนลูปให้คล่อง",
+        lesson: [
+          { h: "อาร์เรย์คืออะไร", p: "ตัวแปรหลายช่องเรียงติดกันภายใต้ชื่อเดียว ประกาศพร้อมขนาด และ<b>ช่องแรกคือ [0]</b> เสมอ", code: "int items[3] = {10, 20, 30};\nprintf(\"%d\", items[0]);  // 10\nitems[1] = 99;           // แก้ค่าช่องที่สอง" },
+          { h: "เพื่อนแท้ชื่อ for", p: "อาร์เรย์กับ for คือคู่หูตลอดกาล — วนดัชนีจาก 0 ถึง ขนาด-1", code: "for (int i = 0; i < 3; i++) {\n    printf(\"%d\\n\", items[i]);\n}" },
+          { h: "C ไม่เช็คขอบเขตให้!", p: "items[99] คอมไพล์ผ่านเฉยเลยแต่พฤติกรรมพังไม่แน่นอน (ต่างจาก Python ที่ฟ้อง IndexError) — เช็คดัชนีเองเสมอ นี่คือทั้งพลังและอันตรายของ C" }
+        ],
+        stages: [
+          {
+            title: "ล็อกเกอร์ช่องแรก",
+            desc: "ประกาศอาร์เรย์พร้อมค่าเริ่มต้นใน { } แล้วหยิบของด้วยเลขช่อง — เริ่มนับจาก 0!",
+            goal: 'ประกาศ <b>int items[3] = {10, 20, 30}</b> แล้วแสดงค่า<b>ช่องแรก</b> (ต้องได้ <b>10</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int items[3] = {10, 20, 30};\n\n    return 0;\n}\n",
+            hint: '<code>printf("%d", items[0]);</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "10") && /\[0\]/.test(code)
+          },
+          {
+            title: "เปลี่ยนของในช่อง",
+            desc: "กำหนดค่าใหม่ให้ช่องไหนก็ได้ตรงๆ เช่น items[1] = 99;",
+            goal: 'เปลี่ยนค่า<b>ช่องที่สอง</b> (items[1]) เป็น <b>99</b> แล้วแสดงค่าช่องนั้น (ต้องได้ <b>99</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int items[3] = {10, 20, 30};\n\n    return 0;\n}\n",
+            hint: '<code>items[1] = 99;</code> แล้ว <code>printf("%d", items[1]);</code>',
+            xp: 50,
+            check: (out, code) => eq(out, "99") && /\[1\]\s*=\s*99/.test(code)
+          },
+          {
+            title: "วนลูปอ่านทุกช่อง",
+            desc: "ใช้ for วนดัชนี 0 ถึง 2 เพื่ออ่านทุกช่อง — สูตร: i < ขนาดอาร์เรย์",
+            goal: 'มี <b>int a[3] = {5, 10, 15}</b> จงวนลูปแสดงทุกค่า (บรรทัดละค่า: 5, 10, 15)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a[3] = {5, 10, 15};\n\n    return 0;\n}\n",
+            hint: '<code>for (int i = 0; i < 3; i++) { printf("%d\\n", a[i]); }</code>',
+            xp: 60,
+            check: (out, code) => { const l = lines(out); return l.join(",") === "5,10,15" && /for\s*\(/.test(code) && /a\s*\[\s*i\s*\]/.test(code); }
+          },
+          {
+            title: "รวมค่าทั้งอาร์เรย์",
+            desc: "รูปแบบสะสมสุดคลาสสิก: ตัวแปรผลรวมเริ่มที่ 0 แล้ววนบวกทีละช่อง",
+            goal: 'มี <b>int a[3] = {12, 30, 25}</b> จงวนรวมทุกค่า แล้วแสดง <b>รวม = 67</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a[3] = {12, 30, 25};\n    int sum = 0;\n\n    return 0;\n}\n",
+            hint: 'ในลูป: <code>sum += a[i];</code> จบลูปค่อย printf',
+            xp: 80,
+            check: (out, code) => eq(out, "รวม = 67") && /for\s*\(/.test(code) && /\+=|sum\s*=\s*sum/.test(code)
+          },
+          {
+            title: "หาแชมป์ในอาร์เรย์",
+            desc: "หาค่ามากสุดแบบไม่มีตัวช่วย (C ไม่มี max() ให้ฟรีๆ แบบ Python): ตั้งแชมป์ชั่วคราว แล้ววนเทียบทีละตัว",
+            goal: 'มี <b>int a[3] = {40, 75, 60}</b> จงหาค่ามากที่สุด แล้วแสดง <b>มากสุด = 75</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a[3] = {40, 75, 60};\n    int best = 0;\n\n    return 0;\n}\n",
+            hint: 'ในลูป: <code>if (a[i] > best) { best = a[i]; }</code>',
+            xp: 80,
+            check: (out, code) => eq(out, "มากสุด = 75") && /for\s*\(/.test(code) && /if\s*\(/.test(code)
+          }
+        ]
+      },
+      {
+        id: "cptr", icon: "🎯", title: "หน่วยที่ 9: พอยน์เตอร์",
+        blurb: "หัวใจของภาษา C — ตัวแปรที่เก็บ \"ที่อยู่\" และพลังการเข้าถึงหน่วยความจำโดยตรง",
+        lesson: [
+          { h: "พอยน์เตอร์ = ตัวแปรเก็บที่อยู่", p: "ทุกตัวแปรมี \"ที่อยู่\" ในหน่วยความจำ • <b>&x</b> = ที่อยู่ของ x • <b>int *p</b> = ประกาศพอยน์เตอร์ • <b>*p</b> = ค่าที่อยู่ปลายทางที่ p ชี้ (เรียกว่า dereference)", code: "int x = 42;\nint *p = &x;      // p ชี้ไปที่ x\nprintf(\"%d\", *p); // 42" },
+          { h: "แก้ค่าผ่านพอยน์เตอร์", p: "<b>*p = 99;</b> คือเขียนค่าลงช่องที่ p ชี้อยู่ — ค่า x จะเปลี่ยนตามทันที เพราะมันคือช่องหน่วยความจำเดียวกัน นี่คือวิธีที่ scanf แก้ค่าตัวแปรของเราได้ (เราส่ง &x ให้มันนั่นเอง!)" },
+          { h: "พอยน์เตอร์กับอาร์เรย์", p: "ชื่ออาร์เรย์คือ<b>ที่อยู่ของช่องแรก</b> — กำหนด p = a; ได้เลย แล้ว *(p+1) คือ a[1] เพราะเลขคณิตพอยน์เตอร์เลื่อนทีละช่อง", code: "int a[] = {5, 10, 15};\nint *p = a;\nprintf(\"%d\", *(p + 1));  // 10" }
+        ],
+        stages: [
+          {
+            title: "ชี้ครั้งแรก",
+            desc: "สามขั้นของพอยน์เตอร์: ประกาศด้วย int *p → ให้ชี้ด้วย p = &x → อ่านค่าปลายทางด้วย *p",
+            goal: 'กำหนด <b>x = 42</b> สร้างพอยน์เตอร์ <b>p</b> ชี้ไปที่ x แล้วแสดงค่า <b>*p</b> (ต้องได้ <b>42</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int x = 42;\n    // สร้างพอยน์เตอร์ชี้ไปที่ x\n\n    return 0;\n}\n",
+            hint: '<code>int *p = &x;</code> แล้ว <code>printf("%d", *p);</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "42") && /\*\s*p/.test(code) && /&\s*x/.test(code)
+          },
+          {
+            title: "แก้ค่าทางไกล",
+            desc: "เขียนค่าผ่านพอยน์เตอร์ด้วย *p = ค่าใหม่; — ตัวแปรต้นทางเปลี่ยนทันทีเพราะเป็นช่องเดียวกัน",
+            goal: 'จากโค้ดเดิม ใช้ <b>*p = 99;</b> แล้วแสดงค่า <b>x</b> (ไม่ใช่ *p) ในรูปแบบ <b>x = 99</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int x = 42;\n    int *p = &x;\n    // แก้ค่าผ่านพอยน์เตอร์ แล้วพิมพ์ค่า x\n\n    return 0;\n}\n",
+            hint: '<code>*p = 99;</code> แล้ว <code>printf("x = %d", x);</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "x = 99") && /\*\s*p\s*=\s*99/.test(code)
+          },
+          {
+            title: "ชื่ออาร์เรย์คือที่อยู่",
+            desc: "ให้พอยน์เตอร์ชี้อาร์เรย์ได้โดยไม่ต้องใส่ & (ชื่ออาร์เรย์เป็นที่อยู่อยู่แล้ว) แล้วเลื่อนดูช่องถัดไปด้วย +1",
+            goal: 'มี <b>int a[] = {5, 10, 15}</b> ให้ <b>p = a</b> แล้วแสดงค่า <b>*(p + 1)</b> (ต้องได้ <b>10</b>)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a[3] = {5, 10, 15};\n    int *p = a;\n\n    return 0;\n}\n",
+            hint: '<code>printf("%d", *(p + 1));</code> — วงเล็บสำคัญ! *p + 1 คือคนละเรื่อง',
+            xp: 80,
+            check: (out, code) => eq(out, "10") && /\*\s*\(\s*p\s*\+\s*1\s*\)/.test(code)
+          },
+          {
+            title: "เดินอ่านด้วยพอยน์เตอร์",
+            desc: "วนอ่านทั้งอาร์เรย์แบบสายพอยน์เตอร์: *(p + i) แทน a[i] — ความจริงแล้ว a[i] ก็คือน้ำตาลเคลือบของ *(a+i) นั่นเอง",
+            goal: 'ใช้ลูปกับ <b>*(p + i)</b> แสดงทุกค่าของอาร์เรย์ (บรรทัดละค่า: 5, 10, 15)',
+            starter: "#include <stdio.h>\n\nint main() {\n    int a[3] = {5, 10, 15};\n    int *p = a;\n\n    return 0;\n}\n",
+            hint: '<code>for (int i = 0; i < 3; i++) { printf("%d\\n", *(p + i)); }</code>',
+            xp: 80,
+            check: (out, code) => { const l = lines(out); return l.join(",") === "5,10,15" && /\*\s*\(\s*p\s*\+\s*i\s*\)/.test(code); }
+          },
+          {
+            title: "สลับค่าด้วยพอยน์เตอร์",
+            desc: "โจทย์อมตะ: สลับค่า x กับ y ผ่านพอยน์เตอร์สองตัว โดยใช้ตัวแปรพัก (t) — ไล่มือทีละบรรทัดให้เห็นภาพหน่วยความจำ",
+            goal: 'กำหนด <b>x = 10</b>, <b>y = 20</b> ใช้พอยน์เตอร์ <b>px, py</b> สลับค่ากัน แล้วแสดง <b>x=20 y=10</b>',
+            starter: "#include <stdio.h>\n\nint main() {\n    int x = 10, y = 20;\n    int *px = &x;\n    int *py = &y;\n    // สลับค่าผ่าน *px และ *py\n\n    printf(\"x=%d y=%d\", x, y);\n    return 0;\n}\n",
+            hint: 'สามจังหวะ: <code>int t = *px;</code> → <code>*px = *py;</code> → <code>*py = t;</code>',
+            xp: 100,
+            check: (out, code) => eq(out, "x=20 y=10") && /int\s*\*\s*px/.test(code) && /\*\s*px\s*=\s*\*\s*py/.test(code)
+          }
+        ]
+      },
+      {
+        id: "cfunc", icon: "🧩", title: "หน่วยที่ 10: ฟังก์ชัน",
+        blurb: "แบ่งโปรแกรมเป็นชิ้นส่วนที่ใช้ซ้ำได้ — ปิดท้ายด้วยการรวมพอยน์เตอร์เข้ากับฟังก์ชัน",
+        lesson: [
+          { h: "โครงสร้างฟังก์ชัน", p: "<b>ชนิดค่าที่คืน ชื่อ(พารามิเตอร์) { ... return ค่า; }</b> — ใช้ void เมื่อไม่ต้องคืนค่า", code: "int add(int a, int b) {\n    return a + b;\n}\n\nint main() {\n    printf(\"%d\", add(3, 4));  // 7\n    return 0;\n}" },
+          { h: "ประกาศก่อนเรียกเสมอ", p: "C อ่านไฟล์จากบนลงล่าง — เขียนฟังก์ชันไว้<b>เหนือ main</b> หรือประกาศโปรโตไทป์ (หัวฟังก์ชัน + ;) ไว้บนสุดก็ได้" },
+          { h: "ส่งอาร์เรย์และพอยน์เตอร์เข้าฟังก์ชัน", p: "อาร์เรย์ถูกส่งเป็น<b>ที่อยู่</b> (เขียนพารามิเตอร์เป็น int a[]) • ส่ง <b>&x</b> ให้พารามิเตอร์ <b>int *p</b> เมื่ออยากให้ฟังก์ชันแก้ค่าตัวแปรต้นทางได้จริง — นี่คือเหตุผลที่ต้องเรียนพอยน์เตอร์มาก่อน!", code: "void swap(int *a, int *b) {\n    int t = *a;\n    *a = *b;\n    *b = t;\n}" }
+        ],
+        stages: [
+          {
+            title: "ฟังก์ชันแรก (void)",
+            desc: "ฟังก์ชันที่ไม่คืนค่าใช้ void — เขียนไว้เหนือ main แล้วเรียกด้วยชื่อตามด้วยวงเล็บ",
+            goal: 'สร้างฟังก์ชัน <b>greet</b> ที่แสดง <b>สวัสดีจากฟังก์ชัน</b> แล้วเรียกใช้ใน main',
+            starter: "#include <stdio.h>\n\nvoid greet() {\n    // แสดงข้อความตรงนี้\n}\n\nint main() {\n    // เรียกใช้ greet\n    return 0;\n}\n",
+            hint: 'ใน greet: <code>printf("สวัสดีจากฟังก์ชัน");</code> ใน main: <code>greet();</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "สวัสดีจากฟังก์ชัน") && /void\s+greet/.test(code)
+          },
+          {
+            title: "รับค่าและ return",
+            desc: "ฟังก์ชันรับพารามิเตอร์ได้หลายตัว (ต้องระบุชนิดทุกตัว!) และส่งผลกลับด้วย return",
+            goal: 'สร้าง <b>int add(int a, int b)</b> ที่คืนผลบวก แล้วแสดงผล add(3, 4) (ต้องได้ <b>7</b>)',
+            starter: "#include <stdio.h>\n\nint add(int a, int b) {\n    // return ผลบวก\n}\n\nint main() {\n    printf(\"%d\", add(3, 4));\n    return 0;\n}\n",
+            hint: '<code>return a + b;</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "7") && /int\s+add\s*\(\s*int/.test(code) && /return/.test(code)
+          },
+          {
+            title: "ฟังก์ชันคืนทศนิยม",
+            desc: "ชนิดค่าที่คืนต้องตรงกับงาน — พื้นที่วงกลมเป็นทศนิยม จึงใช้ float ทั้งพารามิเตอร์และค่าที่คืน",
+            goal: 'สร้าง <b>float area(float r)</b> คืนค่า 3.14 × r × r แล้วแสดง area(2) ทศนิยม 2 ตำแหน่ง (ต้องได้ <b>12.56</b>)',
+            starter: "#include <stdio.h>\n\nfloat area(float r) {\n    // return พื้นที่วงกลม\n}\n\nint main() {\n    printf(\"%.2f\", area(2));\n    return 0;\n}\n",
+            hint: '<code>return 3.14 * r * r;</code>',
+            xp: 80,
+            check: (out, code) => eq(out, "12.56") && /float\s+area/.test(code)
+          },
+          {
+            title: "ฟังก์ชัน + ลูป",
+            desc: "ห่อลูปไว้ในฟังก์ชัน แล้วเรียกซ้ำด้วยค่าต่างกัน — โค้ดชุดเดียว ใช้ได้หลายงาน",
+            goal: 'สร้าง <b>void printStars(int n)</b> ที่พิมพ์ดาว n ดวงแล้วขึ้นบรรทัดใหม่ เรียกด้วย 3 และ 5 (ต้องได้ <b>***</b> และ <b>*****</b>)',
+            starter: "#include <stdio.h>\n\nvoid printStars(int n) {\n    // วนพิมพ์ * ทีละดวง n รอบ แล้วปิดท้ายด้วย \\n\n}\n\nint main() {\n    printStars(3);\n    printStars(5);\n    return 0;\n}\n",
+            hint: '<code>for (int i = 0; i < n; i++) { printf("*"); } printf("\\n");</code>',
+            xp: 80,
+            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "***" && l[1] === "*****" && /for\s*\(/.test(code); }
+          },
+          {
+            title: "ส่งอาร์เรย์เข้าฟังก์ชัน",
+            desc: "พารามิเตอร์ int a[] รับอาร์เรย์ (ที่จริงคือรับที่อยู่ช่องแรก) — ส่งขนาดไปด้วยเพราะฟังก์ชันไม่รู้ความยาวเอง",
+            goal: 'สร้าง <b>int sumArr(int a[], int n)</b> คืนผลรวม แล้วแสดงผลรวมของ {12, 30, 25} ในรูปแบบ <b>รวม = 67</b>',
+            starter: "#include <stdio.h>\n\nint sumArr(int a[], int n) {\n    int s = 0;\n    // วนบวกทุกช่อง\n\n    return s;\n}\n\nint main() {\n    int b[3] = {12, 30, 25};\n    printf(\"รวม = %d\", sumArr(b, 3));\n    return 0;\n}\n",
+            hint: '<code>for (int i = 0; i < n; i++) { s += a[i]; }</code>',
+            xp: 100,
+            check: (out, code) => eq(out, "รวม = 67") && /int\s+sumArr\s*\(\s*int\s+\w+\s*\[/.test(code) && /for\s*\(/.test(code)
+          },
+          {
+            title: "บอสใหญ่: swap ของจริง",
+            desc: "ด่านสุดท้ายของหลักสูตร! รวมหน่วย 9 + 10: ฟังก์ชัน swap รับพอยน์เตอร์ จึงสลับค่าตัวแปรใน main ได้จริง — ถ้าส่งค่าธรรมดา (ไม่ใช่ &) จะสลับไม่ติดเพราะเป็นแค่สำเนา",
+            goal: 'สร้าง <b>void swap(int *a, int *b)</b> สลับค่าปลายทาง แล้วเรียก <b>swap(&x, &y)</b> ให้ได้ผล <b>x=20 y=10</b>',
+            starter: "#include <stdio.h>\n\nvoid swap(int *a, int *b) {\n    // สลับค่าผ่าน *a และ *b\n}\n\nint main() {\n    int x = 10, y = 20;\n    swap(&x, &y);\n    printf(\"x=%d y=%d\", x, y);\n    return 0;\n}\n",
+            hint: '<code>int t = *a; *a = *b; *b = t;</code>',
+            xp: 120,
+            check: (out, code) => eq(out, "x=20 y=10") && /void\s+swap\s*\(\s*int\s*\*/.test(code) && /&\s*x/.test(code)
+          }
+        ]
+      }
+    ]
   }
 };
 
@@ -1068,7 +1646,13 @@ function renderLangs() {
       <p>${c.tagline}</p>
       <div class="meta">${topicCount} หัวข้อ · ${stageCount} ด่าน →</div>
     `;
-    el.onclick = () => { state.lang = id; renderTopics(); showScreen("topic"); };
+    el.onclick = () => {
+      state.lang = id;
+      state.topic = null;
+      try { localStorage.setItem("cq_lang", id); } catch {}
+      renderTopics();
+      showScreen("topic");
+    };
     g.appendChild(el);
   }
 }
@@ -1097,7 +1681,7 @@ function renderTopics() {
     `;
     el.onclick = () => {
       state.topic = t.id;
-      try { localStorage.setItem("cq_topic", t.id); } catch {}
+      try { localStorage.setItem("cq_topic_" + state.lang, t.id); } catch {}
       if (lessonRead(t.id)) goLearn();
       else openLesson(t);
     };
@@ -1281,15 +1865,23 @@ function topicIndex() {
 function pickDefaultTopic() {
   const ts = COURSES[state.lang].topics;
   let saved = null;
-  try { saved = localStorage.getItem("cq_topic"); } catch {}
+  try { saved = localStorage.getItem("cq_topic_" + state.lang); } catch {}
   if (saved && ts.some(t => t.id === saved)) return saved;
   const firstUndone = ts.find(t => t.stages.some((_, s) => !state.done.has(doneKey(state.lang, t.id, s))));
   return (firstUndone || ts[0]).id;
 }
 function goLearn() {
-  if (!state.lang) state.lang = "python";
-  if (!state.topic) state.topic = pickDefaultTopic();
-  try { localStorage.setItem("cq_topic", state.topic); } catch {}
+  if (!state.lang) {
+    let sl = null;
+    try { sl = localStorage.getItem("cq_lang"); } catch {}
+    state.lang = (sl && COURSES[sl]) ? sl : "python";
+  }
+  const ts = COURSES[state.lang].topics;
+  if (!state.topic || !ts.some(t => t.id === state.topic)) state.topic = pickDefaultTopic();
+  try {
+    localStorage.setItem("cq_lang", state.lang);
+    localStorage.setItem("cq_topic_" + state.lang, state.topic);
+  } catch {}
   renderLearn();
   showScreen("learn");
 }
@@ -1395,7 +1987,7 @@ function startExercises() {
   if (!t) return;
   markLessonRead(t.id);
   state.topic = t.id;
-  try { localStorage.setItem("cq_topic", t.id); } catch {}
+  try { localStorage.setItem("cq_topic_" + state.lang, t.id); } catch {}
   const firstUndone = t.stages.findIndex((_, s) => !state.done.has(doneKey(state.lang, t.id, s)));
   state.stage = firstUndone === -1 ? 0 : firstUndone;
   renderStage();
@@ -1591,8 +2183,10 @@ async function initPy() {
     $("runOwnBtn").disabled = false;
     runBtn.textContent = "▶ รันโค้ด";
   } catch (e) {
-    $("bootStatus").textContent = "โหลด Python ไม่สำเร็จ ลองรีเฟรชหน้าอีกครั้งนะ";
-    runBtn.textContent = "โหลดไม่สำเร็จ";
+    $("bootStatus").textContent = "โหลด Python ไม่สำเร็จ (ภาษา C ยังเล่นได้ปกติ)";
+    runBtn.disabled = false;
+    $("runOwnBtn").disabled = false;
+    runBtn.textContent = "▶ รันโค้ด";
   } finally {
     clearInterval(bootTimer);
     $("boot").classList.add("hide2");
@@ -1618,7 +2212,7 @@ function renderStage() {
   $("hintBox").classList.remove("show");
   attempts = 0;
   updateHintBtn();
-  $("fileName").textContent = `${t.id}_${state.stage + 1}.py`;
+  $("fileName").textContent = t.id + "_" + (state.stage + 1) + (state.lang === "c" ? ".c" : ".py");
   codeEl.value = L.starter;
   $("banner").className = "banner";
   outEl.innerHTML = '<span class="empty">ยังไม่มีผลลัพธ์ — เขียนโค้ดแล้วกดรันดูสิ</span>';
@@ -1678,7 +2272,7 @@ function updateHintBtn() {
 
 /* ═══════════════ Run code ═══════════════ */
 async function runCode(ownInput) {
-  if (!pyodide) return;
+  if (!pyodide && state.lang !== "c") return;
   runBtn.disabled = true;
   $("runOwnBtn").disabled = true;
   runBtn.textContent = "⏳ กำลังรัน...";
@@ -1688,7 +2282,15 @@ async function runCode(ownInput) {
 
   const code = codeEl.value;
   try {
-    if (ownInput) {
+    if (state.lang === "c") {
+      // ภาษา C: รันด้วยตัวแปล CRUN (จำลองหน่วยความจำ/พอยน์เตอร์ในเบราว์เซอร์)
+      const provider = ownInput
+        ? (spec => { const v = window.prompt("โปรแกรมขอรับค่า " + spec); return v === null ? "" : v; })
+        : (levels()[state.stage].stdin || []);
+      const res = CRUN.run(code, provider);
+      stdout = res.stdout;
+      if (res.error) stderr = res.error;
+    } else if (ownInput) {
       // โหมดป้อนเอง: input() เด้งกล่องให้ผู้เล่นพิมพ์ค่าเองจริงๆ
       await pyodide.runPythonAsync(
         "import builtins\n" +
@@ -1698,6 +2300,7 @@ async function runCode(ownInput) {
         "    return \"\" if v is None else str(v)\n" +
         "builtins.input = _game_input\n"
       );
+      await pyodide.runPythonAsync(code);
     } else {
       // โหมดตรวจคำตอบ: input() อ่านค่าจากคิวที่โจทย์กำหนด (stdin) ตามลำดับ
       const stdinVals = levels()[state.stage].stdin || [];
@@ -1708,8 +2311,8 @@ async function runCode(ownInput) {
         "    return str(_game_inputs.pop(0)) if _game_inputs else \"\"\n" +
         "builtins.input = _game_input\n"
       );
+      await pyodide.runPythonAsync(code);
     }
-    await pyodide.runPythonAsync(code);
   } catch (e) {
     stderr += String(e.message || e);
   }
@@ -1721,7 +2324,7 @@ async function runCode(ownInput) {
     outEl.innerHTML = "";
     const p = document.createElement("pre");
     p.className = "err";
-    p.textContent = friendlyError(stderr);
+    p.textContent = state.lang === "c" ? stderr : friendlyError(stderr);
     outEl.appendChild(p);
   } else {
     outEl.textContent = stdout || "(โปรแกรมทำงานเสร็จ แต่ไม่มีข้อความแสดงออกมา)";
@@ -1854,7 +2457,7 @@ codeEl.addEventListener("keydown", e => {
 });
 
 /* ═══════════════ Init ═══════════════ */
-const CONTENT_VERSION = 6; // ต้องตรงกับ CONTENT_VERSION ใน server.js
+const CONTENT_VERSION = 7; // ต้องตรงกับ CONTENT_VERSION ใน server.js
 async function checkVersion() {
   try {
     const r = await fetch("/api/version");
