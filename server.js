@@ -77,7 +77,7 @@ async function initDb() {
  * เวอร์ชันเนื้อหา — ต้องตรงกับ CONTENT_VERSION ใน public/index.html
  * ถ้าไม่ตรง หน้าเกมจะแสดงแถบเตือนว่า deploy ไม่ครบทุกไฟล์
  */
-const CONTENT_VERSION = 6;
+const CONTENT_VERSION = 7;
 
 /**
  * XP ของแต่ละด่าน: STAGE_XP[ภาษา][หัวข้อ][ด่าน]
@@ -96,6 +96,18 @@ const STAGE_XP = {
     flowchart:     [80, 80, 100, 100, 100, 100, 100],
     function:      [60, 60, 80, 80, 100, 80, 100, 80, 100],
     project:       [120, 150, 200, 150, 200, 180, 180],
+  },
+  c: {
+    cintro:  [30, 40, 40, 50, 50],
+    cvs:     [40, 40, 50, 50],
+    concept: [50, 50, 60, 60],
+    ctypes:  [40, 50, 50, 50, 60],
+    coper:   [40, 40, 50, 60, 60],
+    cio:     [50, 50, 60, 60, 80],
+    cctrl:   [50, 60, 60, 60, 60, 80],
+    carray:  [50, 50, 60, 80, 80],
+    cptr:    [60, 60, 80, 80, 100],
+    cfunc:   [60, 60, 80, 80, 100, 120],
   },
 };
 const xpNeed = (level) => Math.round(100 * Math.pow(level, 1.5));
