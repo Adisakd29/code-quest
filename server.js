@@ -18,7 +18,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 
-app.use(express.json());
+app.use(express.json({ limit: "2mb" }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -58,8 +58,10 @@ async function initDb() {
       display_name  TEXT NOT NULL,
       xp            INTEGER NOT NULL DEFAULT 0,
       level         INTEGER NOT NULL DEFAULT 1,
+      avatar        TEXT,
       created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
     );
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar TEXT;
     CREATE TABLE IF NOT EXISTS progress (
       user_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       language  TEXT NOT NULL,
@@ -77,7 +79,7 @@ async function initDb() {
  * เวอร์ชันเนื้อหา — ต้องตรงกับ CONTENT_VERSION ใน public/index.html
  * ถ้าไม่ตรง หน้าเกมจะแสดงแถบเตือนว่า deploy ไม่ครบทุกไฟล์
  */
-const CONTENT_VERSION = 8;
+const CONTENT_VERSION = 10;
 
 /**
  * XP ของแต่ละด่าน: STAGE_XP[ภาษา][หัวข้อ][ด่าน]
@@ -98,16 +100,16 @@ const STAGE_XP = {
     project:       [120, 150, 200, 150, 200, 180, 180],
   },
   c: {
-    cintro:  [30, 40, 40, 50, 50],
-    cvs:     [40, 40, 50, 50],
-    concept: [50, 50, 60, 60, 60],
-    ctypes:  [40, 50, 50, 50, 60],
-    coper:   [40, 40, 50, 60, 60],
-    cio:     [50, 50, 60, 60, 80],
-    cctrl:   [50, 60, 60, 60, 60, 80, 80, 100],
-    carray:  [50, 50, 60, 80, 80],
-    cptr:    [60, 60, 80, 80, 100],
-    cfunc:   [60, 60, 80, 80, 100, 120],
+    cintro:  [30, 40, 40, 50, 50, 40, 50],
+    cvs:     [40, 40, 50, 50, 50, 50],
+    concept: [50, 50, 60, 60, 60, 60],
+    ctypes:  [40, 50, 50, 50, 60, 60, 60],
+    coper:   [40, 40, 50, 60, 60, 50, 60],
+    cio:     [50, 50, 60, 60, 80, 60, 80],
+    cctrl:   [50, 60, 60, 60, 60, 80, 80, 100, 80, 80],
+    carray:  [50, 50, 60, 80, 80, 60, 80],
+    cptr:    [60, 60, 80, 80, 100, 100],
+    cfunc:   [60, 60, 80, 80, 100, 120, 80, 150],
   },
 };
 const xpNeed = (level) => Math.round(100 * Math.pow(level, 1.5));
@@ -184,7 +186,7 @@ app.post("/api/register", needDb, async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
     const { rows } = await pool.query(
       `INSERT INTO users (email, password_hash, display_name)
-       VALUES ($1, $2, $3) RETURNING id, display_name, xp, level`,
+       VALUES ($1, $2, $3) RETURNING id, display_name, xp, level, avatar`,
       [email.toLowerCase().trim(), hash, name.trim()]
     );
     setToken(res, rows[0]);
@@ -201,7 +203,7 @@ app.post("/api/login", needDb, async (req, res) => {
   try {
     const { email, password } = req.body || {};
     const { rows } = await pool.query(
-      `SELECT id, password_hash, display_name, xp, level FROM users WHERE email = $1`,
+      `SELECT id, password_hash, display_name, xp, level, avatar FROM users WHERE email = $1`,
       [(email || "").toLowerCase().trim()]
     );
     if (!rows.length || !(await bcrypt.compare(password || "", rows[0].password_hash)))
@@ -224,7 +226,7 @@ app.post("/api/logout", (req, res) => {
 app.get("/api/me", needDb, auth, async (req, res) => {
   try {
     const { rows } = await pool.query(
-      `SELECT id, display_name, xp, level FROM users WHERE id = $1`,
+      `SELECT id, display_name, xp, level, avatar FROM users WHERE id = $1`,
       [req.userId]
     );
     if (!rows.length) return res.status(401).json({ error: "ไม่พบผู้ใช้" });
@@ -347,7 +349,7 @@ app.get("/api/leaderboard", needDb, optionalAuth, async (req, res) => {
 /** แก้ไขข้อมูลส่วนตัว: เปลี่ยนชื่อ และ/หรือ เปลี่ยนรหัสผ่าน */
 app.post("/api/profile", needDb, auth, async (req, res) => {
   try {
-    const { name, currentPassword, newPassword } = req.body || {};
+    const { name, currentPassword, newPassword, avatar } = req.body || {};
     const { rows } = await pool.query(
       `SELECT password_hash FROM users WHERE id = $1`,
       [req.userId]
@@ -378,8 +380,20 @@ app.post("/api/profile", needDb, auth, async (req, res) => {
       ]);
     }
 
+    if (avatar !== undefined) {
+      if (avatar === null || avatar === "") {
+        await pool.query(`UPDATE users SET avatar = NULL WHERE id = $1`, [req.userId]);
+      } else {
+        if (typeof avatar !== "string" || !/^data:image\/(png|jpeg|jpg|webp);base64,/.test(avatar))
+          return res.status(400).json({ error: "ไฟล์รูปไม่ถูกต้อง (รองรับ PNG, JPG, WEBP)" });
+        if (avatar.length > 1500000)
+          return res.status(400).json({ error: "รูปมีขนาดใหญ่เกินไป (หลังย่อแล้วต้องไม่เกิน ~1MB)" });
+        await pool.query(`UPDATE users SET avatar = $1 WHERE id = $2`, [avatar, req.userId]);
+      }
+    }
+
     const u = await pool.query(
-      `SELECT display_name, xp, level FROM users WHERE id = $1`,
+      `SELECT display_name, xp, level, avatar FROM users WHERE id = $1`,
       [req.userId]
     );
     res.json({ user: publicUser(u.rows[0]) });
@@ -391,7 +405,7 @@ app.post("/api/profile", needDb, auth, async (req, res) => {
 
 /* ---------------- Helpers ---------------- */
 function publicUser(u) {
-  return { name: u.display_name, xp: u.xp, level: u.level };
+  return { name: u.display_name, xp: u.xp, level: u.level, avatar: u.avatar || null };
 }
 
 async function getProgress(userId) {
