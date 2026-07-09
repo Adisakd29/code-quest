@@ -728,6 +728,8 @@ const CRUN = (() => {
     }
 
     try {
+      if (/\b(printf|scanf|puts)\s*\(/.test(code) && !/#include\s*<stdio\.h>/.test(code))
+        cerr(1, "ใช้ printf/scanf ต้องมี #include <stdio.h> ไว้บรรทัดบนสุดของโปรแกรม");
       const prog = parse(lex(code));
       for (const f of prog.fns) fns[f.name] = f;
       if (!fns.main) cerr(0, "ไม่พบฟังก์ชัน main — โปรแกรม C ต้องมี int main() เสมอ");
@@ -743,7 +745,60 @@ const CRUN = (() => {
     }
   }
 
-  return { run };
+  /* ---------------- ตรวจการย่อหน้า ---------------- */
+  function stripLine(s, st) {
+    // ตัดสตริง คอมเมนต์ และตัวอักษรออก เพื่อนับปีกกาอย่างถูกต้อง
+    let out = "";
+    for (let i = 0; i < s.length; i++) {
+      const c = s[i];
+      if (st.blockComment) {
+        if (c === "*" && s[i + 1] === "/") { st.blockComment = false; i++; }
+        continue;
+      }
+      if (c === "/" && s[i + 1] === "/") break;
+      if (c === "/" && s[i + 1] === "*") { st.blockComment = true; i++; continue; }
+      if (c === '"') { i++; while (i < s.length && s[i] !== '"') { if (s[i] === "\\") i++; i++; } continue; }
+      if (c === "'") { i++; while (i < s.length && s[i] !== "'") { if (s[i] === "\\") i++; i++; } continue; }
+      out += c;
+    }
+    return out;
+  }
+  function checkIndent(code) {
+    const rows = code.split("\n");
+    let depth = 0, unit = 0, unitChar = null;
+    const st = { blockComment: false };
+    for (let li = 0; li < rows.length; li++) {
+      const raw = rows[li];
+      const wasInComment = st.blockComment;
+      const clean = stripLine(raw, st);
+      if (raw.trim() === "" || wasInComment) continue;
+      const m = raw.match(/^[ \t]*/)[0];
+      if (m.includes(" ") && m.includes("\t"))
+        return { ok: false, msg: "บรรทัดที่ " + (li + 1) + ": ใช้ tab ปนกับ space — เลือกใช้อย่างใดอย่างหนึ่งให้เหมือนกันทั้งไฟล์" };
+      if (unitChar && m.length > 0 && m[0] !== unitChar)
+        return { ok: false, msg: "บรรทัดที่ " + (li + 1) + ": ใช้ tab ปนกับ space — เลือกใช้อย่างใดอย่างหนึ่งให้เหมือนกันทั้งไฟล์" };
+      const body = clean.trim() || raw.trim();
+      let d = depth;
+      if (body.startsWith("}")) d = Math.max(0, depth - 1);
+      if (unit === 0 && m.length > 0 && d > 0) { unit = Math.max(1, Math.round(m.length / d)); unitChar = m[0]; }
+      const u = unit || 4;
+      const expected = d * u;
+      const okWidth = m.length === expected || m.length === expected + u;
+      if (!okWidth) {
+        const what = unitChar === "\t" ? " tab" : " ช่อง";
+        if (m.length < expected)
+          return { ok: false, msg: "บรรทัดที่ " + (li + 1) + ": ย่อหน้าน้อยไป — บรรทัดในปีกกาชั้นนี้ควรย่อหน้า " + expected + what };
+        return { ok: false, msg: "บรรทัดที่ " + (li + 1) + ": ย่อหน้าไม่ตรงระดับปีกกา — ควรเป็น " + expected + what + " (ตอนนี้ " + m.length + ")" };
+      }
+      for (const ch of clean) {
+        if (ch === "{") depth++;
+        else if (ch === "}") depth = Math.max(0, depth - 1);
+      }
+    }
+    return { ok: true };
+  }
+
+  return { run, checkIndent };
 })();
 
 if (typeof module !== "undefined") module.exports = CRUN;

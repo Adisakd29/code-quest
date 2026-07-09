@@ -6,7 +6,7 @@ const lines = out => out.trim().split("\n").map(x => x.trim().replace(/\s+/g, " 
 /* ═══════════════ ไอคอนกราฟิก (SVG) ═══════════════ */
 const ICONS = {
   input: '<svg viewBox="0 0 48 48" fill="none"><path d="M24 5v7" stroke="#6ee7a0" stroke-width="3" stroke-linecap="round"/><path d="M20 9l4 4 4-4" fill="#6ee7a0"/><rect x="4" y="15" width="40" height="24" rx="5" fill="#1b2040" stroke="#62e6ff" stroke-width="3"/><rect x="9" y="20" width="5" height="4.5" rx="1.2" fill="#9aa2d8"/><rect x="16.5" y="20" width="5" height="4.5" rx="1.2" fill="#9aa2d8"/><rect x="24" y="20" width="5" height="4.5" rx="1.2" fill="#9aa2d8"/><rect x="31.5" y="20" width="7.5" height="4.5" rx="1.2" fill="#ff6b81"/><rect x="12" y="29" width="24" height="5.5" rx="2.2" fill="#ffb347"/></svg>',
-  python: '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36 13c0-4-4-7-10-7h-6c-6 0-10 3-10 8s4 8 10 8h8c6 0 10 3 10 8s-4 8-10 8h-6c-6 0-9-2-9-6" stroke="#62e6ff" stroke-width="5" stroke-linecap="round"/><circle cx="36" cy="13" r="6" fill="#ffb347"/><circle cx="38" cy="11.5" r="1.6" fill="#0f1226"/><path d="M42 15l4 2-4 2" stroke="#ff6b81" stroke-width="2" stroke-linecap="round" fill="none"/></svg>',
+  python: '<svg viewBox="0 0 48 48" fill="none"><path d="M23.6 4c-5.5 0-8.4 2.2-8.4 6.2V14h9.2v1.6H10.9C6.6 15.6 3 18.3 3 24c0 5.7 3.6 8.4 7.9 8.4h3.5v-4.8c0-4.4 3.5-7.6 8-7.6h8.2c3.6 0 6.6-2.9 6.6-6.6v-3.2C37.2 6.1 33.8 4 29.5 4h-5.9z" fill="#3776ab"/><circle cx="18.6" cy="9.6" r="2.1" fill="#fff"/><path d="M24.4 44c5.5 0 8.4-2.2 8.4-6.2V34h-9.2v-1.6h13.5c4.3 0 7.9-2.7 7.9-8.4 0-5.7-3.6-8.4-7.9-8.4h-3.5v4.8c0 4.4-3.5 7.6-8 7.6h-8.2c-3.6 0-6.6 2.9-6.6 6.6v3.2c0 4.1 3.4 6.2 7.7 6.2h5.9z" fill="#ffd43b"/><circle cx="29.4" cy="38.4" r="2.1" fill="#fff"/></svg>',
   print: '<svg viewBox="0 0 48 48" fill="none"><rect x="14" y="5" width="20" height="9" rx="2" fill="#9aa2d8"/><rect x="7" y="14" width="34" height="15" rx="4" fill="#62e6ff"/><circle cx="35" cy="19" r="2" fill="#0f1226"/><rect x="13" y="24" width="22" height="17" rx="2" fill="#eef0ff"/><rect x="17" y="30" width="14" height="2.5" rx="1.2" fill="#2e3563"/><rect x="17" y="35" width="9" height="2.5" rx="1.2" fill="#2e3563"/></svg>',
   variable: '<svg viewBox="0 0 48 48" fill="none"><path d="M24 5l17 8.5v17L24 43 7 30.5v-17L24 5z" fill="#e09a2f"/><path d="M24 5l17 8.5L24 22 7 13.5 24 5z" fill="#ffd98a"/><path d="M24 22v21l17-12.5v-17L24 22z" fill="#ffb347"/><rect x="14" y="27" width="6" height="6" rx="1.4" fill="#fff3d6" opacity=".65"/></svg>',
   string: '<svg viewBox="0 0 48 48" fill="none"><rect x="5" y="9" width="38" height="30" rx="7" fill="#1b2040" stroke="#62e6ff" stroke-width="3"/><path d="M14 19c0-3.4 2.2-5.5 5.5-5.5v4c-1.3 0-2 .6-2 2.1h3.2V26H14v-7z" fill="#ffb347"/><path d="M25.5 19c0-3.4 2.2-5.5 5.5-5.5v4c-1.3 0-2 .6-2 2.1h3.2V26h-6.7v-7z" fill="#ffb347"/><rect x="13" y="30" width="22" height="3.4" rx="1.7" fill="#62e6ff"/></svg>',
@@ -18,7 +18,7 @@ const ICONS = {
   function: '<svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="10" fill="#1b2040" stroke="#6ee7a0" stroke-width="3"/><path d="M29 13c-3.4 0-4.6 2.2-4.6 5.4v11.2c0 3.2-1.2 5.4-4.6 5.4" stroke="#6ee7a0" stroke-width="3.6" stroke-linecap="round" fill="none"/><path d="M17 24h11" stroke="#ffb347" stroke-width="3.6" stroke-linecap="round"/><circle cx="35" cy="14" r="2.4" fill="#62e6ff"/></svg>',
   project: '<svg viewBox="0 0 48 48" fill="none"><path d="M14 6h20v11c0 7.2-4.2 12.5-10 12.5S14 24.2 14 17V6z" fill="#ffb347"/><path d="M14 9H7c.3 6.5 3.2 9.8 8.4 10.8M34 9h7c-.3 6.5-3.2 9.8-8.4 10.8" stroke="#e09a2f" stroke-width="3" fill="none"/><rect x="21" y="29" width="6" height="7" fill="#e09a2f"/><rect x="13" y="36" width="22" height="6.5" rx="2.2" fill="#9aa2d8"/><path d="M24 11l1.7 3.4 3.8.6-2.8 2.7.7 3.8-3.4-1.8-3.4 1.8.7-3.8-2.8-2.7 3.8-.6L24 11z" fill="#fff3d6"/></svg>'
 };
-ICONS.c = '<svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="11" fill="#2b5ea7"/><path d="M31 18.5c-1.8-2.2-4.3-3.5-7-3.5-5 0-9 4-9 9s4 9 9 9c2.7 0 5.2-1.3 7-3.5" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/></svg>';
+ICONS.c = '<svg viewBox="0 0 48 48" fill="none"><path d="M24 2 5 13v22l19 11 19-11V13L24 2z" fill="#03599c"/><path d="M24 2 5 13v22l19 11V2z" fill="#659ad2"/><path d="M24 2l19 11-19 11V2z" fill="#659ad2" opacity=".55"/><path d="M33.2 17.2A12 12 0 1 0 33.2 30.8" stroke="#fff" stroke-width="7.5" fill="none"/></svg>';
 ICONS.cintro = '<svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="11" fill="#e9e4fb" stroke="#7b5cf0" stroke-width="2.5"/><path d="M30 18c-1.6-2-3.8-3.2-6.3-3.2-4.5 0-8.2 3.7-8.2 8.2s3.7 8.2 8.2 8.2c2.5 0 4.7-1.2 6.3-3.2" stroke="#7b5cf0" stroke-width="4.5" stroke-linecap="round" fill="none"/><circle cx="36" cy="13" r="5" fill="#f5b942"/><path d="M34.2 13l1.3 1.3 2.3-2.6" stroke="#5a3c00" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>';
 ICONS.cvs = '<svg viewBox="0 0 48 48" fill="none"><rect x="4" y="8" width="40" height="27" rx="4" fill="#1b1a2e" stroke="#8a7cf0" stroke-width="2.5"/><path d="M10 15l6 5.5-6 5.5" stroke="#62e6ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="20" y="24" width="12" height="3" rx="1.5" fill="#f5b942"/><rect x="17" y="38" width="14" height="3" rx="1.5" fill="#9aa2d8"/><rect x="21" y="35" width="6" height="4" fill="#9aa2d8"/></svg>';
 ICONS.cptr = '<svg viewBox="0 0 48 48" fill="none"><rect x="4" y="16" width="16" height="16" rx="4" fill="#e9e4fb" stroke="#7b5cf0" stroke-width="2.5"/><circle cx="12" cy="24" r="3" fill="#7b5cf0"/><path d="M20 24h13" stroke="#f5b942" stroke-width="4" stroke-linecap="round"/><path d="M30 17l9 7-9 7v-14z" fill="#f5b942"/><rect x="36" y="16" width="8" height="16" rx="3" fill="#ecfaf3" stroke="#27c07d" stroke-width="2.5"/></svg>';
@@ -1147,7 +1147,8 @@ const COURSES = {
         lesson: [
           { h: "Input → Process → Output", p: "ทุกโปรแกรมคือ 3 ขั้นตอน: <b>รับข้อมูลเข้า → ประมวลผล → แสดงผลลัพธ์</b> ก่อนเขียนโค้ดทุกครั้ง ตอบให้ได้ว่าโจทย์นี้ Input คืออะไร Process ทำอะไร และ Output หน้าตาแบบไหน" },
           { h: "อัลกอริทึมและซูโดโค้ด", p: "อัลกอริทึม = ลำดับขั้นตอนแก้ปัญหา นิยมร่างเป็น<b>ซูโดโค้ด</b> (ภาษาคนกึ่งโค้ด) ก่อน แล้วค่อยแปลงเป็นภาษา C ทีละบรรทัด", code: "เริ่ม\n  x <- 10\n  x <- x * 2\n  แสดงค่า x\nจบ" },
-          { h: "ไล่มือ (Trace) ก่อนรัน", p: "จดค่าตัวแปรบนกระดาษทีละบรรทัด — ถ้าไล่มือแล้วได้ผลตรงที่คาด โค้ดมักถูก เทคนิคนี้ใช้หาบั๊กได้ตลอดชีวิตการเป็นโปรแกรมเมอร์ และเป็นข้อสอบยอดฮิต" }
+          { h: "ไล่มือ (Trace) ก่อนรัน", p: "จดค่าตัวแปรบนกระดาษทีละบรรทัด — ถ้าไล่มือแล้วได้ผลตรงที่คาด โค้ดมักถูก เทคนิคนี้ใช้หาบั๊กได้ตลอดชีวิตการเป็นโปรแกรมเมอร์ และเป็นข้อสอบยอดฮิต" },
+          { h: "สัญลักษณ์ผังงานมาตรฐาน", p: 'ก่อนลงมือเขียนโค้ด นักออกแบบโปรแกรมวาดผังงาน (Flowchart) ด้วยสัญลักษณ์สากลชุดนี้ — จำให้ได้ เพราะจะเจอในแบบฝึกหัดและข้อสอบแน่นอน:<span class="fc-slot" data-flow="legend"></span>' }
         ],
         stages: [
           {
@@ -1185,6 +1186,15 @@ const COURSES = {
             hint: 'สองบรรทัดอัปเดตค่า แล้ว <code>printf("x สุดท้าย = %d", x);</code>',
             xp: 60,
             check: (out, code) => eq(out, "x สุดท้าย = 14") && /x\s*=\s*x/.test(code)
+          },
+          {
+            title: "อ่านผังงานลำดับ",
+            desc: "ผังงานแบบพื้นฐานที่สุด: ลำดับ (sequence) — ทำจากบนลงล่างทีละกล่อง อ่านสัญลักษณ์แต่ละรูปให้ออก แล้วเขียนภาษา C ตาม",
+            goal: 'เขียนโปรแกรม C ตามผังงานนี้:<span class="fc-slot" data-flow="cseq0"></span>',
+            starter: "// ภารกิจ: แปลงผังงานลำดับเป็นภาษา C\n\n",
+            hint: '<code>int a = 8;</code> → <code>int b = 5;</code> → <code>printf("ผลต่าง = %d", a - b);</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "ผลต่าง = 3") && /int\s+a/.test(code)
           }
         ]
       },
@@ -1423,6 +1433,24 @@ const COURSES = {
             hint: 'ในลูป: <code>if (i % 2 == 0) { printf("%d\\n", i); }</code>',
             xp: 80,
             check: (out, code) => { const l = lines(out); return l.join(",") === "2,4,6,8,10" && /for\s*\(/.test(code) && /%\s*2/.test(code); }
+          },
+          {
+            title: "ผังงานเงื่อนไขแบบ C",
+            desc: "ข้าวหลามตัดหนึ่งลูก = if หนึ่งตัว — ตามเส้น ใช่/ไม่ ให้ถูกทาง แล้วเขียน if/else ภาษา C ตามผัง",
+            goal: 'เขียนโปรแกรม C ตามผังงานนี้:<span class="fc-slot" data-flow="cbr0"></span>',
+            starter: "// ภารกิจ: แปลงผังงานเงื่อนไขเป็นภาษา C\n\n",
+            hint: '<code>int hp = 30;</code> แล้ว <code>if (hp > 0) { ... } else { ... }</code> — hp เป็น 30 ซึ่งมากกว่า 0',
+            xp: 80,
+            check: (out, code) => eq(out, "สู้ต่อ") && /if\s*\(/.test(code) && /else/.test(code)
+          },
+          {
+            title: "ผังงานลูปแบบ C",
+            desc: "เส้นที่วนกลับขึ้นไป = ลูป — ไล่มือค่า i ทุกรอบ: เช็คเงื่อนไข พิมพ์ เพิ่มค่า วนกลับ จนเงื่อนไขเป็นเท็จแล้วออกทางซ้าย",
+            goal: 'เขียนโปรแกรม C ตามผังงานนี้:<span class="fc-slot" data-flow="clp0"></span>(ผลลัพธ์: 1 ถึง 4 บรรทัดละเลข ปิดท้ายด้วย <b>จบลูป</b>)',
+            starter: "// ภารกิจ: แปลงผังงานลูปเป็นภาษา C\n\n",
+            hint: 'ใช้ <code>while (i <= 4)</code> หรือ for ก็ได้ — ในลูปพิมพ์ i แล้วเพิ่มค่า จบลูปค่อยพิมพ์ "จบลูป"',
+            xp: 100,
+            check: (out, code) => { const l = lines(out); return l.join(",") === "1,2,3,4,จบลูป" && (/while\s*\(/.test(code) || /for\s*\(/.test(code)); }
           }
         ]
       },
@@ -1837,8 +1865,30 @@ const FC = (() => {
     return '<svg width="480" height="' + (y - 20) + '" viewBox="0 0 480 ' + (y - 20) + '" xmlns="http://www.w3.org/2000/svg">' + out.join("") + '</svg>';
   }
 
+  /** ผังงานลำดับ: เริ่ม → กล่องคำสั่ง/แสดงผลตามลำดับ → จบ */
+  function seqFlow(items) {
+    const out = [];
+    let y = 32;
+    let n = node("start", y, "เริ่ม");
+    out.push(n.s);
+    let prev = y + n.h / 2;
+    for (const it of items) {
+      y = prev + 19 + 24;
+      n = node(it.o ? "io" : "proc", y, it.o || it.p);
+      out.push(line("M " + CX + " " + prev + " V " + (y - n.h / 2), true), n.s);
+      prev = y + n.h / 2;
+    }
+    y = prev + 19 + 24;
+    n = node("end", y, "จบ");
+    out.push(line("M " + CX + " " + prev + " V " + (y - n.h / 2), true), n.s);
+    return wrapSvg(out, y + n.h / 2 + 14);
+  }
+
   const FLOWS = {
     legend,
+    cseq0: () => seqFlow([{ p: "a = 8" }, { p: "b = 5" }, { o: 'พิมพ์ "ผลต่าง =", a - b' }]),
+    cbr0: () => branchFlow(["hp = 30"], "hp > 0 ?", { o: 'พิมพ์ "สู้ต่อ"' }, { o: 'พิมพ์ "แพ้แล้ว"' }),
+    clp0: () => loopFlow({ pre: [{ p: "i = 1" }], head: { dec: "i <= 4 ?" }, body: [{ o: "พิมพ์ i" }, { p: "i = i + 1" }], exit: [{ o: 'พิมพ์ "จบลูป"' }] }),
     fc0: () => branchFlow(["x = 10"], "x > 5 ?", { o: 'พิมพ์ "มากกว่า"' }, { o: 'พิมพ์ "น้อยกว่า"' }),
     fc1: () => loopFlow({ pre: [{ p: "i = 1" }], head: { dec: "i <= 3 ?" }, body: [{ o: 'พิมพ์ "รอบที่", i' }, { p: "i = i + 1" }], exit: [{ o: 'พิมพ์ "จบ"' }] }),
     fc2: () => loopFlow({ head: { loop: "วน i = 1 ถึง 5" }, body: [{ d: "i เป็นเลขคี่ ?", yes: { o: "พิมพ์ i" } }], no: "ครบแล้ว" }),
@@ -2336,9 +2386,15 @@ async function runCode(ownInput) {
     return;
   }
 
+  let indentMsg = "";
+  if (!stderr && state.lang === "c") {
+    const ind = CRUN.checkIndent(code);
+    if (!ind.ok) indentMsg = ind.msg;
+  }
+
   const L = levels()[state.stage];
   const banner = $("banner");
-  if (!stderr && L.check(stdout, code)) {
+  if (!stderr && !indentMsg && L.check(stdout, code)) {
     banner.className = "banner pass";
     $("bannerText").textContent = "ภารกิจสำเร็จ!";
     const lastStage = state.stage >= levels().length - 1;
@@ -2349,7 +2405,9 @@ async function runCode(ownInput) {
     renderDots();
   } else {
     banner.className = "banner fail";
-    $("bannerText").textContent = stderr ? "โค้ดมีข้อผิดพลาด ลองอ่านข้อความสีแดงด้านล่างดูนะ" : "ผลลัพธ์ยังไม่ตรงเป้าหมาย ลองเทียบกับภารกิจอีกครั้ง";
+    $("bannerText").textContent = stderr
+      ? "โค้ดมีข้อผิดพลาด ลองอ่านข้อความสีแดงด้านล่างดูนะ"
+      : (indentMsg ? "โปรแกรมทำงานได้ แต่การย่อหน้ายังไม่เรียบร้อย — " + indentMsg : "ผลลัพธ์ยังไม่ตรงเป้าหมาย ลองเทียบกับภารกิจอีกครั้ง");
     $("xpPop").textContent = "";
     $("nextBtn").style.display = "none";
     attempts += 1;
@@ -2447,6 +2505,32 @@ $("nextBtn").onclick = () => {
 };
 $("closeOverlay").onclick = () => $("overlay").classList.remove("show");
 codeEl.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const s = codeEl.selectionStart;
+    const before = codeEl.value.slice(0, s);
+    const lineStart = before.lastIndexOf("\n") + 1;
+    const curLine = before.slice(lineStart);
+    let indent = (curLine.match(/^[ \t]*/) || [""])[0];
+    if (/\{\s*$/.test(curLine)) indent += indent.includes("\t") ? "\t" : "    ";
+    const insert = "\n" + indent;
+    codeEl.value = before + insert + codeEl.value.slice(codeEl.selectionEnd);
+    codeEl.selectionStart = codeEl.selectionEnd = s + insert.length;
+    return;
+  }
+  if (e.key === "}") {
+    const s = codeEl.selectionStart;
+    const before = codeEl.value.slice(0, s);
+    const lineStart = before.lastIndexOf("\n") + 1;
+    const curLine = before.slice(lineStart);
+    if (/^ {4,}$/.test(curLine)) {
+      e.preventDefault();
+      const newBefore = before.slice(0, s - 4);
+      codeEl.value = newBefore + "}" + codeEl.value.slice(codeEl.selectionEnd);
+      codeEl.selectionStart = codeEl.selectionEnd = newBefore.length + 1;
+      return;
+    }
+  }
   if (e.key === "Tab") {
     e.preventDefault();
     const s = codeEl.selectionStart;
@@ -2457,7 +2541,7 @@ codeEl.addEventListener("keydown", e => {
 });
 
 /* ═══════════════ Init ═══════════════ */
-const CONTENT_VERSION = 7; // ต้องตรงกับ CONTENT_VERSION ใน server.js
+const CONTENT_VERSION = 8; // ต้องตรงกับ CONTENT_VERSION ใน server.js
 async function checkVersion() {
   try {
     const r = await fetch("/api/version");
