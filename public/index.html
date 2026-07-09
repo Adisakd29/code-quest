@@ -54,6 +54,15 @@
     <div class="logo-mid pixel">⚙️ โปรไฟล์</div>
     <div class="sub">แก้ไขข้อมูลส่วนตัวของคุณ</div>
     <div class="form-msg" id="pfMsg"></div>
+    <div class="avatar-edit">
+      <div class="avatar-preview" id="pfAvatar">🧑‍🚀</div>
+      <div class="avatar-actions">
+        <button type="button" class="mini-btn" id="pfPick">เลือกรูป...</button>
+        <button type="button" class="mini-btn ghost" id="pfClear">ลบรูป</button>
+        <div class="avatar-note">รองรับ PNG, JPG, WEBP — ระบบจะย่อรูปให้อัตโนมัติ</div>
+      </div>
+      <input id="pfFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none">
+    </div>
     <div class="field">
       <label for="pfName">ชื่อผู้เล่น</label>
       <input id="pfName" type="text" maxlength="30">
@@ -83,7 +92,7 @@
       <button class="tab" id="profileBtn">โปรไฟล์</button>
     </nav>
     <button class="user-chip" id="userChip" title="แก้ไขโปรไฟล์">
-      <span class="avatar">🧑‍🚀</span>
+      <span class="avatar" id="headAvatar">🧑‍🚀</span>
       <span class="uc-txt">
         <span class="pname" id="pname">ผู้เยี่ยมชม</span>
         <span class="edit-hint" id="editHint">แตะเพื่อล็อกอิน</span>
