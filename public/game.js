@@ -22,1013 +22,312 @@ ICONS.c = '<svg viewBox="0 0 48 48" fill="none"><path d="M24 2 5 13v22l19 11 19-
 ICONS.cintro = '<svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="11" fill="#e9e4fb" stroke="#7b5cf0" stroke-width="2.5"/><path d="M30 18c-1.6-2-3.8-3.2-6.3-3.2-4.5 0-8.2 3.7-8.2 8.2s3.7 8.2 8.2 8.2c2.5 0 4.7-1.2 6.3-3.2" stroke="#7b5cf0" stroke-width="4.5" stroke-linecap="round" fill="none"/><circle cx="36" cy="13" r="5" fill="#f5b942"/><path d="M34.2 13l1.3 1.3 2.3-2.6" stroke="#5a3c00" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>';
 ICONS.cvs = '<svg viewBox="0 0 48 48" fill="none"><rect x="4" y="8" width="40" height="27" rx="4" fill="#1b1a2e" stroke="#8a7cf0" stroke-width="2.5"/><path d="M10 15l6 5.5-6 5.5" stroke="#62e6ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="20" y="24" width="12" height="3" rx="1.5" fill="#f5b942"/><rect x="17" y="38" width="14" height="3" rx="1.5" fill="#9aa2d8"/><rect x="21" y="35" width="6" height="4" fill="#9aa2d8"/></svg>';
 ICONS.cptr = '<svg viewBox="0 0 48 48" fill="none"><rect x="4" y="16" width="16" height="16" rx="4" fill="#e9e4fb" stroke="#7b5cf0" stroke-width="2.5"/><circle cx="12" cy="24" r="3" fill="#7b5cf0"/><path d="M20 24h13" stroke="#f5b942" stroke-width="4" stroke-linecap="round"/><path d="M30 17l9 7-9 7v-14z" fill="#f5b942"/><rect x="36" y="16" width="8" height="16" rx="3" fill="#ecfaf3" stroke="#27c07d" stroke-width="2.5"/></svg>';
-const ICON_ALIAS = { concept: "flowchart", ctypes: "variable", coper: "operator", cio: "input", cctrl: "ifelse", carray: "datastructure", cfunc: "function" };
+const ICON_ALIAS = { concept: "flowchart", ctypes: "variable", coper: "operator", cio: "input", cctrl: "ifelse", carray: "datastructure", cfunc: "function", intro: "python", datatype: "datastructure", list: "datastructure", tupleset: "datastructure", dict: "datastructure", exception: "ifelse", oop: "function", filehandling: "datastructure", gui: "operator", database: "datastructure", webapp: "operator", api: "function", datascience: "datastructure" };
 const iconFor = k => ICONS[k] || ICONS[ICON_ALIAS[k]] || "";
 const fmt = n => (n || 0).toLocaleString("th-TH");
 
 const COURSES = {
   python: {
     name: "Python", icon: "🐍",
-    tagline: "ภาษายอดนิยมที่อ่านง่ายที่สุด เหมาะกับผู้เริ่มต้น ใช้ได้ตั้งแต่ AI ยันเว็บไซต์",
+    tagline: "หลักสูตร Python เต็มรูปแบบตามหนังสือ — พื้นฐานการเขียนโปรแกรม, OOP, ไฟล์, ฐานข้อมูล, เว็บ, API และ Data Science",
     topics: [
       {
-        id: "print", icon: "🖨️", title: "คำสั่ง Print",
-        blurb: "ก้าวแรกของทุกโปรแกรมเมอร์ — สั่งให้คอมพิวเตอร์พูดกับเรา",
+        id: "intro", icon: "python", title: "บทที่ 1-2: รู้จัก Python และเครื่องมือ",
+        blurb: "ภาษา Python คืออะไร ต่างจากภาษาอื่นยังไง และเครื่องมือที่ใช้เขียน (IDLE, PyCharm, Jupyter)",
         lesson: [
-          { h: "print() คืออะไร", p: "คำสั่งพื้นฐานที่สุดของ Python ใช้แสดงข้อความหรือค่าออกทางหน้าจอ ข้อความ (string) ต้องอยู่ในเครื่องหมายคำพูดเสมอ ไม่งั้น Python จะคิดว่าเป็นชื่อตัวแปร", code: 'print("สวัสดีชาวโลก")\n# ผลลัพธ์: สวัสดีชาวโลก' },
-          { h: "พิมพ์หลายค่าในคำสั่งเดียว", p: "คั่นแต่ละค่าด้วยจุลภาค <code>,</code> แล้ว print จะเว้นวรรคให้อัตโนมัติ — ตัวเลขไม่ต้องใส่เครื่องหมายคำพูด", code: 'print("คะแนน:", 99)\n# ผลลัพธ์: คะแนน: 99' },
-          { h: "รหัสพิเศษและตัวเลือกเสริม", p: "<code>\\n</code> ในข้อความ = ขึ้นบรรทัดใหม่, <code>sep=</code> เปลี่ยนตัวคั่นระหว่างค่า, <code>end=</code> เปลี่ยนตัวปิดท้าย (ปกติคือการขึ้นบรรทัดใหม่)", code: 'print("A\\nB")             # A กับ B คนละบรรทัด\nprint(1, 2, 3, sep="-")   # 1-2-3\nprint("ต่อ", end="")       # บรรทัดถัดไปพิมพ์ต่อท้าย' }
+          { h: "ภาษาคอมพิวเตอร์และ Python", p: "ภาษาคอมพิวเตอร์แบ่งเป็นภาษาระดับต่ำ (low level — ใกล้เครื่อง เช่น Assembly) และภาษาระดับสูง (high level — ใกล้ภาษามนุษย์ เช่น Python) Python เป็นภาษาระดับสูงที่อ่านง่าย เขียนสั้น เหมาะกับผู้เริ่มต้น และใช้ได้ตั้งแต่งานทั่วไป เว็บ ไปจนถึง AI" },
+          { h: "Interpreter vs Compiler", p: "Python เป็นภาษาแบบ <b>Interpreter</b> — แปลและรันโค้ดทีละบรรทัด ต่างจากภาษาแบบ <b>Compiler</b> (เช่น C) ที่แปลทั้งโปรแกรมเป็นไฟล์ก่อนแล้วค่อยรัน ข้อดีของ interpreter คือทดลองโค้ดได้ทันที เห็นผลเร็ว เหมาะกับการเรียนรู้" },
+          { h: "เครื่องมือเขียน Python", p: "มีหลายทางเลือก: <b>Python IDLE</b> (มากับ Python ใช้ง่ายสุด), <b>PyCharm</b> (IDE ครบเครื่องสำหรับงานใหญ่), <b>Jupyter Notebook</b> (รันโค้ดทีละเซลล์ เหมาะกับ Data Science) — ในเกมนี้เรารันโค้ด Python ได้เลยในเบราว์เซอร์ ไม่ต้องติดตั้งอะไร" },
+          { h: "โครงสร้างโปรแกรม Python", p: "Python ใช้<b>การย่อหน้า (indentation)</b> แทนปีกกาเพื่อจัดกลุ่มคำสั่ง (ปกติ 4 ช่อง) และ<b>ไม่ต้องมี ; ท้ายบรรทัด</b> คอมเมนต์ใช้ <code>#</code> — ความเรียบง่ายนี้คือเหตุผลที่ Python ได้รับความนิยม", code: "# นี่คือคอมเมนต์\nprint(\"บรรทัดแรก\")\nprint(\"บรรทัดสอง\")" }
+        ],
+        stages: []
+      },
+      {
+        id: "print", icon: "print", title: "บทที่ 3: เริ่มเขียนโปรแกรม (print/input)",
+        blurb: "การแสดงผลด้วย print() และรับข้อมูลด้วย input() — ก้าวแรกของการสื่อสารกับโปรแกรม",
+        lesson: [
+          { h: "print() แสดงผลออกจอ", p: "คำสั่งพื้นฐานที่สุด แสดงข้อความหรือค่าออกทางหน้าจอ ข้อความ (string) ต้องอยู่ในเครื่องหมายคำพูดเสมอ", code: "print(\"สวัสดีชาวโลก\")" },
+          { h: "พิมพ์หลายค่า + ตัวเลือกเสริม", p: "คั่นค่าด้วย <code>,</code> print จะเว้นวรรคให้ • <code>\\n</code> ขึ้นบรรทัดใหม่ • <code>sep=</code> เปลี่ยนตัวคั่น • <code>end=</code> เปลี่ยนตัวปิดท้าย", code: "print(\"คะแนน:\", 99)\nprint(1, 2, 3, sep=\"-\")\nprint(\"ต่อ\", end=\"\")" },
+          { h: "input() รับข้อมูลจากผู้ใช้", p: "หยุดรอรับสิ่งที่ผู้ใช้พิมพ์ แล้วคืนค่าเป็น<b>ข้อความเสมอ</b> ถ้าจะคำนวณต้องแปลงด้วย int() หรือ float() ก่อน", code: "name = input(\"ชื่อ: \")\nage = int(input(\"อายุ: \"))\nprint(name, \"อายุ\", age + 1, \"ในปีหน้า\")" }
         ],
         stages: [
-          {
-            title: "คำทักทายแรก",
-            desc: "ในภาษา Python เราใช้คำสั่ง print() เพื่อแสดงข้อความออกทางหน้าจอ ข้อความต้องอยู่ในเครื่องหมายคำพูดเสมอ",
-            goal: 'ทำให้โปรแกรมแสดงข้อความ <b>สวัสดี Python</b> ออกมา 1 บรรทัด',
-            starter: '# ภารกิจ: แสดงข้อความ สวัสดี Python\nprint("")\n',
-            hint: 'ใส่ข้อความไว้ในเครื่องหมายคำพูด เช่น <code>print("สวัสดี Python")</code>',
-            xp: 30,
-            check: (out) => eq(out, "สวัสดี Python")
-          },
-          {
-            title: "ป้ายประกาศสามบรรทัด",
-            desc: "print หนึ่งคำสั่งจะขึ้นบรรทัดใหม่ให้เสมอ ถ้าอยากได้หลายบรรทัด ก็ใช้ print หลายครั้ง",
-            goal: 'แสดงป้ายประกาศ 3 บรรทัด: <b>ยินดีต้อนรับ</b> / <b>สู่โลกของ</b> / <b>Python</b>',
-            starter: '# ภารกิจ: พิมพ์ป้ายประกาศ 3 บรรทัด\nprint("ยินดีต้อนรับ")\n\n',
-            hint: 'เพิ่ม print อีก 2 บรรทัด: <code>print("สู่โลกของ")</code> และ <code>print("Python")</code>',
-            xp: 40,
-            check: (out) => { const l = lines(out); return l.length === 3 && l[0] === "ยินดีต้อนรับ" && l[1] === "สู่โลกของ" && l[2] === "Python"; }
-          },
-          {
-            title: "\\n ขึ้นบรรทัดใหม่ในพริบตา",
-            desc: "รหัสพิเศษ \\n ในข้อความหมายถึง \"ขึ้นบรรทัดใหม่\" ทำให้ print ครั้งเดียวได้หลายบรรทัด",
-            goal: 'ใช้ print <b>คำสั่งเดียว</b> กับ \\n เพื่อแสดง <b>บรรทัดหนึ่ง</b> และ <b>บรรทัดสอง</b> คนละบรรทัด',
-            starter: '# ภารกิจ: สองบรรทัดจาก print เดียว\nprint("")\n',
-            hint: 'ลอง <code>print("บรรทัดหนึ่ง\\nบรรทัดสอง")</code> — \\n จะกลายเป็นการขึ้นบรรทัดใหม่',
-            xp: 40,
-            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "บรรทัดหนึ่ง" && l[1] === "บรรทัดสอง" && (code.match(/print/g) || []).length === 1 && code.includes("\\n"); }
-          },
-          {
-            title: "พิมพ์หลายค่าพร้อมกัน",
-            desc: "print รับได้หลายค่าโดยคั่นด้วยเครื่องหมายจุลภาค (,) แล้วมันจะเว้นวรรคให้เองอัตโนมัติ",
-            goal: 'ใช้ print <b>คำสั่งเดียว</b> แสดงข้อความและตัวเลขคู่กัน ให้ได้ผลลัพธ์ <b>HP: 100</b>',
-            starter: '# ภารกิจ: พิมพ์ HP: 100 ด้วย print เดียว โดยคั่นค่าด้วย ,\nprint()\n',
-            hint: 'ลอง <code>print("HP:", 100)</code> — สังเกตว่าตัวเลขไม่ต้องมีเครื่องหมายคำพูด',
-            xp: 50,
-            check: (out, code) => eq(out, "HP: 100") && code.includes(",")
-          },
-          {
-            title: "เปลี่ยนตัวคั่นด้วย sep",
-            desc: "ปกติ print คั่นแต่ละค่าด้วยช่องว่าง แต่เราสั่งให้ใช้ตัวคั่นอื่นได้ด้วย sep= เช่น sep=\"-\"",
-            goal: 'ใช้ print กับ <b>sep="-"</b> แสดงวันที่ <b>2026-07-06</b> จากสามค่า "2026", "07", "06"',
-            starter: '# ภารกิจ: ประกอบวันที่ด้วยตัวคั่น -\nprint("2026", "07", "06")\n',
-            hint: 'เพิ่มท้ายวงเล็บ: <code>print("2026", "07", "06", sep="-")</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "2026-07-06") && /sep\s*=/.test(code)
-          },
-          {
-            title: "ต่อบรรทัดด้วย end",
-            desc: "ปกติ print ปิดท้ายด้วยการขึ้นบรรทัดใหม่เสมอ แต่ใส่ end=\"\" เพื่อให้ print คำสั่งถัดไปพิมพ์ต่อท้ายบรรทัดเดิมได้",
-            goal: 'แก้โค้ดให้สองคำสั่ง print ต่อกันเป็น<b>บรรทัดเดียว</b>: <b>โจมตีคอมโบ!</b>',
-            starter: '# ภารกิจ: เชื่อมสองคำสั่งเป็นบรรทัดเดียวด้วย end=""\nprint("โจมตี")\nprint("คอมโบ!")\n',
-            hint: 'เติมที่คำสั่งแรก: <code>print("โจมตี", end="")</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "โจมตีคอมโบ!") && /end\s*=/.test(code) && (code.match(/print/g) || []).length >= 2
-          },
-          {
-            title: "ป้ายหน้าร้านค้า",
-            desc: "เอาทุกท่าที่เรียนมาวาดของจริงกัน — โปรแกรมเมอร์ยุคแรกก็วาดภาพด้วยตัวอักษรแบบนี้แหละ",
-            goal: 'พิมพ์ป้ายร้าน 3 บรรทัดให้ตรงเป๊ะ:<span class="fc">+------+\n| SHOP |\n+------+</span>',
-            starter: '# ภารกิจ: วาดป้ายหน้าร้านค้า\n\n',
-            hint: 'ใช้ print 3 ครั้ง บรรทัดแรกกับบรรทัดสุดท้ายเหมือนกัน: <code>print("+------+")</code>',
-            xp: 60,
-            check: (out) => { const l = lines(out); return l.length === 3 && l[0] === "+------+" && l[1] === "| SHOP |" && l[2] === "+------+"; }
-          },
-          {
-            title: "เครื่องหมายคำพูดในข้อความ",
-            desc: "อยากพิมพ์เครื่องหมายคำพูดคู่ (\") ในข้อความ? ครอบข้อความด้วยคำพูดเดี่ยว (') แทน — Python ใช้ได้ทั้งสองแบบ",
-            goal: 'พิมพ์ประโยคนี้ให้มีเครื่องหมายคำพูดติดมาด้วย: <b>เขาตะโกนว่า "สู้ๆ"</b>',
-            starter: "# ภารกิจ: พิมพ์ประโยคที่มีเครื่องหมายคำพูดข้างใน\n\n",
-            hint: "ครอบด้วยคำพูดเดี่ยว: <code>print('เขาตะโกนว่า \"สู้ๆ\"')</code>",
-            xp: 50,
-            check: (out) => eq(out, 'เขาตะโกนว่า "สู้ๆ"')
-          },
-          {
-            title: "พีระมิดดาว",
-            desc: "ช่องว่างในเครื่องหมายคำพูดมีความหมายเสมอ — จัดช่องว่างนำหน้าให้พอดีเพื่อวาดรูปทรง",
-            goal: 'พิมพ์พีระมิด 3 ชั้นให้ตรงเป๊ะ (ระวังช่องว่างนำหน้า):<span class="fc">  *\n ***\n*****</span>',
-            starter: '# ภารกิจ: ก่อพีระมิดดาว\n\n',
-            hint: 'ชั้นแรกมีช่องว่างนำ 2 ช่อง: <code>print("  *")</code> ชั้นสอง 1 ช่อง ชั้นสามไม่มี',
-            xp: 60,
-            check: (out) => { const r = out.replace(/\s+$/, "").split("\n").map(s => s.replace(/\s+$/, "")); return r.length === 3 && r[0] === "  *" && r[1] === " ***" && r[2] === "*****"; }
-          }
+          { title: "สวัสดี Python", desc: "print() แสดงข้อความออกจอ — ข้อความต้องอยู่ในเครื่องหมายคำพูด", goal: "แสดงข้อความ <b>สวัสดี Python</b>", starter: "# แสดงข้อความออกหน้าจอ\n", hint: "<code>print(\"สวัสดี Python\")</code>", xp: 30, check: (out) => eq(out, "สวัสดี Python") },
+          { title: "หลายบรรทัด", desc: "เรียก print หลายครั้ง ได้ผลลัพธ์หลายบรรทัด", goal: "แสดง 3 บรรทัด: <b>Python</b>, <b>สนุก</b>, <b>มาก</b>", starter: "", hint: "print 3 ครั้ง", xp: 40, check: (out) => { const l = lines(out); return l.length === 3 && l[0] === "Python" && l[1] === "สนุก" && l[2] === "มาก"; } },
+          { title: "พิมพ์หลายค่า", desc: "คั่นค่าด้วย , print เว้นวรรคให้อัตโนมัติ", goal: "ใช้ print เดียวแสดง <b>คะแนน: 100</b> (คั่นด้วย ,)", starter: "", hint: "<code>print(\"คะแนน:\", 100)</code>", xp: 40, check: (out, code) => eq(out, "คะแนน: 100") && code.includes(",") },
+          { title: "เปลี่ยนตัวคั่น sep", desc: "sep= เปลี่ยนตัวที่คั่นระหว่างค่า", goal: "ใช้ sep แสดง <b>2026-07-09</b>", starter: "", hint: "<code>print(2026, \"07\", \"09\", sep=\"-\")</code>", xp: 50, check: (out, code) => eq(out, "2026-07-09") && code.includes("sep") },
+          { title: "รับชื่อมาทักทาย", desc: "input() รับข้อมูลเก็บในตัวแปร (ระบบป้อนค่าให้ในกล่อง ⌨️)", goal: "รับชื่อแล้วแสดง <b>สวัสดี มะลิ</b> (ระบบป้อน \"มะลิ\")", starter: "name = input()\n", hint: "<code>print(\"สวัสดี\", name)</code>", xp: 50, stdin: ["มะลิ"], check: (out, code) => eq(out, "สวัสดี มะลิ") && /input\(/.test(code) },
+          { title: "รับเลขมาบวก", desc: "input() ได้ข้อความเสมอ ต้องแปลงเป็น int ก่อนคำนวณ", goal: "รับเลขแล้วแสดงค่าที่บวก 10 (ระบบป้อน \"5\" ต้องได้ <b>15</b>)", starter: "n = input()\n", hint: "<code>print(int(n) + 10)</code>", xp: 60, stdin: ["5"], check: (out, code) => eq(out, "15") && /int\(/.test(code) }
         ]
       },
       {
-        id: "variable", icon: "📦", title: "ตัวแปร (Variable)",
-        blurb: "กล่องวิเศษสำหรับเก็บข้อมูล ตั้งชื่อแล้วหยิบมาใช้เมื่อไหร่ก็ได้",
+        id: "variable", icon: "variable", title: "บทที่ 4: ตัวแปร (Variables)",
+        blurb: "การกำหนดค่า ตั้งชื่อ และเปลี่ยนค่าตัวแปร รวมถึงการแปลงชนิดข้อมูล",
         lesson: [
-          { h: "ตัวแปรคือกล่องเก็บข้อมูล", p: "ใช้ <code>=</code> เก็บค่าไว้ใต้ชื่อที่เราตั้ง แล้วเรียกใช้ผ่านชื่อนั้นได้ทุกที่ — ตั้งชื่อเป็นภาษาอังกฤษ ห้ามเว้นวรรค ห้ามขึ้นต้นด้วยตัวเลข", code: 'name = "มะลิ"\nhp = 100' },
-          { h: "คำนวณและอัปเดตค่า", p: "ตัวแปรตัวเลขเอามา + - * / กันได้ และเปลี่ยนค่าได้ตลอด — <code>x += 5</code> คือคำย่อของ <code>x = x + 5</code>", code: 'gold = 10\ngold += 5   # ตอนนี้ gold = 15\ngold -= 3   # ตอนนี้ gold = 12' },
-          { h: "ชนิดข้อมูลและการแปลง", p: '"12" (ข้อความ) ไม่เท่ากับ 12 (ตัวเลข)! ใช้ <code>int()</code> แปลงข้อความเป็นจำนวนเต็ม และ <code>str()</code> แปลงตัวเลขกลับเป็นข้อความ', code: 'age = int("12") + 1   # ได้ 13' },
-          { h: "f-string แทรกค่าลงประโยค", p: "ใส่ <code>f</code> หน้าเครื่องหมายคำพูด แล้วครอบตัวแปรด้วย <code>{}</code> — วิธีประกอบข้อความที่นิยมที่สุดใน Python ยุคใหม่", code: 'level = 5\nprint(f"ตอนนี้เลเวล {level}")' }
+          { h: "การกำหนดค่าตัวแปร", p: "ตัวแปรคือกล่องเก็บค่า ใช้ <code>=</code> กำหนดค่า ไม่ต้องประกาศชนิดล่วงหน้า Python รู้ชนิดเองจากค่าที่ใส่", code: "name = \"มะลิ\"\nage = 15\nheight = 158.5" },
+          { h: "กฎการตั้งชื่อตัวแปร", p: "ขึ้นต้นด้วยตัวอักษรหรือ _ (ห้ามขึ้นด้วยตัวเลข), ใช้ตัวเลขตามหลังได้, ห้ามเว้นวรรค (ใช้ _ แทน), แยกตัวพิมพ์เล็กใหญ่ (age กับ Age คนละตัว), ห้ามใช้คำสงวน" },
+          { h: "เปลี่ยนแปลงค่าตัวแปร", p: "กำหนดค่าใหม่ทับได้ตลอด และใช้ตัวดำเนินการย่อ (+=, -=) เพื่อปรับค่าจากเดิม", code: "score = 10\nscore = score + 5\nscore += 3   # เท่ากับ score = score + 3\nprint(score) # 18" }
         ],
         stages: [
-          {
-            title: "กล่องใส่ชื่อ",
-            desc: "ตัวแปรคือการตั้งชื่อให้ข้อมูล ใช้เครื่องหมาย = เพื่อเก็บค่า เช่น name = \"มะลิ\" แล้วเรียกใช้ผ่านชื่อได้เลย",
-            goal: 'สร้างตัวแปร <b>name</b> เก็บชื่อของคุณ แล้วแสดงผล <b>ฉันชื่อ ...</b> ตามด้วยชื่อในตัวแปร',
-            starter: '# ภารกิจ: ใส่ชื่อในตัวแปร name\nname = ""\nprint("ฉันชื่อ " + name)\n',
-            hint: 'แค่เติมชื่อในเครื่องหมายคำพูด เช่น <code>name = "มะลิ"</code>',
-            xp: 40,
-            check: (out, code) => /ฉันชื่อ .+/.test(out.trim()) && /name\s*=/.test(code)
-          },
-          {
-            title: "คำนวณพลังชีวิต",
-            desc: "ตัวแปรเก็บตัวเลขได้ด้วย และเอามาบวกลบคูณหารกันได้เหมือนเลขคณิตปกติ",
-            goal: 'สร้างตัวแปร <b>hp = 80</b> และ <b>potion = 25</b> แล้ว print ผลรวมของทั้งสอง (ต้องได้ <b>105</b>)',
-            starter: '# ภารกิจ: ดื่มยาเพิ่มพลัง! รวม hp กับ potion\nhp = 80\npotion = 25\n\n',
-            hint: 'พิมพ์ <code>print(hp + potion)</code> — Python จะคำนวณให้เอง',
-            xp: 40,
-            check: (out, code) => eq(out, "105") && /hp\s*=/.test(code) && /\+/.test(code)
-          },
-          {
-            title: "อัปเดตค่าในกล่อง",
-            desc: "ตัวแปรเปลี่ยนค่าได้ตลอด เช่น coins = coins - 3 คือ \"เอาค่าเดิมมาลบ 3 แล้วเก็บกลับที่เดิม\" (ย่อได้เป็น coins -= 3)",
-            goal: 'เริ่มด้วย <b>coins = 10</b> ซื้อของไป <b>3 เหรียญ</b> แล้วได้รางวัล <b>8 เหรียญ</b> จากนั้น print ยอดสุดท้าย (ต้องได้ <b>15</b>)',
-            starter: '# ภารกิจ: อัปเดตยอดเหรียญ\ncoins = 10\n# ซื้อของ -3\n\n# ได้รางวัล +8\n\nprint(coins)\n',
-            hint: 'สองบรรทัด: <code>coins = coins - 3</code> แล้ว <code>coins = coins + 8</code> (หรือใช้ -= และ +=)',
-            xp: 50,
-            check: (out, code) => eq(out, "15") && (/coins\s*[+\-]=/.test(code) || /coins\s*=\s*coins/.test(code))
-          },
-          {
-            title: "แปลงชนิดข้อมูล",
-            desc: "\"12\" (ข้อความ) กับ 12 (ตัวเลข) ไม่เหมือนกัน! ถ้าอยากคำนวณต้องแปลงข้อความเป็นตัวเลขด้วย int() ก่อน",
-            goal: 'มี <b>age = "12"</b> เป็นข้อความ จงแปลงเป็นตัวเลข บวก 1 แล้ว print (ต้องได้ <b>13</b>)',
-            starter: '# ภารกิจ: ปีหน้าอายุเท่าไหร่?\nage = "12"\n# แปลงเป็นตัวเลขก่อนค่อยบวก\n\n',
-            hint: 'ลอง <code>print(int(age) + 1)</code> — int() แปลงข้อความเป็นจำนวนเต็ม',
-            xp: 50,
-            check: (out, code) => eq(out, "13") && /int\(/.test(code)
-          },
-          {
-            title: "f-string เวทมนตร์แทรกค่า",
-            desc: "f-string คือวิธีแทรกตัวแปรลงในข้อความแบบเท่ๆ แค่ใส่ f หน้าเครื่องหมายคำพูด แล้วครอบตัวแปรด้วย {}",
-            goal: 'สร้างตัวแปร <b>level = 5</b> แล้วใช้ f-string แสดงผล <b>ตอนนี้เลเวล 5 แล้ว</b>',
-            starter: '# ภารกิจ: ใช้ f-string แทรกค่า level ลงในประโยค\nlevel = 5\nprint(f"")\n',
-            hint: 'ลอง <code>print(f"ตอนนี้เลเวล {level} แล้ว")</code> — ตัวแปรใน {} จะถูกแทนที่ด้วยค่าจริง',
-            xp: 60,
-            check: (out, code) => eq(out, "ตอนนี้เลเวล 5 แล้ว") && /f["']/.test(code)
-          },
-          {
-            title: "สลับค่าสองกล่อง",
-            desc: "ท่าเด็ดเฉพาะของ Python: a, b = b, a สลับค่าตัวแปรสองตัวได้ในบรรทัดเดียว (ภาษาอื่นต้องใช้ตัวแปรพักถึงสามบรรทัด!)",
-            goal: 'กำหนด <b>a = 5</b> และ <b>b = 9</b> จงสลับค่ากัน แล้ว print(a) และ print(b) (ต้องได้ <b>9</b> และ <b>5</b>)',
-            starter: '# ภารกิจ: สลับของในกล่อง a กับ b\na = 5\nb = 9\n# สลับค่าตรงนี้\n\nprint(a)\nprint(b)\n',
-            hint: 'บรรทัดเดียวจบ: <code>a, b = b, a</code>',
-            xp: 60,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "9,5" && /print\(\s*a\s*\)/.test(code) && /print\(\s*b\s*\)/.test(code); }
-          },
-          {
-            title: "เครื่องคิดส่วนลด",
-            desc: "โจทย์ประยุกต์: ใช้ตัวแปรกับเลขคณิตแก้ปัญหาในชีวิตจริง — ส่วนลด 20% คือราคาคูณ 20 หาร 100",
-            goal: 'สินค้าราคา <b>price = 250</b> ลดราคา <b>20%</b> จงคำนวณแล้ว print ราคาที่ต้องจ่ายจริง (ต้องได้ <b>200</b>)',
-            starter: '# ภารกิจ: ลดกระหน่ำ 20% ต้องจ่ายเท่าไหร่?\nprice = 250\n\n',
-            hint: 'ส่วนลดคือ <code>price * 20 // 100</code> แล้วเอาราคาตั้งลบส่วนลด',
-            xp: 60,
-            check: (out, code) => { const t = out.trim(); return (t === "200" || t === "200.0") && /price/.test(code); }
-          },
-          {
-            title: "พื้นที่ห้องสมบัติ",
-            desc: "ตัวแปรหลายตัวคูณกันได้ตรงๆ — สูตรพื้นที่สี่เหลี่ยมคือ กว้าง × สูง",
-            goal: 'ห้องสมบัติกว้าง <b>w = 7</b> สูง <b>h = 4</b> จง print พื้นที่ห้อง (ต้องได้ <b>28</b>)',
-            starter: '# ภารกิจ: คำนวณพื้นที่ห้องสมบัติ\nw = 7\nh = 4\n\n',
-            hint: '<code>print(w * h)</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "28") && /w\s*\*\s*h|h\s*\*\s*w/.test(code)
-          },
-          {
-            title: "สองกล่องในบรรทัดเดียว",
-            desc: "Python ประกาศหลายตัวแปรพร้อมกันได้: x, y = 3, 4 — ค่าแรกเข้าตัวแรก ค่าสองเข้าตัวสอง",
-            goal: 'ประกาศ <b>x, y = 3, 4</b> ในบรรทัดเดียว แล้ว print ผลรวม (ต้องได้ <b>7</b>)',
-            starter: '# ภารกิจ: ประกาศสองตัวแปรในบรรทัดเดียว\n\n',
-            hint: '<code>x, y = 3, 4</code> แล้ว <code>print(x + y)</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "7") && /\w+\s*,\s*\w+\s*=/.test(code)
-          }
+          { title: "กล่องแรก", desc: "สร้างตัวแปรด้วย = แล้วนำไปใช้", goal: "สร้าง <b>name = \"มะลิ\"</b> แล้วแสดง <b>ฉันชื่อ มะลิ</b>", starter: "", hint: "<code>print(\"ฉันชื่อ\", name)</code>", xp: 40, check: (out, code) => eq(out, "ฉันชื่อ มะลิ") && /name\s*=/.test(code) },
+          { title: "บวกตัวแปร", desc: "ตัวแปรตัวเลขนำมาคำนวณได้", goal: "มี hp=80, potion=25 แสดงผลรวม (ต้องได้ <b>105</b>)", starter: "hp = 80\npotion = 25\n", hint: "<code>print(hp + potion)</code>", xp: 40, check: (out) => eq(out, "105") },
+          { title: "ปรับค่าด้วย +=", desc: "+= เพิ่มค่าจากเดิม, -= ลดค่า", goal: "coins=10 เพิ่ม 8 แล้วลด 3 แสดง <b>15</b>", starter: "coins = 10\n", hint: "<code>coins += 8</code> แล้ว <code>coins -= 3</code>", xp: 50, check: (out, code) => eq(out, "15") && /\+=/.test(code) },
+          { title: "แปลงข้อความเป็นเลข", desc: "int() แปลงข้อความเป็นจำนวนเต็ม", goal: "มี age=\"12\" (ข้อความ) แสดงค่าที่บวก 1 เป็นตัวเลข (ต้องได้ <b>13</b>)", starter: "age = \"12\"\n", hint: "<code>print(int(age) + 1)</code>", xp: 50, check: (out, code) => eq(out, "13") && /int\(/.test(code) },
+          { title: "f-string", desc: "f-string ฝังค่าตัวแปรลงในข้อความด้วย {}", goal: "level=5 ใช้ f-string แสดง <b>ตอนนี้เลเวล 5</b>", starter: "level = 5\n", hint: "<code>print(f\"ตอนนี้เลเวล {level}\")</code>", xp: 60, check: (out, code) => eq(out, "ตอนนี้เลเวล 5") && /f["']/.test(code) },
+          { title: "สลับค่า", desc: "Python สลับค่าตัวแปรได้ในบรรทัดเดียว: a, b = b, a", goal: "a=5, b=9 สลับค่ากัน แล้วแสดง a และ b (ต้องได้ <b>9</b> แล้ว <b>5</b>)", starter: "a = 5\nb = 9\n", hint: "<code>a, b = b, a</code>", xp: 60, check: (out) => { const l = lines(out); return l.length === 2 && l[0] === "9" && l[1] === "5"; } }
         ]
       },
       {
-        id: "input", icon: "⌨️", title: "รับข้อมูล (Input)",
-        blurb: "คุยกับโปรแกรมได้จริง — รับข้อมูลจากผู้ใช้ด้วย input() แล้วเอาไปใช้ต่อ",
+        id: "datatype", icon: "datastructure", title: "บทที่ 5: ชนิดข้อมูล (Data Types)",
+        blurb: "ชนิดข้อมูลพื้นฐาน: ตัวเลข (int/float/complex), Boolean, และการแปลงชนิดข้อมูล",
         lesson: [
-          { h: "input() — หยุดรอรับข้อมูล", p: "input() ทำให้โปรแกรมหยุดรอให้ผู้ใช้พิมพ์อะไรบางอย่าง แล้วคืนค่านั้นกลับมาให้เราเก็บใส่ตัวแปร <b>ในเกมนี้ระบบจะป้อนค่าให้อัตโนมัติ</b>ตามที่โจทย์กำหนด (ดูกล่อง ⌨️ ในแต่ละด่าน)", code: 'name = input()\nprint("สวัสดี", name)' },
-          { h: "ใส่ข้อความถามได้", p: "เขียนคำถามไว้ในวงเล็บเพื่อบอกผู้ใช้ว่าต้องพิมพ์อะไร เช่น input(\"ชื่อของคุณ: \") — หมายเหตุ: ในเกมนี้ข้อความถามจะไม่ถูกนับรวมในช่องผลลัพธ์ ตรวจเฉพาะสิ่งที่ print ออกมา", code: 'name = input("ชื่อของคุณ: ")' },
-          { h: "ได้ข้อความ (string) เสมอ!", p: "กับดักอันดับหนึ่งของมือใหม่: input() คืนค่าเป็นข้อความเสมอ แม้ผู้ใช้จะพิมพ์ตัวเลข ถ้าอยากคำนวณต้องแปลงด้วย int() ก่อน", code: 'age = int(input())\nprint(age + 1)' },
-          { h: "รับหลายค่า", p: "เรียก input() กี่ครั้งก็ได้ ค่าจะถูกป้อนให้ตามลำดับ ครั้งแรกได้ค่าแรก ครั้งที่สองได้ค่าถัดไป", code: 'a = int(input())\nb = int(input())\nprint(a + b)' }
+          { h: "ชนิดข้อมูลตัวเลข", p: "<b>int</b> จำนวนเต็ม (10, -3) • <b>float</b> ทศนิยม (3.14, -0.5) • <b>complex</b> จำนวนเชิงซ้อน (3+4j) — ใช้ <code>type()</code> ดูชนิดของค่าได้", code: "print(type(10))     # int\nprint(type(3.14))   # float\nprint(type(3 + 4j)) # complex" },
+          { h: "ชนิดข้อมูล Boolean", p: "มีแค่ 2 ค่า: <b>True</b> และ <b>False</b> (ขึ้นต้นตัวใหญ่) เกิดจากการเปรียบเทียบ และเป็นพื้นฐานของเงื่อนไข", code: "print(10 > 5)   # True\nprint(3 == 5)   # False" },
+          { h: "การแปลงชนิดข้อมูล", p: "<b>Implicit</b> Python แปลงเองเมื่อคำนวณ (int + float = float) • <b>Explicit</b> เราแปลงเองด้วย int(), float(), str(), bool()", code: "x = 5 + 2.0      # float โดยอัตโนมัติ\ny = int(3.9)     # 3 (ตัดเศษ)\nz = str(100)     # \"100\" ข้อความ" }
         ],
         stages: [
-          {
-            title: "ทักทายผู้มาเยือน",
-            desc: "input() รับข้อมูลเข้ามาเก็บในตัวแปร แล้วเอาไปใช้ต่อได้เหมือนตัวแปรปกติ — สังเกตกล่อง ⌨️ ด้านบน นั่นคือค่าที่ระบบจะป้อนให้",
-            goal: 'รับชื่อด้วย input() แล้วแสดง <b>สวัสดี</b> ตามด้วยชื่อที่รับมา (ระบบจะป้อน "มะลิ" ให้ ผลลัพธ์ต้องได้ <b>สวัสดี มะลิ</b>)',
-            starter: '# ภารกิจ: รับชื่อแล้วทักทาย\nname = input()\n\n',
-            hint: 'บรรทัดถัดมา: <code>print("สวัสดี", name)</code>',
-            xp: 50,
-            stdin: ["มะลิ"],
-            check: (out, code) => eq(out, "สวัสดี มะลิ") && /input\(/.test(code)
-          },
-          {
-            title: "ถามก่อนรับ",
-            desc: "ใส่คำถามในวงเล็บของ input เพื่อบอกผู้ใช้ว่าต้องพิมพ์อะไร (ในเกมนี้คำถามจะไม่แสดงในช่องผลลัพธ์ ตรวจเฉพาะที่ print)",
-            goal: 'ใช้ <b>input("ชื่ออะไร: ")</b> รับชื่อ แล้วแสดง <b>ยินดีที่รู้จัก</b> ตามด้วยชื่อ (ระบบป้อน "โบ้" ผลลัพธ์ต้องได้ <b>ยินดีที่รู้จัก โบ้</b>)',
-            starter: '# ภารกิจ: ถามชื่อแบบสุภาพ\nname = input("ชื่ออะไร: ")\n\n',
-            hint: '<code>print("ยินดีที่รู้จัก", name)</code>',
-            xp: 50,
-            stdin: ["โบ้"],
-            check: (out, code) => eq(out, "ยินดีที่รู้จัก โบ้") && /input\(\s*["']/.test(code)
-          },
-          {
-            title: "กับดักตัวเลขปลอม",
-            desc: "input() คืนค่าเป็นข้อความเสมอ! \"7\" + 3 จะพัง ต้องแปลงเป็นตัวเลขด้วย int() ก่อนถึงจะคำนวณได้",
-            goal: 'รับตัวเลขด้วย input แปลงเป็น int แล้ว print ค่าที่<b>บวก 3</b> (ระบบป้อน "7" ผลลัพธ์ต้องได้ <b>10</b>)',
-            starter: '# ภารกิจ: รับเลขแล้วบวก 3 — ระวังชนิดข้อมูล!\nn = input()\n\n',
-            hint: 'แปลงก่อนบวก: <code>print(int(n) + 3)</code> หรือรับแบบแปลงเลย <code>n = int(input())</code>',
-            xp: 60,
-            stdin: ["7"],
-            check: (out, code) => eq(out, "10") && /int\(/.test(code) && /input\(/.test(code)
-          },
-          {
-            title: "รับสองค่ามารวมกัน",
-            desc: "เรียก input() หลายครั้งได้ ระบบจะป้อนค่าให้ตามลำดับในกล่อง ⌨️ — ครั้งแรกได้ค่าแรก ครั้งที่สองได้ค่าที่สอง",
-            goal: 'รับตัวเลข <b>สองค่า</b> ด้วย input สองครั้ง แล้ว print ผลรวม (ระบบป้อน "12" และ "30" ผลลัพธ์ต้องได้ <b>42</b>)',
-            starter: '# ภารกิจ: เครื่องบวกเลขจากผู้ใช้\na = int(input())\n\n',
-            hint: 'รับตัวที่สอง: <code>b = int(input())</code> แล้ว <code>print(a + b)</code>',
-            xp: 60,
-            stdin: ["12", "30"],
-            check: (out, code) => eq(out, "42") && (code.match(/input\(/g) || []).length >= 2
-          },
-          {
-            title: "แนะนำตัวสุดเท่",
-            desc: "รวม input กับ f-string: รับข้อมูลหลายอย่างแล้วประกอบเป็นประโยคสวยๆ — สูตรของทุกฟอร์มลงทะเบียนในโลก",
-            goal: 'รับ<b>ชื่อ</b>และ<b>อายุ</b> แล้วใช้ f-string แสดง <b>ฉันชื่อ มะลิ อายุ 15 ปี</b> (ระบบป้อน "มะลิ" และ "15")',
-            starter: '# ภารกิจ: สร้างประโยคแนะนำตัวจากข้อมูลที่รับมา\nname = input()\nage = input()\n\n',
-            hint: '<code>print(f"ฉันชื่อ {name} อายุ {age} ปี")</code>',
-            xp: 80,
-            stdin: ["มะลิ", "15"],
-            check: (out, code) => eq(out, "ฉันชื่อ มะลิ อายุ 15 ปี") && /f["']/.test(code) && (code.match(/input\(/g) || []).length >= 2
-          },
-          {
-            title: "ประตูรหัสลับ",
-            desc: "input + if = โปรแกรมโต้ตอบของจริง: รับข้อมูลแล้วตัดสินใจตามค่าที่ได้ — เหมือนระบบล็อกอินย่อส่วน",
-            goal: 'รับรหัสผ่านด้วย input ถ้าตรงกับ <b>"1234"</b> ให้แสดง <b>ปลดล็อกสำเร็จ</b> ไม่งั้นแสดง <b>รหัสผิด</b> (ระบบป้อน "1234")',
-            starter: '# ภารกิจ: ระบบล็อกประตูฐานลับ\npassword = input()\n\n',
-            hint: '<code>if password == "1234":</code> — เทียบเป็นข้อความ อย่าลืมเครื่องหมายคำพูด',
-            xp: 80,
-            stdin: ["1234"],
-            check: (out, code) => eq(out, "ปลดล็อกสำเร็จ") && /if\s+/.test(code) && /input\(/.test(code)
-          }
+          { title: "ดูชนิดข้อมูล", desc: "type() บอกชนิดของค่า", goal: "แสดงชนิดของ 3.14 (ผลลัพธ์ต้องมีคำว่า <b>float</b>)", starter: "", hint: "<code>print(type(3.14))</code>", xp: 40, check: (out) => /float/.test(out) },
+          { title: "จำนวนเต็มหาร", desc: "/ ได้ทศนิยมเสมอ, // ได้จำนวนเต็ม (ปัดลง)", goal: "แสดง 2 บรรทัด: <b>7 / 2</b> และ <b>7 // 2</b> (ต้องได้ <b>3.5</b> และ <b>3</b>)", starter: "", hint: "<code>print(7 / 2)</code> และ <code>print(7 // 2)</code>", xp: 50, check: (out) => { const l = lines(out); return l[0] === "3.5" && l[1] === "3"; } },
+          { title: "Boolean จากการเทียบ", desc: "การเปรียบเทียบให้ผลเป็น True/False", goal: "แสดงผลของ <b>10 > 7</b> (ต้องได้ <b>True</b>)", starter: "", hint: "<code>print(10 > 7)</code>", xp: 40, check: (out) => eq(out, "True") },
+          { title: "แปลง float เป็น int", desc: "int() ตัดเศษทศนิยมทิ้ง (ไม่ปัด)", goal: "แปลง 3.9 เป็น int แล้วแสดง (ต้องได้ <b>3</b>)", starter: "", hint: "<code>print(int(3.9))</code>", xp: 50, check: (out, code) => eq(out, "3") && /int\(/.test(code) },
+          { title: "แปลงเลขเป็นข้อความ", desc: "str() แปลงตัวเลขเป็นข้อความ เพื่อนำไปต่อกับข้อความอื่น", goal: "แปลง 100 เป็น str แล้วต่อกับ \"แต้ม\" ให้ได้ <b>100แต้ม</b>", starter: "", hint: "<code>print(str(100) + \"แต้ม\")</code>", xp: 50, check: (out, code) => eq(out, "100แต้ม") && /str\(/.test(code) }
         ]
       },
       {
-        id: "string", icon: "🔤", title: "ข้อความ (String)",
-        blurb: "จัดการตัวอักษรอย่างเซียน — แปลงตัวใหญ่ ตัดคำ นับตัวอักษร ค้นหาคำ",
+        id: "string", icon: "string", title: "บทที่ 5: ข้อความ (String)",
+        blurb: "การจัดการข้อความ: เข้าถึงตัวอักษร, ตัดข้อความ, และเมท็อดที่ใช้บ่อย",
         lesson: [
-          { h: "method — ท่าติดตัวของข้อความ", p: "ข้อความมีความสามารถในตัว เรียกใช้ด้วยจุดตามด้วยชื่อท่า เช่น <code>.upper()</code> ตัวพิมพ์ใหญ่, <code>.lower()</code> ตัวพิมพ์เล็ก, <code>.replace(เก่า, ใหม่)</code> เปลี่ยนคำ", code: '"hero".upper()            # "HERO"\n"a-b".replace("-", "+")   # "a+b"' },
-          { h: "len() และการตัดข้อความ (slicing)", p: "<code>len()</code> นับจำนวนตัวอักษร ส่วน <code>[เริ่ม:จบ]</code> ตัดเอาบางส่วน — นับจาก 0 และหยุดก่อนตำแหน่งจบเสมอ", code: 'word = "python"\nlen(word)    # 6\nword[0:3]    # "pyt"' },
-          { h: "ค้นหาและทำซ้ำ", p: "<code>in</code> เช็คว่ามีคำนี้อยู่ในข้อความไหม (ได้ True/False) ส่วน <code>*</code> ทำซ้ำข้อความกี่รอบก็ได้", code: '"py" in "python"   # True\n"ฮ่า" * 3           # "ฮ่าฮ่าฮ่า"' },
-          { h: "split — หั่นข้อความเป็นชิ้น", p: "<code>.split(ตัวคั่น)</code> หั่นข้อความออกเป็น list ตามตัวคั่น ใช้บ่อยมากตอนอ่านข้อมูลดิบ", code: '"a,b,c".split(",")   # ["a", "b", "c"]' }
+          { h: "String และการเข้าถึง", p: "ข้อความคือลำดับของตัวอักษร เข้าถึงทีละตัวด้วยดัชนี (เริ่มที่ 0) และตัดช่วง (slice) ด้วย [start:end]", code: "s = \"Python\"\nprint(s[0])    # P\nprint(s[0:3])  # Pyt\nprint(len(s))  # 6" },
+          { h: "เมท็อดของ String", p: "<code>.upper()</code> ตัวใหญ่ • <code>.lower()</code> ตัวเล็ก • <code>.replace(a,b)</code> แทนที่ • <code>.split(x)</code> แยกเป็นลิสต์ • <code>.strip()</code> ตัดช่องว่างหัวท้าย", code: "print(\"abc\".upper())          # ABC\nprint(\"a,b,c\".split(\",\"))     # ['a','b','c']" },
+          { h: "ตรวจสอบและนับ", p: "<code>in</code> เช็คว่ามีคำนั้นไหม • <code>.count(x)</code> นับจำนวนครั้ง • <code>*</code> ทำซ้ำข้อความ", code: "print(\"ก\" in \"กขค\")   # True\nprint(\"ฮา\" * 3)        # ฮาฮาฮา" }
         ],
         stages: [
-          {
-            title: "ตะโกนด้วย upper()",
-            desc: "String มี \"ท่าติดตัว\" เรียกว่า method เรียกใช้ด้วยจุดตามด้วยชื่อท่า เช่น .upper() แปลงเป็นตัวพิมพ์ใหญ่ทั้งหมด",
-            goal: 'มีตัวแปร <b>word = "victory"</b> จง print แบบตัวพิมพ์ใหญ่ทั้งหมด (ต้องได้ <b>VICTORY</b>)',
-            starter: '# ภารกิจ: ตะโกนคำว่าชัยชนะ!\nword = "victory"\n\n',
-            hint: 'ลอง <code>print(word.upper())</code>',
-            xp: 40,
-            check: (out, code) => eq(out, "VICTORY") && /\.upper\(\)/.test(code)
-          },
-          {
-            title: "นับความยาวคาถา",
-            desc: "len() บอกจำนวนตัวอักษรในข้อความ (ใช้นับจำนวนสมาชิกใน list ได้ด้วย — ฟังก์ชันสารพัดประโยชน์)",
-            goal: 'มีตัวแปร <b>spell = "abrakadabra"</b> จง print จำนวนตัวอักษรของคาถานี้ (ต้องได้ <b>11</b>)',
-            starter: '# ภารกิจ: คาถานี้ยาวกี่ตัวอักษร?\nspell = "abrakadabra"\n\n',
-            hint: 'ลอง <code>print(len(spell))</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "11") && /len\(/.test(code)
-          },
-          {
-            title: "ตัดข้อความ (Slicing)",
-            desc: "ใช้ [เริ่ม:จบ] ตัดเอาบางส่วนของข้อความ โดยนับจาก 0 และหยุดก่อนตำแหน่งจบ เช่น [0:3] ได้ 3 ตัวแรก",
-            goal: 'มีตัวแปร <b>code_name = "python-master"</b> จง print เฉพาะ <b>6 ตัวแรก</b> (ต้องได้ <b>python</b>)',
-            starter: '# ภารกิจ: ถอดรหัสลับ เอาเฉพาะส่วนแรก\ncode_name = "python-master"\n\n',
-            hint: 'ลอง <code>print(code_name[0:6])</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "python") && /\[\s*\d*\s*:\s*\d+\s*\]/.test(code)
-          },
-          {
-            title: "ค้นหาคำด้วย in",
-            desc: "คีย์เวิร์ด in ใช้เช็คว่ามีคำนี้อยู่ในข้อความไหม ให้คำตอบเป็น True/False — ใช้ใน if ได้เลย",
-            goal: 'มีประโยค <b>sentence = "มังกรเฝ้าสมบัติอยู่ในถ้ำ"</b> จง print ผลการเช็คว่ามีคำว่า <b>"มังกร"</b> อยู่ไหม (ต้องได้ <b>True</b>)',
-            starter: '# ภารกิจ: สแกนหามังกรในประโยค\nsentence = "มังกรเฝ้าสมบัติอยู่ในถ้ำ"\n\n',
-            hint: 'ลอง <code>print("มังกร" in sentence)</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "True") && /\bin\b/.test(code)
-          },
-          {
-            title: "ทำซ้ำข้อความด้วย *",
-            desc: "เครื่องหมาย * กับข้อความคือการทำซ้ำ เช่น \"ab\" * 3 ได้ \"ababab\" — เหมาะกับการสร้างลวดลายหรือเสียงหัวเราะ",
-            goal: 'มีตัวแปร <b>laugh = "ฮ่า"</b> จง print เสียงหัวเราะ 3 รอบติดกัน (ต้องได้ <b>ฮ่าฮ่าฮ่า</b>)',
-            starter: '# ภารกิจ: หัวเราะสามรอบรวด\nlaugh = "ฮ่า"\n\n',
-            hint: 'ลอง <code>print(laugh * 3)</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "ฮ่าฮ่าฮ่า") && /\*/.test(code)
-          },
-          {
-            title: "เสกคำใหม่ด้วย replace",
-            desc: ".replace(เก่า, ใหม่) เปลี่ยนคำในข้อความ — ใช้แก้คำผิด เซ็นเซอร์คำ หรือเสกประโยคใหม่ได้เลย",
-            goal: 'มี <b>msg = "ฉันเกลียดบั๊ก"</b> จงใช้ replace เปลี่ยน <b>เกลียด</b> เป็น <b>รัก</b> แล้ว print (ต้องได้ <b>ฉันรักบั๊ก</b>)',
-            starter: '# ภารกิจ: ปรับทัศนคติต่อบั๊กสักหน่อย\nmsg = "ฉันเกลียดบั๊ก"\n\n',
-            hint: 'ลอง <code>print(msg.replace("เกลียด", "รัก"))</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "ฉันรักบั๊ก") && /\.replace\(/.test(code)
-          },
-          {
-            title: "แยกข้อมูลด้วย split",
-            desc: ".split(ตัวคั่น) หั่นข้อความเป็น list — นี่คือวิธีอ่านข้อมูลแบบ CSV ที่ใช้กันจริงในทุกวงการ",
-            goal: 'มีข้อมูล <b>data = "มะลิ,15,นักเวท"</b> จง split ด้วยจุลภาค แล้ว print เฉพาะ<b>อาชีพ</b> (ส่วนที่สาม ต้องได้ <b>นักเวท</b>)',
-            starter: '# ภารกิจ: อ่านบัตรนักผจญภัยจากข้อมูลดิบ\ndata = "มะลิ,15,นักเวท"\n\n',
-            hint: 'สองจังหวะ: <code>parts = data.split(",")</code> แล้ว <code>print(parts[2])</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "นักเวท") && /\.split\(/.test(code)
-          },
-          {
-            title: "เทียบแบบไม่สนตัวพิมพ์",
-            desc: "ผู้ใช้อาจพิมพ์ YES, Yes หรือ yes — แปลงเป็นตัวเล็กด้วย .lower() ก่อนเทียบ จะครอบคลุมทุกแบบ",
-            goal: 'มี <b>ans = "YES"</b> จง print ผลการเทียบว่า ans (แปลงเป็นตัวเล็กแล้ว) เท่ากับ <b>"yes"</b> ไหม (ต้องได้ <b>True</b>)',
-            starter: '# ภารกิจ: เช็คคำตอบแบบใจกว้าง\nans = "YES"\n\n',
-            hint: '<code>print(ans.lower() == "yes")</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "True") && /\.lower\(\)/.test(code)
-          },
-          {
-            title: "นับคำด้วย count",
-            desc: ".count(คำ) นับว่าคำนั้นปรากฏกี่ครั้งในข้อความ — ใช้วิเคราะห์เนื้อเพลง ข้อความ หรือ DNA ก็ยังได้",
-            goal: 'มีเนื้อเพลง <b>song = "นานานา นา"</b> จง print จำนวนครั้งที่มีคำว่า <b>"นา"</b> (ต้องได้ <b>4</b>)',
-            starter: '# ภารกิจ: นับท่อนฮุกในเพลง\nsong = "นานานา นา"\n\n',
-            hint: '<code>print(song.count("นา"))</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "4") && /\.count\(/.test(code)
-          }
+          { title: "ตัวพิมพ์ใหญ่", desc: ".upper() แปลงเป็นตัวพิมพ์ใหญ่ทั้งหมด", goal: "แปลง \"victory\" เป็นตัวใหญ่ (ต้องได้ <b>VICTORY</b>)", starter: "word = \"victory\"\n", hint: "<code>print(word.upper())</code>", xp: 40, check: (out, code) => eq(out, "VICTORY") && /\.upper\(\)/.test(code) },
+          { title: "ความยาว", desc: "len() นับจำนวนตัวอักษร", goal: "หาความยาวของ \"abrakadabra\" (ต้องได้ <b>11</b>)", starter: "spell = \"abrakadabra\"\n", hint: "<code>print(len(spell))</code>", xp: 40, check: (out, code) => eq(out, "11") && /len\(/.test(code) },
+          { title: "ตัดข้อความ", desc: "slice [start:end] ตัดช่วงตัวอักษร (ไม่รวม end)", goal: "ตัด 6 ตัวแรกของ \"python-master\" (ต้องได้ <b>python</b>)", starter: "s = \"python-master\"\n", hint: "<code>print(s[0:6])</code>", xp: 50, check: (out, code) => eq(out, "python") && /\[.*:.*\]/.test(code) },
+          { title: "แทนที่คำ", desc: ".replace(เก่า, ใหม่) แทนที่ข้อความ", goal: "เปลี่ยน \"เกลียด\" เป็น \"รัก\" ใน \"ฉันเกลียดบั๊ก\" (ต้องได้ <b>ฉันรักบั๊ก</b>)", starter: "msg = \"ฉันเกลียดบั๊ก\"\n", hint: "<code>print(msg.replace(\"เกลียด\", \"รัก\"))</code>", xp: 60, check: (out, code) => eq(out, "ฉันรักบั๊ก") && /\.replace\(/.test(code) },
+          { title: "แยกข้อความ", desc: ".split(ตัวคั่น) แยกข้อความเป็นลิสต์", goal: "แยก \"มะลิ,15,นักเวท\" ด้วย , แล้วแสดงช่องที่ 3 (ต้องได้ <b>นักเวท</b>)", starter: "data = \"มะลิ,15,นักเวท\"\n", hint: "<code>parts = data.split(\",\")</code> แล้ว <code>print(parts[2])</code>", xp: 60, check: (out, code) => eq(out, "นักเวท") && /\.split\(/.test(code) },
+          { title: "นับคำ", desc: ".count(คำ) นับจำนวนครั้งที่พบ", goal: "นับคำว่า \"นา\" ใน \"นานานา นา\" (ต้องได้ <b>4</b>)", starter: "song = \"นานานา นา\"\n", hint: "<code>print(song.count(\"นา\"))</code>", xp: 60, check: (out, code) => eq(out, "4") && /\.count\(/.test(code) }
         ]
       },
       {
-        id: "datastructure", icon: "🗂️", title: "โครงสร้างข้อมูล",
-        blurb: "จัดระเบียบข้อมูลด้วย List และ Dictionary — กระเป๋าเก็บของของโปรแกรมเมอร์",
+        id: "list", icon: "datastructure", title: "บทที่ 5: ลิสต์ (List)",
+        blurb: "ชนิดข้อมูลรายการที่แก้ไขได้ — เพิ่ม ลบ เข้าถึง และเมท็อดที่ใช้บ่อย",
         lesson: [
-          { h: "List — เก็บหลายค่าในตัวแปรเดียว", p: "เขียนใน <code>[]</code> เข้าถึงสมาชิกด้วยตำแหน่ง — เริ่มนับจาก 0 และใช้เลขติดลบนับจากท้ายได้ (-1 คือตัวสุดท้าย)", code: 'items = ["ดาบ", "โล่", "ยา"]\nitems[0]    # "ดาบ"\nitems[-1]   # "ยา"' },
-          { h: "เพิ่ม ลบ เรียง", p: "<code>.append(ค่า)</code> เพิ่มต่อท้าย, <code>.remove(ค่า)</code> ลบตัวที่ตรงกับค่า, <code>.sort()</code> เรียงจากน้อยไปมากทันที", code: 'items.append("คบเพลิง")\nitems.remove("โล่")\nnums.sort()' },
-          { h: "ฟังก์ชันคู่ใจของ list", p: "<code>len()</code> นับจำนวนสมาชิก, <code>sum()</code> รวมตัวเลขทั้งหมด, <code>max()</code>/<code>min()</code> หาค่ามาก/น้อยสุด", code: 'len(items)         # 3\nsum([1, 2, 3])     # 6\nmax([4, 9, 2])     # 9' },
-          { h: "Dictionary — ข้อมูลแบบมีชื่อช่อง", p: "เก็บเป็นคู่ <code>ชื่อช่อง: ค่า</code> ใน <code>{}</code> — เข้าถึงหรือเพิ่มช่องใหม่ด้วยชื่อช่องได้เลย เหมาะกับข้อมูลที่มีหลายด้าน เช่น ตัวละครหนึ่งตัว", code: 'p = {"name": "มะลิ", "hp": 100}\np["hp"]        # 100\np["mp"] = 50   # เพิ่มช่องใหม่' }
+          { h: "List คืออะไร", p: "รายการที่เก็บหลายค่าเรียงลำดับ อยู่ใน <b>[ ]</b> คั่นด้วย , เข้าถึงด้วยดัชนี (เริ่ม 0) และแก้ไขค่าได้", code: "items = [\"ดาบ\", \"โล่\", \"ยา\"]\nprint(items[0])   # ดาบ\nprint(items[-1])  # ยา (ตัวสุดท้าย)" },
+          { h: "เพิ่มและลบสมาชิก", p: "<code>.append(x)</code> เพิ่มท้าย • <code>.insert(i,x)</code> แทรก • <code>.remove(x)</code> ลบตามค่า • <code>.pop()</code> ลบท้าย/ตามดัชนี", code: "items = [\"ดาบ\", \"โล่\"]\nitems.append(\"ยา\")\nitems.remove(\"โล่\")\nprint(items)  # ['ดาบ', 'ยา']" },
+          { h: "เมท็อดที่มีประโยชน์", p: "<code>len()</code> นับจำนวน • <code>sum()</code> รวมค่า • <code>.sort()</code> เรียง • <code>max()/min()</code> ค่ามาก/น้อยสุด", code: "nums = [30, 5, 12]\nnums.sort()\nprint(nums)      # [5, 12, 30]\nprint(sum(nums)) # 47" }
         ],
         stages: [
-          {
-            title: "กระเป๋านักผจญภัย (List)",
-            desc: "List คือรายการข้อมูลหลายชิ้นในตัวแปรเดียว เขียนใน [] และหยิบของชิ้นที่ต้องการด้วยเลขตำแหน่ง (เริ่มนับจาก 0!)",
-            goal: 'มี list ชื่อ <b>items</b> อยู่แล้ว จง print ของ<b>ชิ้นแรก</b>ในกระเป๋า (ต้องได้ <b>ดาบ</b>)',
-            starter: '# ภารกิจ: หยิบของชิ้นแรกจากกระเป๋า\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
-            hint: 'ตำแหน่งแรกคือ 0 — ลอง <code>print(items[0])</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "ดาบ") && /\[0\]/.test(code)
-          },
-          {
-            title: "เก็บของเพิ่มเข้ากระเป๋า",
-            desc: "ใช้ .append() เพื่อเพิ่มของเข้าท้าย list และ len() เพื่อนับว่ามีของกี่ชิ้น",
-            goal: 'เพิ่ม <b>"คบเพลิง"</b> เข้าไปใน items แล้ว print จำนวนของทั้งหมด (ต้องได้ <b>4</b>)',
-            starter: '# ภารกิจ: เก็บคบเพลิงเข้ากระเป๋า แล้วนับของ\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
-            hint: 'สองบรรทัด: <code>items.append("คบเพลิง")</code> แล้ว <code>print(len(items))</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "4") && /\.append\(/.test(code) && /len\(/.test(code)
-          },
-          {
-            title: "หยิบจากท้ายด้วยเลขติดลบ",
-            desc: "เคล็ดลับ Python: ตำแหน่ง -1 คือชิ้นสุดท้าย -2 คือรองสุดท้าย ไม่ต้องรู้ความยาว list ก็หยิบจากท้ายได้",
-            goal: 'จาก list เดิม จง print ของ<b>ชิ้นสุดท้าย</b>โดยใช้เลขติดลบ (ต้องได้ <b>ยาฟื้นพลัง</b>)',
-            starter: '# ภารกิจ: หยิบของชิ้นสุดท้ายแบบเซียน\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
-            hint: 'ลอง <code>print(items[-1])</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "ยาฟื้นพลัง") && /\[-1\]/.test(code)
-          },
-          {
-            title: "รวมพลังทั้งทีม",
-            desc: "sum() รวมตัวเลขทั้งหมดใน list ในคำสั่งเดียว (มี min() และ max() หาค่าน้อยสุด/มากสุดด้วยนะ)",
-            goal: 'มีพลังโจมตีของทีม <b>powers = [12, 30, 25]</b> จง print พลังรวมทั้งทีม (ต้องได้ <b>67</b>)',
-            starter: '# ภารกิจ: รวมพลังโจมตีของทั้งทีม\npowers = [12, 30, 25]\n\n',
-            hint: 'ลอง <code>print(sum(powers))</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "67") && /sum\(/.test(code)
-          },
-          {
-            title: "บัตรประจำตัว (Dictionary)",
-            desc: "Dictionary เก็บข้อมูลเป็นคู่ ชื่อช่อง: ค่า เขียนใน {} เหมาะกับข้อมูลที่มีหลายด้าน เช่น ข้อมูลตัวละคร",
-            goal: 'มี dict ชื่อ <b>player</b> อยู่แล้ว จง print ค่าพลังชีวิตจากช่อง <b>"hp"</b> (ต้องได้ <b>100</b>)',
-            starter: '# ภารกิจ: อ่านค่า hp จากบัตรตัวละคร\nplayer = {"name": "นักผจญภัย", "hp": 100}\n\n',
-            hint: 'เข้าถึงค่าใน dict ด้วยชื่อช่อง: <code>print(player["hp"])</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "100") && /\[\s*["']hp["']\s*\]/.test(code)
-          },
-          {
-            title: "เพิ่มช่องใหม่ให้บัตร",
-            desc: "เพิ่มหรือแก้ข้อมูลใน dict ง่ายมาก แค่กำหนดค่าให้ช่องนั้นตรงๆ เช่น player[\"mp\"] = 50 ถ้าช่องยังไม่มีจะถูกสร้างใหม่ให้เอง",
-            goal: 'เพิ่มช่อง <b>"mp"</b> ค่า <b>50</b> เข้าไปใน player แล้ว print ค่า mp ออกมา (ต้องได้ <b>50</b>)',
-            starter: '# ภารกิจ: ปลดล็อกพลังเวท เพิ่ม mp ให้ตัวละคร\nplayer = {"name": "นักผจญภัย", "hp": 100}\n\n',
-            hint: 'สองบรรทัด: <code>player["mp"] = 50</code> แล้ว <code>print(player["mp"])</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "50") && /\[\s*["']mp["']\s*\]\s*=/.test(code)
-          },
-          {
-            title: "ทิ้งของด้วย remove",
-            desc: ".remove(ค่า) ลบสมาชิกตัวแรกที่ตรงกับค่านั้นออกจาก list ทันที",
-            goal: 'กระเป๋าหนักไป! จง remove <b>"โล่"</b> ออกจาก items แล้ว print จำนวนของที่เหลือ (ต้องได้ <b>2</b>)',
-            starter: '# ภารกิจ: ทิ้งโล่เพื่อวิ่งให้เร็วขึ้น\nitems = ["ดาบ", "โล่", "ยาฟื้นพลัง"]\n\n',
-            hint: '<code>items.remove("โล่")</code> แล้ว <code>print(len(items))</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "2") && /\.remove\(/.test(code)
-          },
-          {
-            title: "จัดเรียงด้วย sort",
-            desc: ".sort() เรียงสมาชิกใน list จากน้อยไปมากทันที (list เดิมถูกเรียงใหม่เลย ไม่ต้องรับค่ากลับ)",
-            goal: 'มีค่าพลัง <b>nums = [30, 5, 12]</b> จง sort แล้ว print ค่าที่<b>น้อยที่สุด</b> (ตัวแรกหลังเรียง ต้องได้ <b>5</b>)',
-            starter: '# ภารกิจ: เรียงพลังจากน้อยไปมาก แล้วดูตัวอ่อนสุด\nnums = [30, 5, 12]\n\n',
-            hint: '<code>nums.sort()</code> แล้ว <code>print(nums[0])</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "5") && /\.sort\(\)/.test(code)
-          },
-          {
-            title: "หาตัวแข็งแกร่งสุด",
-            desc: "max() หาค่ามากสุดใน list ในคำสั่งเดียว (คู่กับ min() ที่หาค่าน้อยสุด) — ไม่ต้องเขียนลูปเองเลย",
-            goal: 'มีพลังโจมตี <b>powers = [12, 30, 25]</b> จง print ค่าพลังที่<b>มากที่สุด</b> (ต้องได้ <b>30</b>)',
-            starter: '# ภารกิจ: หานักสู้ที่แข็งแกร่งที่สุด\npowers = [12, 30, 25]\n\n',
-            hint: '<code>print(max(powers))</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "30") && /max\(/.test(code)
-          },
-          {
-            title: "อ่านบัตรด้วย f-string",
-            desc: "ดึงค่าจาก dict มาใส่ f-string ได้เลย — เคล็ดลับ: ข้างใน {} ใช้คำพูดเดี่ยว player['name'] เพื่อไม่ชนกับคำพูดคู่ข้างนอก",
-            goal: 'จาก dict player จงแสดง <b>นักผจญภัย มีพลัง 100</b> ด้วย f-string เดียว',
-            starter: '# ภารกิจ: ประกาศข้อมูลตัวละครในประโยคเดียว\nplayer = {"name": "นักผจญภัย", "hp": 100}\n\n',
-            hint: "<code>print(f\"{player['name']} มีพลัง {player['hp']}\")</code>",
-            xp: 80,
-            check: (out, code) => eq(out, "นักผจญภัย มีพลัง 100") && /f["']/.test(code) && /player\[/.test(code)
-          }
+          { title: "หยิบสมาชิก", desc: "เข้าถึงด้วยดัชนี เริ่มนับจาก 0", goal: "แสดงสมาชิกตัวแรกของลิสต์ (ต้องได้ <b>ดาบ</b>)", starter: "items = [\"ดาบ\", \"โล่\", \"ยา\"]\n", hint: "<code>print(items[0])</code>", xp: 40, check: (out, code) => eq(out, "ดาบ") && /\[0\]/.test(code) },
+          { title: "เพิ่มท้าย", desc: ".append() เพิ่มสมาชิกท้ายลิสต์", goal: "เพิ่ม \"คบเพลิง\" แล้วแสดงจำนวนสมาชิก (ต้องได้ <b>4</b>)", starter: "items = [\"ดาบ\", \"โล่\", \"ยา\"]\n", hint: "<code>items.append(\"คบเพลิง\")</code> แล้ว <code>print(len(items))</code>", xp: 50, check: (out, code) => eq(out, "4") && /\.append\(/.test(code) },
+          { title: "ตัวสุดท้าย", desc: "ดัชนีลบ [-1] คือตัวสุดท้าย", goal: "แสดงสมาชิกตัวสุดท้าย (ต้องได้ <b>ยา</b>)", starter: "items = [\"ดาบ\", \"โล่\", \"ยา\"]\n", hint: "<code>print(items[-1])</code>", xp: 50, check: (out, code) => eq(out, "ยา") && /\[-1\]/.test(code) },
+          { title: "รวมค่า", desc: "sum() รวมตัวเลขทั้งลิสต์", goal: "รวมค่าใน [12, 30, 25] (ต้องได้ <b>67</b>)", starter: "powers = [12, 30, 25]\n", hint: "<code>print(sum(powers))</code>", xp: 50, check: (out, code) => eq(out, "67") && /sum\(/.test(code) },
+          { title: "ลบสมาชิก", desc: ".remove() ลบตามค่าที่ระบุ", goal: "ลบ \"โล่\" แล้วแสดงจำนวนที่เหลือ (ต้องได้ <b>2</b>)", starter: "items = [\"ดาบ\", \"โล่\", \"ยา\"]\n", hint: "<code>items.remove(\"โล่\")</code> แล้ว <code>print(len(items))</code>", xp: 60, check: (out, code) => eq(out, "2") && /\.remove\(/.test(code) },
+          { title: "เรียงลำดับ", desc: ".sort() เรียงจากน้อยไปมาก", goal: "เรียง [30, 5, 12] แล้วแสดงตัวแรก (ต้องได้ <b>5</b>)", starter: "nums = [30, 5, 12]\n", hint: "<code>nums.sort()</code> แล้ว <code>print(nums[0])</code>", xp: 60, check: (out, code) => eq(out, "5") && /\.sort\(\)/.test(code) }
         ]
       },
       {
-        id: "operator", icon: "➗", title: "ตัวดำเนินการ (Operator)",
-        blurb: "เครื่องมือคำนวณและเปรียบเทียบ — หาเศษ ยกกำลัง และตรรกะ and/or",
+        id: "tupleset", icon: "datastructure", title: "บทที่ 5: Tuple และ Set",
+        blurb: "Tuple (รายการที่แก้ไม่ได้) และ Set (เซตไม่มีค่าซ้ำ) — ชนิดข้อมูลที่ใช้เฉพาะงาน",
         lesson: [
-          { h: "เลขคณิตครบชุด", p: "นอกจาก <code>+ - * /</code> แล้ว มีอีกสามตัวที่ออกข้อสอบบ่อยสุด: <code>%</code> หารเอาเศษ, <code>//</code> หารปัดเศษลง, <code>**</code> ยกกำลัง", code: '17 % 5    # 2  (เศษ)\n17 // 5   # 3  (ผลหารปัดลง)\n2 ** 10   # 1024' },
-          { h: "เปรียบเทียบ — ได้คำตอบ True/False", p: "<code>&gt; &lt; &gt;= &lt;=</code> ตามคณิตศาสตร์, <code>==</code> เท่ากับ (สองตัว! ตัวเดียวคือการเก็บค่า), <code>!=</code> ไม่เท่ากับ — เขียนต่อกันเป็นช่วงได้ด้วย", code: '10 > 7          # True\nx == 5          # เช็คว่า x เท่ากับ 5 ไหม\n10 <= age <= 18 # อยู่ในช่วง 10-18 ไหม' },
-          { h: "ตรรกะ and / or / not", p: "<code>and</code> จริงเมื่อทั้งสองฝั่งจริง, <code>or</code> จริงเมื่อมีอย่างน้อยหนึ่งฝั่งจริง, <code>not</code> กลับค่าจริงเป็นเท็จ", code: 'True and False   # False\nTrue or False    # True\nnot True         # False' }
+          { h: "Tuple — แก้ไขไม่ได้", p: "คล้าย list แต่อยู่ใน <b>( )</b> และ<b>แก้ไขค่าไม่ได้</b> (immutable) เหมาะกับข้อมูลที่ไม่ควรเปลี่ยน เช่น พิกัด สีคงที่ — เข้าถึงด้วยดัชนีเหมือน list", code: "point = (10, 20)\nprint(point[0])   # 10\nprint(len(point)) # 2" },
+          { h: "Set — ไม่มีค่าซ้ำ", p: "เซตอยู่ใน <b>{ }</b> เก็บค่าไม่ซ้ำกัน และไม่มีลำดับ เหมาะกับการกำจัดค่าซ้ำหรือตรวจสมาชิก — <code>.add()</code> เพิ่ม • <code>.discard()</code> ลบ", code: "s = {1, 2, 2, 3}\nprint(s)        # {1, 2, 3} ตัดซ้ำ\ns.add(4)\nprint(len(s))   # 4" },
+          { h: "การดำเนินการ Set", p: "Set ทำงานแบบเซตในคณิตศาสตร์: <code>|</code> ยูเนียน (รวม) • <code>&</code> อินเตอร์เซกชัน (ร่วม) • <code>-</code> ผลต่าง", code: "a = {1, 2, 3}\nb = {2, 3, 4}\nprint(a & b)  # {2, 3}\nprint(a | b)  # {1, 2, 3, 4}" }
         ],
         stages: [
-          {
-            title: "หารเอาเศษ กับหารปัดเศษ",
-            desc: "นอกจาก + - * / แล้ว Python ยังมี % (หารเอาเศษ) และ // (หารปัดเศษลง) ที่ใช้บ่อยมากในเกมและโจทย์จริง",
-            goal: 'print สองบรรทัด: บรรทัดแรกคือ <b>17 % 5</b> บรรทัดสองคือ <b>17 // 5</b> (ต้องได้ <b>2</b> และ <b>3</b>)',
-            starter: '# ภารกิจ: แบ่งเหรียญ 17 อันให้เพื่อน 5 คน\n# เหลือเศษกี่อัน? ได้คนละกี่อัน?\n\n',
-            hint: 'สองบรรทัด: <code>print(17 % 5)</code> และ <code>print(17 // 5)</code>',
-            xp: 40,
-            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "2" && l[1] === "3" && code.includes("%") && code.includes("//"); }
-          },
-          {
-            title: "ยกกำลังด้วย **",
-            desc: "เครื่องหมาย ** คือการยกกำลัง เช่น 2 ** 3 ได้ 8 — พลังของมันโตเร็วมาก ลองดู",
-            goal: 'จง print ค่า <b>2 ยกกำลัง 10</b> (ต้องได้ <b>1024</b>)',
-            starter: '# ภารกิจ: มังกรแยกร่างเท่าตัว 10 รอบ จะมีกี่ตัว?\n\n',
-            hint: 'ลอง <code>print(2 ** 10)</code>',
-            xp: 40,
-            check: (out, code) => eq(out, "1024") && code.includes("**")
-          },
-          {
-            title: "เครื่องเปรียบเทียบ",
-            desc: "ตัวดำเนินการเปรียบเทียบ เช่น > < == != จะให้คำตอบเป็น True หรือ False ซึ่งเป็นหัวใจของการตัดสินใจในโปรแกรม",
-            goal: 'print สองบรรทัด: <b>10 > 7</b> และ <b>3 == 5</b> (ต้องได้ <b>True</b> และ <b>False</b>)',
-            starter: '# ภารกิจ: ให้ Python ตอบคำถามจริง/เท็จ\n# ระวัง: เท่ากับ ใช้ == (สองตัว) ไม่ใช่ =\n\n',
-            hint: '<code>print(10 > 7)</code> และ <code>print(3 == 5)</code> — ไม่ต้องใส่เครื่องหมายคำพูด',
-            xp: 50,
-            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "True" && l[1] === "False" && code.includes("=="); }
-          },
-          {
-            title: "ตรรกะ and / or",
-            desc: "and จะเป็น True เมื่อทั้งสองฝั่งจริง ส่วน or เป็น True เมื่อฝั่งใดฝั่งหนึ่งจริง ใช้รวมหลายเงื่อนไขเข้าด้วยกัน",
-            goal: 'มีตัวแปร key และ torch อยู่แล้ว จง print <b>key and torch</b> แล้วตามด้วย <b>key or torch</b> (ต้องได้ <b>False</b> และ <b>True</b>)',
-            starter: '# ภารกิจ: มีกุญแจแต่ไม่มีคบเพลิง จะเข้าถ้ำได้ไหม?\nkey = True\ntorch = False\n\n',
-            hint: '<code>print(key and torch)</code> และ <code>print(key or torch)</code>',
-            xp: 50,
-            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "False" && l[1] === "True" && /\band\b/.test(code) && /\bor\b/.test(code); }
-          },
-          {
-            title: "ทางลัด += และ -=",
-            desc: "โปรแกรมเมอร์ตัวจริงชอบเขียนสั้น: gold += 50 คือเพิ่ม 50 และ gold -= 30 คือลด 30 — สั้นกว่า gold = gold + 50 เยอะ",
-            goal: 'เริ่มด้วย <b>gold = 100</b> ใช้ <b>+=</b> เพิ่ม 50 แล้วใช้ <b>-=</b> ลด 30 จากนั้น print (ต้องได้ <b>120</b>)',
-            starter: '# ภารกิจ: รับรางวัลแล้วจ่ายค่าที่พัก\ngold = 100\n\n',
-            hint: 'สองบรรทัด: <code>gold += 50</code> แล้ว <code>gold -= 30</code> แล้วค่อย print',
-            xp: 60,
-            check: (out, code) => eq(out, "120") && code.includes("+=") && code.includes("-=")
-          },
-          {
-            title: "เปรียบเทียบสามชั้น",
-            desc: "Python เขียนเงื่อนไขช่วงได้เหมือนคณิตศาสตร์เลย: 10 <= age <= 18 เช็คว่า age อยู่ระหว่าง 10 ถึง 18 ในนัดเดียว",
-            goal: 'กำหนด <b>age = 15</b> จง print ผลเช็คว่า age อยู่ในช่วง <b>10 ถึง 18</b> โดยเขียนเงื่อนไขต่อกันในนิพจน์เดียว (ต้องได้ <b>True</b>)',
-            starter: '# ภารกิจ: เช็คว่าเป็นวัยรุ่นไหมในบรรทัดเดียว\nage = 15\n\n',
-            hint: 'ลอง <code>print(10 <= age <= 18)</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "True") && (code.match(/<=/g) || []).length >= 2
-          },
-          {
-            title: "แปลงนาทีเป็นชั่วโมง",
-            desc: "โจทย์คลาสสิกของ % กับ //: // ได้จำนวนชั่วโมงเต็ม ส่วน % ได้นาทีที่เหลือเศษ",
-            goal: 'ภารกิจใช้เวลา <b>135 นาที</b> จง print ในรูปแบบ <b>2 ชั่วโมง 15 นาที</b> โดยคำนวณจากตัวแปร minutes (ห้ามพิมพ์เลขคำตอบตรงๆ)',
-            starter: '# ภารกิจ: 135 นาที คือกี่ชั่วโมงกี่นาที?\nminutes = 135\n\n',
-            hint: 'ลอง <code>print(minutes // 60, "ชั่วโมง", minutes % 60, "นาที")</code>',
-            xp: 60,
-            check: (out, code) => lines(out)[0] === "2 ชั่วโมง 15 นาที" && code.includes("//") && code.includes("%")
-          },
-          {
-            title: "วงเล็บเปลี่ยนโลก",
-            desc: "Python คูณหารก่อนบวกลบเสมอ (เหมือนคณิตศาสตร์) — ใส่วงเล็บเมื่ออยากให้คิดส่วนไหนก่อน",
-            goal: 'print สองบรรทัด: <b>(2 + 3) * 4</b> และ <b>2 + 3 * 4</b> แล้วดูว่าต่างกันแค่ไหน (ต้องได้ <b>20</b> และ <b>14</b>)',
-            starter: '# ภารกิจ: พิสูจน์พลังของวงเล็บ\n\n',
-            hint: '<code>print((2 + 3) * 4)</code> แล้ว <code>print(2 + 3 * 4)</code>',
-            xp: 50,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "20,14" && /\(\s*2\s*\+\s*3\s*\)/.test(code); }
-          },
-          {
-            title: "ไม่เท่ากับ !=",
-            desc: "!= คือ \"ไม่เท่ากับ\" — คู่ตรงข้ามของ == ใช้บ่อยเวลาเช็คว่าค่าเปลี่ยนไปหรือยัง",
-            goal: 'print สองบรรทัด: <b>5 != 3</b> และ <b>"a" != "a"</b> (ต้องได้ <b>True</b> และ <b>False</b>)',
-            starter: '# ภารกิจ: ทดสอบเครื่องหมายไม่เท่ากับ\n\n',
-            hint: '<code>print(5 != 3)</code> และ <code>print("a" != "a")</code>',
-            xp: 50,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "True,False" && code.includes("!="); }
-          }
+          { title: "เข้าถึง Tuple", desc: "tuple เข้าถึงด้วยดัชนีเหมือน list", goal: "มี point=(10, 20) แสดงค่าแรก (ต้องได้ <b>10</b>)", starter: "point = (10, 20)\n", hint: "<code>print(point[0])</code>", xp: 50, check: (out, code) => eq(out, "10") && /point\[0\]/.test(code) },
+          { title: "ความยาว Tuple", desc: "len() ใช้กับ tuple ได้เช่นกัน", goal: "แสดงจำนวนสมาชิกของ (3, 6, 9, 12) (ต้องได้ <b>4</b>)", starter: "nums = (3, 6, 9, 12)\n", hint: "<code>print(len(nums))</code>", xp: 50, check: (out, code) => eq(out, "4") && /len\(/.test(code) },
+          { title: "ตัดค่าซ้ำด้วย Set", desc: "แปลง list เป็น set เพื่อกำจัดค่าซ้ำ", goal: "มี list [1,2,2,3,3,3] แปลงเป็น set แล้วแสดงจำนวนค่าที่ไม่ซ้ำ (ต้องได้ <b>3</b>)", starter: "nums = [1, 2, 2, 3, 3, 3]\n", hint: "<code>print(len(set(nums)))</code>", xp: 60, check: (out, code) => eq(out, "3") && /set\(/.test(code) },
+          { title: "เพิ่มสมาชิก Set", desc: ".add() เพิ่มค่าเข้าเซต (ถ้าซ้ำจะไม่เพิ่ม)", goal: "เซต {1,2,3} เพิ่ม 4 แล้วแสดงจำนวน (ต้องได้ <b>4</b>)", starter: "s = {1, 2, 3}\n", hint: "<code>s.add(4)</code> แล้ว <code>print(len(s))</code>", xp: 60, check: (out, code) => eq(out, "4") && /\.add\(/.test(code) },
+          { title: "สมาชิกร่วม", desc: "& หาสมาชิกที่อยู่ในทั้งสองเซต", goal: "หาค่าร่วมของ {1,2,3} และ {2,3,4} แล้วแสดงจำนวน (ต้องได้ <b>2</b>)", starter: "a = {1, 2, 3}\nb = {2, 3, 4}\n", hint: "<code>print(len(a & b))</code>", xp: 60, check: (out, code) => eq(out, "2") && /&/.test(code) }
         ]
       },
       {
-        id: "ifelse", icon: "🚪", title: "เงื่อนไข If-Else",
-        blurb: "สอนโปรแกรมให้ตัดสินใจ — ถ้าเจอแบบนี้ให้ทำอย่างนั้น ไม่งั้นทำอีกอย่าง",
+        id: "dict", icon: "datastructure", title: "บทที่ 5: Dictionary",
+        blurb: "โครงสร้างข้อมูลแบบคู่ คีย์-ค่า (key-value) — เก็บข้อมูลที่มีป้ายกำกับ",
         lesson: [
-          { h: "โครงสร้าง if / elif / else", p: "Python เช็คเงื่อนไขจากบนลงล่าง เจอทางแรกที่เป็นจริงก็เดินทางนั้นแล้วจบ — อย่าลืม <code>:</code> ท้ายบรรทัดเงื่อนไข และย่อหน้า 4 ช่องให้โค้ดในแต่ละทาง", code: 'if score >= 80:\n    print("A")\nelif score >= 50:\n    print("B")\nelse:\n    print("F")' },
-          { h: "รวมหลายเงื่อนไขในบรรทัดเดียว", p: "ใช้ <code>and</code> / <code>or</code> / <code>not</code> ผสมในเงื่อนไข if ได้เลย เช่น ต้องมีทั้งพลังชีวิตและกุญแจ", code: 'if hp > 0 and has_key:\n    print("ไปต่อได้")' },
-          { h: "if ซ้อน if", p: "ใน if มี if อีกชั้นได้ (ย่อหน้าลึกเข้าไปอีกขั้น) — ใช้กับการตัดสินใจที่มีลำดับ เช่น เช็คพลังก่อน ค่อยเช็คเลเวล", code: 'if hp > 50:\n    if level > 10:\n        print("พร้อมลุย!")' }
+          { h: "Dictionary คืออะไร", p: "เก็บข้อมูลเป็นคู่ <b>คีย์: ค่า</b> อยู่ใน <b>{ }</b> เข้าถึงค่าผ่านคีย์ (ไม่ใช่ดัชนี) เหมาะกับข้อมูลที่มีป้ายกำกับ เช่น ข้อมูลผู้เล่น", code: "player = {\"name\": \"มะลิ\", \"hp\": 100}\nprint(player[\"name\"])  # มะลิ\nprint(player[\"hp\"])    # 100" },
+          { h: "เพิ่มและแก้ไข", p: "กำหนดค่าผ่านคีย์ใหม่เพื่อเพิ่ม หรือคีย์เดิมเพื่อแก้ไข • <code>.pop(key)</code> ลบ • <code>in</code> เช็คว่ามีคีย์ไหม", code: "player = {\"hp\": 100}\nplayer[\"mp\"] = 50    # เพิ่มคีย์ใหม่\nplayer[\"hp\"] = 80    # แก้ค่าเดิม\nprint(\"mp\" in player) # True" },
+          { h: "วนลูปและเมท็อด", p: "<code>.keys()</code> คีย์ทั้งหมด • <code>.values()</code> ค่าทั้งหมด • <code>.items()</code> คู่คีย์-ค่า — ใช้กับ for เพื่อวนทุกรายการ", code: "score = {\"a\": 10, \"b\": 20}\nfor k in score:\n    print(k, score[k])" }
         ],
         stages: [
-          {
-            title: "ประตูลับ",
-            desc: "if ใช้ตรวจเงื่อนไข ถ้าจริงจะทำบรรทัดที่ย่อหน้าเข้าไป ถ้าไม่จริงจะไปทำในส่วน else แทน อย่าลืมเครื่องหมาย : ท้ายบรรทัด",
-            goal: 'กำหนด <b>key = 7</b> ถ้า key มากกว่า 5 ให้พิมพ์ <b>ประตูเปิดแล้ว!</b> ไม่งั้นพิมพ์ <b>ประตูล็อกอยู่</b>',
-            starter: '# ภารกิจ: ใช้ if/else เปิดประตูลับ\nkey = 7\n\n',
-            hint: 'โครงสร้าง: <code>if key > 5:</code> (ขึ้นบรรทัดใหม่ ย่อหน้า) <code>print(...)</code> แล้ว <code>else:</code> อีกชุด',
-            xp: 50,
-            check: (out, code) => eq(out, "ประตูเปิดแล้ว!") && /if\s+/.test(code) && /else\s*:/.test(code)
-          },
-          {
-            title: "ตัดเกรดด้วย elif",
-            desc: "ถ้ามีมากกว่า 2 ทางเลือก ใช้ elif (else if) คั่นกลาง Python จะเช็คจากบนลงล่างแล้วเลือกทางแรกที่เป็นจริง",
-            goal: 'กำหนด <b>score = 75</b> ถ้า ≥ 80 พิมพ์ <b>เก่งมาก</b> / ถ้า ≥ 50 พิมพ์ <b>ผ่าน</b> / นอกนั้นพิมพ์ <b>ลองใหม่</b> (คำตอบต้องได้ <b>ผ่าน</b>)',
-            starter: '# ภารกิจ: ตัดเกรดคะแนนสอบเวทมนตร์\nscore = 75\n\n',
-            hint: 'เรียงเป็น <code>if score >= 80:</code> → <code>elif score >= 50:</code> → <code>else:</code>',
-            xp: 50,
-            check: (out, code) => eq(out, "ผ่าน") && /elif\s+/.test(code)
-          },
-          {
-            title: "เงื่อนไขซ้อนด้วย and",
-            desc: "บางครั้งต้องผ่านหลายเงื่อนไขพร้อมกัน เช่น ต้องมีพลังชีวิตเหลือ และ มีกุญแจ ถึงจะไปต่อได้ ใช้ and เชื่อมใน if ได้เลย",
-            goal: 'กำหนด <b>hp = 50</b> และ <b>has_key = True</b> ถ้า hp มากกว่า 0 <b>และ</b> has_key เป็นจริง พิมพ์ <b>ไปต่อได้!</b> ไม่งั้นพิมพ์ <b>ติดอยู่ที่เดิม</b>',
-            starter: '# ภารกิจ: เช็คสองเงื่อนไขก่อนเข้าด่านต่อไป\nhp = 50\nhas_key = True\n\n',
-            hint: 'เขียน <code>if hp > 0 and has_key:</code> — ตัวแปร True/False ใช้เดี่ยวๆ ในเงื่อนไขได้เลย',
-            xp: 60,
-            check: (out, code) => eq(out, "ไปต่อได้!") && /\band\b/.test(code) && /if\s+/.test(code)
-          },
-          {
-            title: "กลับค่าด้วย not",
-            desc: "not กลับความจริงเป็นเท็จและเท็จเป็นจริง เช่น not False ได้ True — อ่านเป็นภาษาคนได้ว่า \"ถ้าไม่...\"",
-            goal: 'กำหนด <b>is_locked = False</b> ถ้าประตู<b>ไม่</b>ล็อก (ใช้ not) พิมพ์ <b>เข้าไปได้</b> ไม่งั้นพิมพ์ <b>ต้องหากุญแจ</b>',
-            starter: '# ภารกิจ: ประตูไม่ล็อก ก็เข้าไปเลยสิ!\nis_locked = False\n\n',
-            hint: 'เขียน <code>if not is_locked:</code> — อ่านว่า "ถ้าไม่ล็อก"',
-            xp: 60,
-            check: (out, code) => eq(out, "เข้าไปได้") && /\bnot\b/.test(code)
-          },
-          {
-            title: "if ซ้อน if",
-            desc: "ใน if สามารถมี if อีกชั้นได้ (ย่อหน้าลึกเข้าไปอีกขั้น) ใช้เมื่อการตัดสินใจมีลำดับชั้น เช่น เช็คพลังก่อน แล้วค่อยเช็คเลเวล",
-            goal: 'กำหนด <b>hp = 70</b>, <b>level = 12</b> ถ้า hp > 50: เช็คต่อว่าถ้า level > 10 พิมพ์ <b>พร้อมสู้บอส!</b> ไม่งั้นพิมพ์ <b>ฝึกอีกนิด</b> / แต่ถ้า hp ไม่ถึง พิมพ์ <b>พักก่อน</b>',
-            starter: '# ภารกิจ: เช็คความพร้อมสองชั้นก่อนสู้บอส\nhp = 70\nlevel = 12\n\n',
-            hint: 'if ชั้นในต้องย่อหน้าลึกกว่าชั้นนอก: <code>if hp > 50:</code> แล้วข้างในมี <code>if level > 10:</code> กับ <code>else:</code> ของมันเอง',
-            xp: 80,
-            check: (out, code) => eq(out, "พร้อมสู้บอส!") && (code.match(/if\s+/g) || []).length >= 2
-          },
-          {
-            title: "คู่หรือคี่?",
-            desc: "สูตรที่เจอในทุกข้อสอบ: เลขคู่คือเลขที่หาร 2 ลงตัว (n % 2 == 0) — จับคู่ % กับ if ให้คล่องไว้เลย",
-            goal: 'กำหนด <b>n = 7</b> ถ้าเป็นเลขคู่พิมพ์ <b>คู่</b> ไม่งั้นพิมพ์ <b>คี่</b> (คำตอบต้องได้ <b>คี่</b>)',
-            starter: '# ภารกิจ: เครื่องตรวจเลขคู่เลขคี่\nn = 7\n\n',
-            hint: 'เช็ค <code>if n % 2 == 0:</code> แล้วตามด้วย else',
-            xp: 60,
-            check: (out, code) => eq(out, "คี่") && /%/.test(code) && /if\s+/.test(code)
-          },
-          {
-            title: "เครื่องขายตั๋วอัตโนมัติ",
-            desc: "โจทย์ประยุกต์ elif: ราคาตั๋วขึ้นกับช่วงอายุ — เขียนเงื่อนไขให้ครอบคลุมทุกกรณีโดยไม่ทับซ้อนกัน",
-            goal: 'กำหนด <b>age = 10</b> ถ้าอายุน้อยกว่า 12 พิมพ์ <b>เด็ก 50 บาท</b> / ถ้า 60 ขึ้นไป พิมพ์ <b>สูงวัย 60 บาท</b> / นอกนั้น <b>ผู้ใหญ่ 100 บาท</b>',
-            starter: '# ภารกิจ: เครื่องขายตั๋วสวนสนุก\nage = 10\n\n',
-            hint: '<code>if age < 12:</code> → <code>elif age >= 60:</code> → <code>else:</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "เด็ก 50 บาท") && /elif\s+/.test(code)
-          },
-          {
-            title: "ร่ายคาถาให้ถูกคำ",
-            desc: "if เทียบข้อความได้ด้วย == เหมือนตัวเลขเลย — แต่ต้องสะกดตรงเป๊ะทุกตัวอักษร",
-            goal: 'กำหนด <b>spell = "ไฟ"</b> ถ้าคาถาคือ <b>"ไฟ"</b> ให้แสดง <b>ลุกโชน!</b> ไม่งั้นแสดง <b>แชะ... ไม่มีอะไรเกิดขึ้น</b>',
-            starter: '# ภารกิจ: เครื่องตรวจคาถา\nspell = "ไฟ"\n\n',
-            hint: '<code>if spell == "ไฟ":</code> — เทียบข้อความต้องมีเครื่องหมายคำพูด',
-            xp: 60,
-            check: (out, code) => eq(out, "ลุกโชน!") && /==\s*["']/.test(code)
-          },
-          {
-            title: "if แบบบรรทัดเดียว",
-            desc: "ท่าลัดของ Python: ค่า1 if เงื่อนไข else ค่า2 — เลือกค่าตามเงื่อนไขจบในบรรทัดเดียว (เรียกว่า conditional expression)",
-            goal: 'กำหนด <b>hp = 1</b> จงสร้างตัวแปร status ด้วย if บรรทัดเดียว: ได้ <b>"ชนะ"</b> ถ้า hp > 0 ไม่งั้น <b>"แพ้"</b> แล้ว print (ต้องได้ <b>ชนะ</b>)',
-            starter: '# ภารกิจ: ตัดสินผลแบบมือโปร\nhp = 1\n# status = ... if ... else ...\n\nprint(status)\n',
-            hint: '<code>status = "ชนะ" if hp > 0 else "แพ้"</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "ชนะ") && /if\s+.+\s+else\s+/.test(code)
-          }
+          { title: "อ่านค่าจากคีย์", desc: "เข้าถึงค่าผ่านคีย์ในวงเล็บเหลี่ยม", goal: "แสดงค่า hp ของ player (ต้องได้ <b>100</b>)", starter: "player = {\"name\": \"มะลิ\", \"hp\": 100}\n", hint: "<code>print(player[\"hp\"])</code>", xp: 50, check: (out, code) => eq(out, "100") && /\[.hp.\]/.test(code) },
+          { title: "เพิ่มคีย์ใหม่", desc: "กำหนดค่าให้คีย์ใหม่เพื่อเพิ่มเข้า dict", goal: "เพิ่ม mp=50 แล้วแสดงค่า mp (ต้องได้ <b>50</b>)", starter: "player = {\"name\": \"มะลิ\", \"hp\": 100}\n", hint: "<code>player[\"mp\"] = 50</code> แล้ว <code>print(player[\"mp\"])</code>", xp: 50, check: (out, code) => eq(out, "50") && /\[.mp.\]\s*=/.test(code) },
+          { title: "แก้ค่าเดิม", desc: "กำหนดค่าให้คีย์ที่มีอยู่เพื่อแก้ไข", goal: "เปลี่ยน hp เป็น 75 แล้วแสดง (ต้องได้ <b>75</b>)", starter: "player = {\"name\": \"มะลิ\", \"hp\": 100}\n", hint: "<code>player[\"hp\"] = 75</code> แล้ว print", xp: 50, check: (out, code) => eq(out, "75") && /\[.hp.\]\s*=\s*75/.test(code) },
+          { title: "เช็คคีย์", desc: "in เช็คว่ามีคีย์นั้นใน dict ไหม", goal: "เช็คว่ามีคีย์ \"hp\" ไหม (ต้องได้ <b>True</b>)", starter: "player = {\"name\": \"มะลิ\", \"hp\": 100}\n", hint: "<code>print(\"hp\" in player)</code>", xp: 60, check: (out, code) => eq(out, "True") && /in\s+player/.test(code) },
+          { title: "หาความยาว", desc: "len() นับจำนวนคู่คีย์-ค่า", goal: "แสดงจำนวนคีย์ใน player (ต้องได้ <b>2</b>)", starter: "player = {\"name\": \"มะลิ\", \"hp\": 100}\n", hint: "<code>print(len(player))</code>", xp: 50, check: (out, code) => eq(out, "2") && /len\(/.test(code) }
         ]
       },
       {
-        id: "loop", icon: "🔁", title: "ลูป For / While",
-        blurb: "ทำงานซ้ำร้อยรอบด้วยโค้ดไม่กี่บรรทัด — พลังที่แท้จริงของคอมพิวเตอร์",
+        id: "operator", icon: "operator", title: "บทที่ 6: ตัวดำเนินการ (Operators)",
+        blurb: "เลขคณิต, ตรรกะ, เปรียบเทียบ, bitwise, identity และ membership",
         lesson: [
-          { h: "for + range — วนตามจำนวนรอบ", p: "<code>range(1, 6)</code> ให้เลข 1 ถึง 5 (หยุดก่อนตัวหลังเสมอ) — โค้ดที่จะทำซ้ำต้องย่อหน้าเข้าไปในลูป", code: 'for i in range(1, 6):\n    print(i)   # 1 2 3 4 5' },
-          { h: "for วน list โดยตรง", p: "หยิบสมาชิกใน list มาให้ทีละตัว ไม่ต้องยุ่งกับตำแหน่งเลย — อ่านเป็นภาษาคนว่า \"สำหรับของแต่ละชิ้นใน...\"", code: 'for item in items:\n    print(item)' },
-          { h: "while — วนตามเงื่อนไข", p: "วนตราบใดที่เงื่อนไขยังจริง ใช้เมื่อไม่รู้จำนวนรอบล่วงหน้า — <b>ต้องมี</b>บรรทัดที่ทำให้เงื่อนไขเป็นเท็จได้ ไม่งั้นลูปไม่มีวันจบ!", code: 'n = 3\nwhile n > 0:\n    print(n)\n    n -= 1' },
-          { h: "break / continue และลูปซ้อนลูป", p: "<code>break</code> หยุดลูปทันที, <code>continue</code> ข้ามรอบนี้ไปรอบถัดไป — และใน for มี for อีกชั้นได้ สำหรับงานแบบตาราง/กระดาน", code: 'for i in range(10):\n    if i == 3:\n        continue   # ข้าม 3\n    if i == 6:\n        break      # หยุดที่ 6\n    print(i)' }
+          { h: "เลขคณิตและเปรียบเทียบ", p: "<b>เลขคณิต:</b> + - * / // (หารปัดลง) % (เศษ) ** (ยกกำลัง) • <b>เปรียบเทียบ:</b> > < >= <= == != ให้ผลเป็น True/False", code: "print(17 % 5)   # 2 (เศษ)\nprint(2 ** 10)  # 1024\nprint(10 >= 10) # True" },
+          { h: "ตรรกะ (Logical)", p: "<b>and</b> จริงทั้งคู่ • <b>or</b> จริงตัวใดตัวหนึ่ง • <b>not</b> กลับค่า — ใช้รวมเงื่อนไขหลายอย่าง", code: "print(True and False)  # False\nprint(True or False)   # True\nprint(not True)        # False" },
+          { h: "Identity และ Membership", p: "<b>is</b> เช็คว่าเป็นวัตถุเดียวกันไหม • <b>in</b> เช็คว่าอยู่ในลำดับไหม (ใช้บ่อยกับ list/string)", code: "print(\"a\" in \"abc\")     # True\nprint(3 in [1, 2, 3])   # True" },
+          { h: "Bitwise", p: "ทำงานระดับบิต: <code>&</code> AND • <code>|</code> OR • <code>^</code> XOR • <code>&lt;&lt;</code> เลื่อนซ้าย • <code>&gt;&gt;</code> เลื่อนขวา", code: "print(5 & 3)   # 1\nprint(5 | 2)   # 7\nprint(1 << 3)  # 8" }
         ],
         stages: [
-          {
-            title: "วนลูปเก็บเหรียญ",
-            desc: "for i in range(1, 6) จะวน 5 รอบ โดย i มีค่า 1,2,3,4,5 (range หยุดก่อนเลขตัวหลัง) บรรทัดในลูปต้องย่อหน้าเข้าไป",
-            goal: 'ใช้ <b>for loop</b> แสดง <b>เก็บเหรียญที่ 1</b> ไปจนถึง <b>เก็บเหรียญที่ 5</b> (5 บรรทัด)',
-            starter: '# ภารกิจ: วนลูปเก็บเหรียญ 5 อัน\nfor i in range(1, 6):\n    print()\n',
-            hint: 'ในลูป ลอง <code>print("เก็บเหรียญที่", i)</code>',
-            xp: 50,
-            check: (out, code) => { const l = lines(out); return /for\s+/.test(code) && l.length === 5 && l.every((s, i) => s === `เก็บเหรียญที่ ${i + 1}`); }
-          },
-          {
-            title: "รวมสมบัติทั้งหมด",
-            desc: "รูปแบบที่ใช้บ่อยสุดของลูป: สร้างตัวแปรผลรวมไว้ก่อน แล้วบวกสะสมทีละรอบ",
-            goal: 'ใช้ for loop รวมตัวเลข <b>1 ถึง 10</b> เก็บในตัวแปร total แล้ว print ออกมา (ต้องได้ <b>55</b>)',
-            starter: '# ภารกิจ: รวมค่าสมบัติ 1 ถึง 10\ntotal = 0\nfor i in range(1, 11):\n    # บวก i เข้าไปใน total\n\nprint(total)\n',
-            hint: 'ในลูปเขียน <code>total = total + i</code> (หรือย่อเป็น <code>total += i</code>)',
-            xp: 60,
-            check: (out, code) => eq(out, "55") && /for\s+/.test(code) && /range\(/.test(code)
-          },
-          {
-            title: "นับถอยหลังด้วย While",
-            desc: "while จะวนไปเรื่อยๆ ตราบใดที่เงื่อนไขยังจริง ระวัง! ต้องมีบรรทัดที่ทำให้เงื่อนไขเป็นเท็จได้ ไม่งั้นลูปจะไม่มีวันจบ",
-            goal: 'ใช้ <b>while</b> นับถอยหลัง <b>3, 2, 1</b> (บรรทัดละเลข) แล้วปิดท้ายด้วย <b>ทะยานออกไป!</b>',
-            starter: '# ภารกิจ: นับถอยหลังปล่อยจรวด\ncount = 3\nwhile count > 0:\n    print(count)\n    # อย่าลืมลดค่า count!\n\nprint("ทะยานออกไป!")\n',
-            hint: 'ในลูปเพิ่ม <code>count = count - 1</code> (หรือ <code>count -= 1</code>) ไม่งั้นลูปไม่จบ',
-            xp: 60,
-            check: (out, code) => { const l = lines(out); return /while\s+/.test(code) && l.length === 4 && l[0] === "3" && l[1] === "2" && l[2] === "1" && l[3] === "ทะยานออกไป!"; }
-          },
-          {
-            title: "กรองเฉพาะเลขคู่",
-            desc: "รวมพลังลูปกับ if: วนดูตัวเลขทีละตัว แล้วเลือกทำเฉพาะตัวที่เข้าเงื่อนไข เลขคู่คือเลขที่หาร 2 ลงตัว (เศษเป็น 0)",
-            goal: 'วนลูปเลข 1 ถึง 10 แล้ว print <b>เฉพาะเลขคู่</b> (ต้องได้ 2, 4, 6, 8, 10 บรรทัดละเลข)',
-            starter: '# ภารกิจ: เดินเก็บเฉพาะเหรียญเลขคู่\nfor i in range(1, 11):\n    # print เฉพาะตอนที่ i เป็นเลขคู่\n\n',
-            hint: 'ในลูปเช็ค <code>if i % 2 == 0:</code> แล้วค่อย <code>print(i)</code>',
-            xp: 80,
-            check: (out, code) => { const l = lines(out); return /for\s+/.test(code) && /%/.test(code) && l.join(",") === "2,4,6,8,10"; }
-          },
-          {
-            title: "หยุดทันทีด้วย break",
-            desc: "break สั่งให้ลูปหยุดกลางคันทันทีที่เจอ ใช้ตอน \"เจอสิ่งที่ตามหาแล้ว ไม่ต้องหาต่อ\" ประหยัดเวลาไปเยอะ",
-            goal: 'วนลูปเปิดหีบใน <b>chest</b> เมื่อเจอ <b>"กุญแจ"</b> ให้พิมพ์ <b>เจอกุญแจแล้ว!</b> แล้ว <b>break</b> ทันที (ผลลัพธ์ต้องมีแค่บรรทัดเดียว)',
-            starter: '# ภารกิจ: หากุญแจในหีบ เจอแล้วหยุดหาทันที\nchest = ["หิน", "ผ้า", "กุญแจ", "เหรียญ"]\nfor item in chest:\n    # ถ้า item คือกุญแจ ให้พิมพ์แล้ว break\n\n',
-            hint: 'ในลูป: <code>if item == "กุญแจ":</code> แล้วข้างในมี print กับ <code>break</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "เจอกุญแจแล้ว!") && /\bbreak\b/.test(code)
-          },
-          {
-            title: "ลูปซ้อนลูป",
-            desc: "ลูปข้างในลูปอีกชั้น! ลูปนอกคุมแถว ลูปในคุมของในแต่ละแถว — นี่คือวิธีวาดตาราง กระดานเกม หรือแผนที่",
-            goal: 'ใช้ <b>ลูปซ้อนลูป</b> (for สองชั้น) วาดกำแพงดาว 3 แถว แถวละ 3 ดวง:<span class="fc">***\n***\n***</span>',
-            starter: '# ภารกิจ: ก่อกำแพงดาว 3x3 ด้วยลูปซ้อนลูป\nfor i in range(3):\n    row = ""\n    for j in range(3):\n        # ต่อ * เข้าไปใน row\n\n    print(row)\n',
-            hint: 'ในลูปชั้นใน: <code>row = row + "*"</code> (หรือ <code>row += "*"</code>) แล้ว print(row) อยู่ในลูปชั้นนอก',
-            xp: 100,
-            check: (out, code) => { const l = lines(out); return l.length === 3 && l.every(s => s === "***") && (code.match(/for\s/g) || []).length >= 2; }
-          },
-          {
-            title: "ลาดตระเวนทั้ง list",
-            desc: "for วน list ได้โดยตรง: for item in items จะหยิบสมาชิกมาให้ทีละตัว ไม่ต้องยุ่งกับตำแหน่งเลย",
-            goal: 'มี <b>monsters = ["สไลม์", "ค้างคาว", "มังกร"]</b> จงวนลูปพิมพ์ <b>พบ ...</b> ตามด้วยชื่อมอนสเตอร์ทีละตัว (3 บรรทัด)',
-            starter: '# ภารกิจ: ออกลาดตระเวนสำรวจมอนสเตอร์\nmonsters = ["สไลม์", "ค้างคาว", "มังกร"]\n\n',
-            hint: '<code>for m in monsters:</code> แล้วข้างใน <code>print("พบ", m)</code>',
-            xp: 60,
-            check: (out, code) => { const l = lines(out); return l.length === 3 && l[0] === "พบ สไลม์" && l[1] === "พบ ค้างคาว" && l[2] === "พบ มังกร" && /for\s+\w+\s+in\s+monsters/.test(code); }
-          },
-          {
-            title: "ข้ามรอบด้วย continue",
-            desc: "continue สั่งข้ามรอบปัจจุบันไปเริ่มรอบถัดไปทันที — คู่แฝดของ break แต่ไม่หยุดลูป แค่โดดข้าม",
-            goal: 'วนเลข 1 ถึง 5 แต่ใช้ <b>continue</b> ข้ามเลข <b>3</b> (ต้องได้ 1, 2, 4, 5 บรรทัดละเลข)',
-            starter: '# ภารกิจ: เดินข้ามกับดักช่องที่ 3\nfor i in range(1, 6):\n    # ถ้า i คือ 3 ให้ continue\n\n    print(i)\n',
-            hint: 'ก่อน print: <code>if i == 3:</code> แล้วข้างในใส่ <code>continue</code>',
-            xp: 80,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "1,2,4,5" && /\bcontinue\b/.test(code); }
-          },
-          {
-            title: "ท่องสูตรคูณแม่ 2",
-            desc: "รวมลูปกับ f-string สร้างตารางสูตรคูณ — แบบฝึกหัดอมตะที่โปรแกรมเมอร์ทุกคนต้องเคยเขียน",
-            goal: 'ใช้ลูปพิมพ์สูตรคูณแม่ 2 ตั้งแต่ x1 ถึง x6 ในรูปแบบ <b>2 x 1 = 2</b> ไปจนถึง <b>2 x 6 = 12</b> (6 บรรทัด)',
-            starter: '# ภารกิจ: ท่องสูตรคูณด้วยลูป\nfor i in range(1, 7):\n    # พิมพ์ 2 x i = ผลคูณ\n\n',
-            hint: 'ในลูป: <code>print(f"2 x {i} = {2 * i}")</code>',
-            xp: 100,
-            check: (out, code) => { const l = lines(out); if (l.length !== 6 || !/for\s+/.test(code)) return false; for (let k = 0; k < 6; k++) { if (l[k] !== "2 x " + (k + 1) + " = " + (2 * (k + 1))) return false; } return true; }
-          },
-          {
-            title: "สะกดทีละตัวอักษร",
-            desc: "for วนข้อความได้ด้วย! จะได้ตัวอักษรมาทีละตัว — ใช้วิเคราะห์หรือแปลงข้อความทีละอักขระ",
-            goal: 'วนลูปข้อความ <b>"code"</b> แล้ว print ตัวอักษร<b>ทีละตัว</b> (4 บรรทัด: c, o, d, e)',
-            starter: '# ภารกิจ: สะกดคำทีละตัว\nword = "code"\n\n',
-            hint: '<code>for ch in word:</code> แล้ว <code>print(ch)</code>',
-            xp: 60,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "c,o,d,e" && /for\s+\w+\s+in\s+/.test(code); }
-          },
-          {
-            title: "นับถอยหลังด้วย range",
-            desc: "range รับค่าที่สามเป็น \"ก้าว\" ได้: range(5, 0, -1) คือเริ่ม 5 ถอยทีละ 1 จนก่อนถึง 0 — ลูปถอยหลังไม่ต้องพึ่ง while",
-            goal: 'ใช้ <b>for กับ range สามค่า</b> นับถอยหลัง <b>5 ถึง 1</b> (บรรทัดละเลข)',
-            starter: '# ภารกิจ: นับถอยหลังฉบับ range\n\n',
-            hint: '<code>for i in range(5, 0, -1):</code> แล้ว <code>print(i)</code>',
-            xp: 80,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "5,4,3,2,1" && /range\([^)]*-\s*1\s*\)/.test(code); }
-          }
+          { title: "หารและเศษ", desc: "// หารปัดลง, % เศษจากการหาร", goal: "แสดง 2 บรรทัด: <b>17 % 5</b> และ <b>17 // 5</b> (ต้องได้ <b>2</b> และ <b>3</b>)", starter: "", hint: "<code>print(17 % 5)</code> และ <code>print(17 // 5)</code>", xp: 40, check: (out) => { const l = lines(out); return l[0] === "2" && l[1] === "3"; } },
+          { title: "ยกกำลัง", desc: "** คือการยกกำลัง", goal: "แสดง 2 ยกกำลัง 10 (ต้องได้ <b>1024</b>)", starter: "", hint: "<code>print(2 ** 10)</code>", xp: 40, check: (out, code) => eq(out, "1024") && /\*\*/.test(code) },
+          { title: "ตรรกะ and/or", desc: "and จริงทั้งคู่, or จริงตัวใดตัวหนึ่ง", goal: "แสดง 2 บรรทัด: <b>True and False</b> และ <b>True or False</b> (ต้องได้ <b>False</b> และ <b>True</b>)", starter: "", hint: "<code>print(True and False)</code> และ <code>print(True or False)</code>", xp: 50, check: (out) => { const l = lines(out); return l[0] === "False" && l[1] === "True"; } },
+          { title: "membership in", desc: "in เช็คว่าอยู่ในลำดับไหม", goal: "เช็คว่า 3 อยู่ใน [1,2,3] ไหม (ต้องได้ <b>True</b>)", starter: "", hint: "<code>print(3 in [1, 2, 3])</code>", xp: 50, check: (out, code) => eq(out, "True") && /\bin\b/.test(code) },
+          { title: "เทียบช่วง", desc: "Python เขียนเงื่อนไขช่วงต่อกันได้ เช่น 10 <= x <= 20", goal: "age=15 เช็คว่า 10 ≤ age ≤ 18 ไหม (ต้องได้ <b>True</b>)", starter: "age = 15\n", hint: "<code>print(10 <= age <= 18)</code>", xp: 60, check: (out) => eq(out, "True") },
+          { title: "bitwise AND", desc: "& ทำ AND ระดับบิต", goal: "แสดงผลของ <b>5 & 3</b> (ต้องได้ <b>1</b>)", starter: "", hint: "<code>print(5 & 3)</code>", xp: 60, check: (out, code) => eq(out, "1") && /&/.test(code) }
         ]
       },
       {
-        id: "flowchart", icon: "🧭", title: "Flowchart สู่โค้ด",
-        blurb: "อ่านผังงานให้เป็น แล้วแปลงเป็นโค้ด — ทักษะออกแบบโปรแกรมก่อนลงมือเขียน",
+        id: "ifelse", icon: "ifelse", title: "บทที่ 7: คำสั่งเงื่อนไข (if)",
+        blurb: "if, if-else, if-elif-else และ nested if — สอนโปรแกรมให้ตัดสินใจ",
         lesson: [
-          { h: "สัญลักษณ์มาตรฐานของผังงาน", p: 'แต่ละรูปทรงมีความหมายตายตัว จำ 5 ตัวนี้ได้ก็อ่านผังงานได้ทุกแบบ ลูกศรคือลำดับการทำงาน:<span class="fc-slot" data-flow="legend"></span>' },
-          { h: "แปลงผังเป็นโค้ด", p: "ข้าวหลามตัดหนึ่งลูก = <code>if</code> หนึ่งตัว ส่วนเส้นที่วนกลับขึ้นไป = ลูป (<code>while</code> หรือ <code>for</code>) — ไล่ตามลูกศรทีละก้าว แล้วเขียนโค้ดตามลำดับนั้นเป๊ะๆ" },
-          { h: "เทคนิคไล่มือ (trace)", p: "จดค่าตัวแปรทุกครั้งที่ผ่านกล่องคำสั่ง แล้วเดินตามเส้นจนถึงจบ — ถ้าไล่มือแล้วได้ผลลัพธ์ตรงกับที่โจทย์บอก โค้ดที่เขียนตามผังก็จะถูกด้วย นี่คือทักษะที่ข้อสอบชอบวัดที่สุด" }
+          { h: "if และ else", p: "<b>if</b> ทำเมื่อเงื่อนไขจริง <b>else</b> ทำเมื่อเท็จ — สังเกต : ท้ายเงื่อนไข และ<b>การย่อหน้า</b>บอกว่าคำสั่งไหนอยู่ในเงื่อนไข", code: "if score >= 50:\n    print(\"ผ่าน\")\nelse:\n    print(\"ไม่ผ่าน\")" },
+          { h: "if-elif-else", p: "หลายเงื่อนไขใช้ <b>elif</b> ต่อกัน เช็คจากบนลงล่าง เข้าอันแรกที่จริง", code: "if score >= 80:\n    print(\"A\")\nelif score >= 70:\n    print(\"B\")\nelse:\n    print(\"F\")" },
+          { h: "Nested if", p: "if ซ้อนใน if ได้ ใช้เมื่อต้องเช็คหลายเงื่อนไขเป็นชั้นๆ — ระวังการย่อหน้าให้ถูกชั้น", code: "if hp > 0:\n    if level > 10:\n        print(\"สู้บอส\")\n    else:\n        print(\"ฝึกต่อ\")" }
         ],
         stages: [
-          {
-            title: "อ่านผังงานเงื่อนไข",
-            desc: "Flowchart คือแผนภาพแสดงลำดับการทำงานของโปรแกรม สี่เหลี่ยมคือคำสั่ง ข้าวหลามตัด (?) คือจุดตัดสินใจที่แยกเป็นสองทาง จงอ่านผังแล้วเขียนโค้ดให้ตรงเป๊ะ",
-            goal: 'เขียนโค้ดตามผังงานนี้ให้ตรงเป๊ะ:<span class="fc-slot" data-flow="fc0"></span>',
-            starter: '# ภารกิจ: แปลงผังงานเป็นโค้ด\n\n',
-            hint: 'เริ่มจาก <code>x = 10</code> แล้วใช้ if/else ตามเส้นทางในผัง — x เป็น 10 ซึ่งมากกว่า 5 ผลลัพธ์จึงควรเป็น "มากกว่า"',
-            xp: 80,
-            check: (out, code) => eq(out, "มากกว่า") && /if\s+/.test(code) && /x\s*=/.test(code)
-          },
-          {
-            title: "อ่านผังงานลูป",
-            desc: "ผังงานที่มีเส้นวนกลับขึ้นไปคือลูป! ตามเส้นดูว่าอะไรถูกทำซ้ำ และเงื่อนไขไหนที่ทำให้หลุดออกจากลูป",
-            goal: 'เขียนโค้ดตามผังงานนี้ (สังเกตเส้นที่วนกลับขึ้นไป):<span class="fc-slot" data-flow="fc1"></span>',
-            starter: '# ภารกิจ: แปลงผังงานลูปเป็นโค้ด\n\n',
-            hint: 'ใช้ <code>while i <= 3:</code> ข้างในมี print กับ i = i + 1 แล้วค่อย print("จบ") นอกลูป — หรือใช้ for ก็ได้ถ้าผลลัพธ์ตรงกัน',
-            xp: 80,
-            check: (out) => { const l = lines(out); return l.length === 4 && l[0] === "รอบที่ 1" && l[1] === "รอบที่ 2" && l[2] === "รอบที่ 3" && l[3] === "จบ"; }
-          },
-          {
-            title: "ผังงานเงื่อนไขในลูป",
-            desc: "ผังนี้มีทั้งลูปและจุดตัดสินใจข้างใน — เส้นทาง \"ไม่\" ของเงื่อนไขจะข้ามการพิมพ์แล้ววนต่อเลย",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc2"></span>ผลลัพธ์ที่ถูกต้อง: 1, 3, 5 (บรรทัดละเลข)',
-            starter: '# ภารกิจ: แปลงผังงานเป็นโค้ด (เลขคี่คือหาร 2 เหลือเศษ 1)\n\n',
-            hint: '<code>for i in range(1, 6):</code> แล้วข้างใน <code>if i % 2 == 1:</code> ค่อย print(i)',
-            xp: 100,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "1,3,5" && /for\s+|while\s+/.test(code) && /if\s+/.test(code); }
-          },
-          {
-            title: "ผังงานสะสมค่า",
-            desc: "ผังงานแบบสะสม (accumulator) พบบ่อยมากในข้อสอบ: มีตัวแปรเก็บผลรวม แล้ววนบวกเพิ่มทีละรอบ ค่อยแสดงผลตอนจบ",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc3"></span>(ต้องได้ <b>20</b>)',
-            starter: '# ภารกิจ: แปลงผังงานสะสมค่าเป็นโค้ด\n\n',
-            hint: '<code>total = 0</code> → <code>for i in range(1, 5):</code> → <code>total += i * 2</code> → print(total) นอกลูป — ลองไล่มือ: 2+4+6+8 = 20',
-            xp: 100,
-            check: (out, code) => eq(out, "20") && /total\s*/.test(code) && /for\s+|while\s+/.test(code)
-          },
-          {
-            title: "ผังงานหาค่ามากสุด",
-            desc: "ผังงานยอดฮิตในข้อสอบ: ตัวแปร best เก็บแชมป์ปัจจุบัน วนเทียบทีละตัว ใครมากกว่าก็ขึ้นแท่นแทน",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc4"></span>(ต้องได้ <b>75</b>)',
-            starter: '# ภารกิจ: หาคะแนนสูงสุดตามผังงาน\nscores = [40, 75, 60]\n\n',
-            hint: '<code>best = 0</code> → <code>for s in scores:</code> → <code>if s > best:</code> → <code>best = s</code> → print(best) นอกลูป',
-            xp: 100,
-            check: (out, code) => eq(out, "75") && /for\s+/.test(code) && /if\s+/.test(code)
-          },
-          {
-            title: "ผังงานใช้พลังงาน",
-            desc: "ผัง while ในสถานการณ์จริง: มีพลังงานจำกัด ทำซ้ำจนพลังไม่พอแล้วค่อยจบ — ไล่มือค่าพลังงานทุกรอบให้ดี",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc5"></span>',
-            starter: '# ภารกิจ: โจมตีจนกว่าจะหมดแรง\n\n',
-            hint: '<code>while energy >= 4:</code> ข้างในพิมพ์กับลดพลัง — ไล่มือ: 10 → 6 → 2 หยุด (โจมตีได้ 2 ครั้ง)',
-            xp: 100,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "โจมตี,โจมตี,หมดแรง" && /while\s+/.test(code); }
-          },
-          {
-            title: "ผังงานก้าวทีละสอง",
-            desc: "ผังลูปที่ตัวนับเพิ่มทีละ 2 — สังเกตกล่องอัปเดตค่าให้ดีว่าเพิ่มเท่าไหร่ต่อรอบ แล้วเขียนตามให้ตรง",
-            goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc6"></span>(ต้องได้ 2, 4, 6, 8 บรรทัดละเลข)',
-            starter: '# ภารกิจ: เดินก้าวละสองช่องตามผัง\n\n',
-            hint: '<code>while i <= 8:</code> ข้างในพิมพ์แล้ว <code>i += 2</code> — หรือใช้ <code>range(2, 9, 2)</code> ก็ได้',
-            xp: 100,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "2,4,6,8" && (/while\s+/.test(code) || /for\s+/.test(code)); }
-          }
+          { title: "ประตูเงื่อนไข", desc: "if-else เลือกทำตามเงื่อนไข", goal: "key=7 ถ้า > 5 แสดง <b>ประตูเปิด</b> ไม่งั้น <b>ประตูล็อก</b>", starter: "key = 7\n", hint: "<code>if key > 5:</code> ... <code>else:</code> ...", xp: 50, check: (out, code) => eq(out, "ประตูเปิด") && /if\s+/.test(code) },
+          { title: "บันไดเกรด", desc: "elif เช็คหลายช่วง จากมากไปน้อย", goal: "score=75: ≥80 A / ≥70 B / นอกนั้น F (ต้องได้ <b>B</b>)", starter: "score = 75\n", hint: "<code>if score >= 80: ... elif score >= 70: ... else: ...</code>", xp: 60, check: (out, code) => eq(out, "B") && /elif/.test(code) },
+          { title: "เงื่อนไขร่วม and", desc: "รวมสองเงื่อนไขด้วย and", goal: "hp=50, has_key=True ถ้า hp>0 และมีกุญแจ แสดง <b>ไปต่อ</b> ไม่งั้น <b>ติดอยู่</b>", starter: "hp = 50\nhas_key = True\n", hint: "<code>if hp > 0 and has_key:</code>", xp: 60, check: (out, code) => eq(out, "ไปต่อ") && /and/.test(code) },
+          { title: "คู่หรือคี่", desc: "% 2 == 0 คือเลขคู่", goal: "n=7 แสดง <b>คู่</b> หรือ <b>คี่</b> (ต้องได้ <b>คี่</b>)", starter: "n = 7\n", hint: "<code>if n % 2 == 0:</code>", xp: 50, check: (out, code) => eq(out, "คี่") && /%\s*2/.test(code) },
+          { title: "เงื่อนไขซ้อน", desc: "if ซ้อนใน if ตรวจเป็นชั้นๆ", goal: "hp=70, lv=12 ถ้า hp>50 และ lv>10 แสดง <b>สู้บอส</b>", starter: "hp = 70\nlv = 12\n", hint: "if hp>50 ข้างในมี if lv>10 อีกชั้น", xp: 60, check: (out, code) => eq(out, "สู้บอส") && (code.match(/if\s+/g) || []).length >= 2 }
         ]
       },
       {
-        id: "function", icon: "🧩", title: "ฟังก์ชัน (Function)",
-        blurb: "ห่อโค้ดเป็นท่าไม้ตาย ตั้งชื่อไว้ แล้วเรียกใช้ซ้ำได้ไม่จำกัด",
+        id: "loop", icon: "loop", title: "บทที่ 8: คำสั่งทำซ้ำ (Loop)",
+        blurb: "while และ for พร้อม break, continue, else และลูปซ้อน",
         lesson: [
-          { h: "สร้างด้วย def เรียกด้วยชื่อ()", p: "ห่อโค้ดไว้ใต้ชื่อที่ตั้งเอง โค้ดข้างในจะยังไม่ทำงานจนกว่าจะถูก \"เรียก\" ด้วยชื่อตามด้วยวงเล็บ", code: 'def greet():\n    print("สวัสดี")\n\ngreet()   # เรียกใช้ตรงนี้' },
-          { h: "parameter และ return", p: "รับข้อมูลเข้าทางวงเล็บ (parameter) และส่งผลลัพธ์กลับด้วย <code>return</code> เพื่อเอาไปใช้ต่อ — เจอ return เมื่อไหร่ ฟังก์ชันจบทันที", code: 'def double(x):\n    return x * 2\n\nprint(double(21))   # 42' },
-          { h: "หลายค่า และค่าเริ่มต้น", p: "รับได้หลาย parameter คั่นด้วยจุลภาค และตั้งค่าเริ่มต้น (default) ได้ ถ้าผู้เรียกไม่ส่งค่ามาก็ใช้ค่านั้นแทน", code: 'def heal(target, amount=10):\n    print(target, "+", amount)\n\nheal("มะลิ")        # มะลิ + 10\nheal("มะลิ", 50)    # มะลิ + 50' },
-          { h: "ฟังก์ชันเรียกฟังก์ชัน", p: "ฟังก์ชันใช้ฟังก์ชันอื่นข้างในได้ — โปรแกรมใหญ่ๆ ทั้งหลายก็คือฟังก์ชันเล็กๆ ที่เรียกต่อกันเป็นทอดๆ นั่นเอง", code: 'def tax(p):\n    return p // 10\n\ndef total(p):\n    return p + tax(p)' }
+          { h: "ลูป for", p: "วนตามลำดับหรือช่วงตัวเลข <b>range(a, b)</b> ให้เลข a ถึง b-1 — เหมาะเมื่อรู้จำนวนรอบ", code: "for i in range(1, 4):\n    print(i)  # 1 2 3" },
+          { h: "ลูป while", p: "วนตราบใดที่เงื่อนไขจริง — ต้องมีบรรทัดเปลี่ยนค่าเพื่อให้เงื่อนไขเป็นเท็จ ไม่งั้นวนไม่จบ", code: "n = 3\nwhile n > 0:\n    print(n)\n    n -= 1" },
+          { h: "break และ continue", p: "<b>break</b> ออกจากลูปทันที • <b>continue</b> ข้ามไปรอบถัดไป — ใช้ควบคุมการวนละเอียดขึ้น", code: "for i in range(1, 6):\n    if i == 3:\n        continue  # ข้าม 3\n    print(i)  # 1 2 4 5" }
         ],
         stages: [
-          {
-            title: "ท่าไม้ตายแรก",
-            desc: "def คือการสร้างฟังก์ชัน — ห่อโค้ดไว้ใต้ชื่อที่เราตั้ง โค้ดจะยังไม่ทำงานจนกว่าจะถูก \"เรียก\" ด้วยชื่อตามด้วยวงเล็บ",
-            goal: 'สร้างฟังก์ชัน <b>greet</b> ที่พิมพ์ <b>สวัสดีนักผจญภัย</b> แล้วเรียกใช้มัน 1 ครั้ง',
-            starter: '# ภารกิจ: สร้างและเรียกใช้ฟังก์ชันแรก\ndef greet():\n    print("สวัสดีนักผจญภัย")\n\n# เรียกใช้ฟังก์ชันตรงนี้\n',
-            hint: 'เรียกฟังก์ชันด้วยชื่อ + วงเล็บ: <code>greet()</code> (ไม่ต้องมี def)',
-            xp: 60,
-            check: (out, code) => eq(out, "สวัสดีนักผจญภัย") && /def\s+greet/.test(code)
-          },
-          {
-            title: "รับค่าและส่งค่ากลับ",
-            desc: "ฟังก์ชันรับข้อมูลผ่านวงเล็บ (parameter) และส่งผลลัพธ์กลับด้วย return ทำให้เอาผลไปใช้ต่อได้",
-            goal: 'สร้างฟังก์ชัน <b>double(x)</b> ที่ return ค่า x คูณ 2 แล้ว <b>print(double(21))</b> (ต้องได้ <b>42</b>)',
-            starter: '# ภารกิจ: สร้างเวทเพิ่มพลังสองเท่า\ndef double(x):\n    # return ค่า x คูณ 2\n\nprint(double(21))\n',
-            hint: 'ในฟังก์ชันเขียน <code>return x * 2</code>',
-            xp: 60,
-            check: (out, code) => eq(out, "42") && /def\s+double/.test(code) && /return/.test(code)
-          },
-          {
-            title: "รับหลายค่าพร้อมกัน",
-            desc: "ฟังก์ชันรับ parameter ได้หลายตัว คั่นด้วยจุลภาค ทำให้ท่าไม้ตายของเรายืดหยุ่นขึ้นมาก",
-            goal: 'สร้างฟังก์ชัน <b>attack(name, dmg)</b> ที่พิมพ์ <b>{name} โจมตี {dmg} ดาเมจ</b> แล้วเรียก <b>attack("อัศวิน", 30)</b> (ต้องได้ <b>อัศวิน โจมตี 30 ดาเมจ</b>)',
-            starter: '# ภารกิจ: สร้างท่าโจมตีที่ใครก็ใช้ได้\ndef attack(name, dmg):\n    # พิมพ์ข้อความโจมตีด้วย f-string\n\nattack("อัศวิน", 30)\n',
-            hint: 'ในฟังก์ชัน: <code>print(f"{name} โจมตี {dmg} ดาเมจ")</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "อัศวิน โจมตี 30 ดาเมจ") && /def\s+attack\s*\(\s*\w+\s*,\s*\w+\s*\)/.test(code)
-          },
-          {
-            title: "ค่าเริ่มต้น (Default)",
-            desc: "กำหนดค่าเริ่มต้นให้ parameter ได้ เช่น def heal(amount=10) — ถ้าเรียกโดยไม่ส่งค่า จะใช้ 10 อัตโนมัติ",
-            goal: 'สร้างฟังก์ชัน <b>heal(amount=10)</b> ที่ return amount แล้ว print ผลของ <b>heal()</b> และ <b>heal(50)</b> (ต้องได้ <b>10</b> และ <b>50</b>)',
-            starter: '# ภารกิจ: ยาสามัญฟื้น 10 แต่ระบุเองก็ได้\n# สร้างฟังก์ชัน heal ที่มีค่าเริ่มต้น\n\nprint(heal())\nprint(heal(50))\n',
-            hint: '<code>def heal(amount=10):</code> แล้วข้างใน <code>return amount</code>',
-            xp: 80,
-            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "10" && l[1] === "50" && /def\s+heal\s*\(\s*\w+\s*=\s*10\s*\)/.test(code); }
-          },
-          {
-            title: "ฟังก์ชัน + ลูป = คอมโบ",
-            desc: "รวมทุกอย่างที่เรียนมา: สร้างฟังก์ชันแล้วเรียกใช้ซ้ำๆ ในลูป นี่คือวิธีที่โปรแกรมจริงทำงาน",
-            goal: 'สร้างฟังก์ชัน <b>power_up(lv)</b> ที่ return ค่า lv + 10 แล้วใช้ for loop เรียกกับเลข 1 ถึง 3 และ print ผลลัพธ์ (ต้องได้ <b>11, 12, 13</b> บรรทัดละเลข)',
-            starter: '# ภารกิจ: อัพพลังทีมทั้ง 3 คน\ndef power_up(lv):\n    return lv + 10\n\n# วนลูป 1 ถึง 3 แล้ว print(power_up(i))\n',
-            hint: '<code>for i in range(1, 4):</code> แล้วในลูป <code>print(power_up(i))</code>',
-            xp: 100,
-            check: (out, code) => { const l = lines(out); return /def\s+power_up/.test(code) && /for\s+/.test(code) && l.join(",") === "11,12,13"; }
-          },
-          {
-            title: "ฟังก์ชันนักตัดสิน",
-            desc: "ใส่ if ในฟังก์ชันเพื่อให้มัน \"ตัดสินใจ\" แล้ว return คำตอบต่างกัน — สังเกตว่าเจอ return ปุ๊บ ฟังก์ชันจบทันที",
-            goal: 'สร้างฟังก์ชัน <b>rank(score)</b> ที่ return <b>ทอง</b> ถ้า score ≥ 80 ไม่งั้น return <b>เงิน</b> แล้ว print ผลของ rank(90) และ rank(55) (ต้องได้ <b>ทอง</b> และ <b>เงิน</b>)',
-            starter: '# ภารกิจ: เครื่องแจกเหรียญรางวัล\ndef rank(score):\n    # return "ทอง" หรือ "เงิน"\n\nprint(rank(90))\nprint(rank(55))\n',
-            hint: 'ในฟังก์ชัน: <code>if score >= 80: return "ทอง"</code> บรรทัดถัดมา <code>return "เงิน"</code>',
-            xp: 80,
-            check: (out, code) => { const l = lines(out); return l.join(",") === "ทอง,เงิน" && /def\s+rank/.test(code) && /return/.test(code); }
-          },
-          {
-            title: "ฟังก์ชันเรียกฟังก์ชัน",
-            desc: "ฟังก์ชันใช้ฟังก์ชันอื่นข้างในได้ — โปรแกรมใหญ่ๆ ทั้งหลายคือฟังก์ชันเล็กๆ ที่เรียกต่อกันเป็นทอดๆ นี่แหละ",
-            goal: 'สร้าง <b>tax(p)</b> ที่ return p // 10 (ภาษี 10%) และ <b>total(p)</b> ที่ return p บวกกับ tax(p) แล้ว print(total(200)) (ต้องได้ <b>220</b>)',
-            starter: '# ภารกิจ: คิดราคารวมภาษีแบบมืออาชีพ\ndef tax(p):\n    return p // 10\n\ndef total(p):\n    # return ราคารวมภาษี โดยเรียกใช้ tax\n\nprint(total(200))\n',
-            hint: 'ใน total: <code>return p + tax(p)</code>',
-            xp: 100,
-            check: (out, code) => eq(out, "220") && (code.match(/def\s+/g) || []).length >= 2
-          },
-          {
-            title: "ท่าตะโกน",
-            desc: "ฟังก์ชันทำงานกับข้อความได้เหมือนตัวเลข — รับข้อความ แปลงร่าง แล้ว return กลับ",
-            goal: 'สร้างฟังก์ชัน <b>shout(msg)</b> ที่ return ข้อความตัวพิมพ์ใหญ่ + <b>"!"</b> ต่อท้าย แล้ว print(shout("victory")) (ต้องได้ <b>VICTORY!</b>)',
-            starter: '# ภารกิจ: เครื่องขยายเสียงเวทมนตร์\ndef shout(msg):\n    # return ตัวพิมพ์ใหญ่ตามด้วย !\n\nprint(shout("victory"))\n',
-            hint: '<code>return msg.upper() + "!"</code>',
-            xp: 80,
-            check: (out, code) => eq(out, "VICTORY!") && /def\s+shout/.test(code) && /\.upper\(\)/.test(code)
-          },
-          {
-            title: "ฟังก์ชันนับคนผ่าน",
-            desc: "ฟังก์ชันรับ list ได้ด้วย! รวมลูปกับตัวนับไว้ในฟังก์ชัน แล้วเรียกใช้กับข้อมูลชุดไหนก็ได้ — นี่คือโค้ดที่นำกลับมาใช้ซ้ำได้จริง",
-            goal: 'สร้างฟังก์ชัน <b>count_pass(scores)</b> ที่วนนับจำนวนคะแนน ≥ 50 แล้ว return จากนั้น print(count_pass([40, 60, 80])) (ต้องได้ <b>2</b>)',
-            starter: '# ภารกิจ: เครื่องนับผู้ผ่านการทดสอบ\ndef count_pass(scores):\n    count = 0\n    # วนนับคะแนนที่ >= 50\n\n    return count\n\nprint(count_pass([40, 60, 80]))\n',
-            hint: 'ในฟังก์ชัน: <code>for s in scores:</code> แล้ว <code>if s >= 50: count += 1</code>',
-            xp: 100,
-            check: (out, code) => eq(out, "2") && /def\s+count_pass/.test(code) && /for\s+/.test(code)
-          }
+          { title: "วนด้วย for", desc: "range(1, 6) ให้ 1 ถึง 5", goal: "แสดง <b>เก็บเหรียญที่ 1</b> ถึง <b>5</b>", starter: "", hint: "<code>for i in range(1, 6): print(\"เก็บเหรียญที่\", i)</code>", xp: 50, check: (out, code) => { const l = lines(out); return l.length === 5 && l[0] === "เก็บเหรียญที่ 1" && l[4] === "เก็บเหรียญที่ 5" && /for\s+/.test(code); } },
+          { title: "ผลรวม 1 ถึง 10", desc: "สะสมค่าในตัวแปรระหว่างวนลูป", goal: "หาผลรวม 1 ถึง 10 (ต้องได้ <b>55</b>)", starter: "total = 0\n", hint: "<code>for i in range(1, 11): total += i</code> จบลูปค่อย print", xp: 60, check: (out, code) => eq(out, "55") && /for\s+/.test(code) },
+          { title: "นับถอยหลัง while", desc: "while วนจนเงื่อนไขเป็นเท็จ", goal: "count=3 นับถอยหลัง 3,2,1 แล้วแสดง <b>ทะยาน!</b>", starter: "count = 3\n", hint: "<code>while count > 0:</code> print แล้ว <code>count -= 1</code>", xp: 60, check: (out, code) => { const l = lines(out); return l.join(",") === "3,2,1,ทะยาน!" && /while/.test(code); } },
+          { title: "เฉพาะเลขคู่", desc: "รวม for กับ if กรองค่า", goal: "แสดงเลขคู่ 1 ถึง 10 (2,4,6,8,10 บรรทัดละเลข)", starter: "", hint: "<code>for i in range(1, 11): if i % 2 == 0: print(i)</code>", xp: 60, check: (out) => { const l = lines(out); return l.join(",") === "2,4,6,8,10"; } },
+          { title: "continue ข้ามค่า", desc: "continue ข้ามไปรอบถัดไป", goal: "แสดง 1-5 แต่ข้าม 3 (ต้องได้ 1,2,4,5)", starter: "", hint: "<code>if i == 3: continue</code>", xp: 60, check: (out, code) => { const l = lines(out); return l.join(",") === "1,2,4,5" && /continue/.test(code); } },
+          { title: "ลูปซ้อน", desc: "ลูปใน ลูป — สร้างตาราง/รูปทรง", goal: "พิมพ์ตาราง 3 แถว แต่ละแถวมี *** (ดาว 3 ดวง)", starter: "", hint: "<code>for i in range(3): print(\"*\" * 3)</code> หรือลูปซ้อน", xp: 80, check: (out) => { const l = lines(out); return l.length === 3 && l.every(s => s === "***"); } }
         ]
       },
       {
-        id: "project", icon: "🏆", title: "ด่านบอส: รวมพลัง",
-        blurb: "โจทย์ใหญ่ที่ต้องใช้ทุกวิชาที่เรียนมา — ผ่านได้คือของจริง!",
+        id: "flowchart", icon: "flowchart", title: "Flowchart สู่โค้ด",
+        blurb: "อ่านผังงานสัญลักษณ์มาตรฐานแล้วแปลงเป็นโค้ด Python — ฝึกคิดก่อนเขียน",
         lesson: [
-          { h: "สนามสอบรวมยอด", p: "ด่านบอสไม่มีความรู้ใหม่ — ทุกข้อคือสิ่งที่เรียนมาแล้วเอามาผสมกัน: ลูป + เงื่อนไข + ตัวแปรสะสม + ฟังก์ชัน ถ้าติดตรงไหน กลับไปทบทวนหัวข้อนั้นก่อนได้เสมอ" },
-          { h: "สูตรเอาชนะโจทย์ยาก 4 ขั้น", p: "1) อ่านโจทย์แล้ว<b>ไล่มือ</b>ผลลัพธ์ที่คาดหวังก่อน &nbsp;2) เขียนโครงใหญ่ (ลูป/เงื่อนไข) &nbsp;3) ค่อยเติมรายละเอียดข้างใน &nbsp;4) รันแล้วเทียบผลทีละบรรทัด ผิดตรงไหนแก้ตรงนั้น" },
-          { h: "ลำดับเงื่อนไขสำคัญมาก", p: "เคสที่<b>เจาะจงที่สุดต้องเช็คก่อน</b> เช่น \"หารทั้ง 3 และ 5 ลงตัว\" ต้องมาก่อน \"หาร 3 ลงตัว\" — เพราะ Python เลือกทางแรกที่จริงแล้วข้ามที่เหลือทันที" }
+          { h: "สัญลักษณ์ผังงานมาตรฐาน", p: 'ก่อนเขียนโค้ด นักออกแบบวาดผังงานด้วยสัญลักษณ์สากลชุดนี้ — จำให้ได้เพราะออกข้อสอบบ่อย:<span class="fc-slot" data-flow="legend"></span>' },
+          { h: "จากผังงานสู่โค้ด", p: "ข้าวหลามตัด = if, เส้นวนกลับ = loop, สี่เหลี่ยมด้านขนาน = input/print — อ่านทีละกล่องแล้วแปลงเป็น Python ตามลำดับ" }
         ],
-        boss: true,
         stages: [
-          {
-            title: "บอสที่ 1: เวทกับดาบ",
-            desc: "โจทย์คลาสสิกระดับตำนาน (FizzBuzz)! ต้องใช้ลูป เงื่อนไข และตัวดำเนินการ % พร้อมกัน — ระวังลำดับการเช็คเงื่อนไขให้ดี",
-            goal: 'วนเลข 1 ถึง 15: ถ้าหารด้วย <b>ทั้ง 3 และ 5</b> ลงตัว พิมพ์ <b>เวทดาบ</b> / หาร 3 ลงตัว พิมพ์ <b>เวท</b> / หาร 5 ลงตัว พิมพ์ <b>ดาบ</b> / นอกนั้นพิมพ์ตัวเลขนั้น (บรรทัดละหนึ่งอย่าง)',
-            starter: '# ด่านบอส: เวทกับดาบ (FizzBuzz)\n# เคล็ดลับ: เช็คกรณี "หารทั้งคู่ลงตัว" ก่อนเสมอ!\nfor i in range(1, 16):\n    pass  # ลบ pass แล้วเขียนเงื่อนไขของคุณ\n',
-            hint: 'โครงสร้าง: <code>if i % 3 == 0 and i % 5 == 0:</code> → <code>elif i % 3 == 0:</code> → <code>elif i % 5 == 0:</code> → <code>else: print(i)</code>',
-            xp: 120,
-            check: (out, code) => {
-              const expect = ["1","2","เวท","4","ดาบ","เวท","7","8","เวท","ดาบ","11","เวท","13","14","เวทดาบ"];
-              return lines(out).join("|") === expect.join("|") && /for\s+/.test(code);
-            }
-          },
-          {
-            title: "บอสที่ 2: ตัดเกรดทั้งชั้น",
-            desc: "รวมฟังก์ชัน + ลูป + เงื่อนไข: สร้างเครื่องตัดเกรดหนึ่งครั้ง แล้วใช้กับนักเรียนทุกคนด้วยลูป — นี่แหละพลังของฟังก์ชัน",
-            goal: 'มี <b>scores = [45, 82, 60, 95, 30]</b> จงสร้างฟังก์ชัน <b>grade(s)</b> ที่ return <b>ผ่าน</b> ถ้า s ≥ 50 ไม่งั้น return <b>ไม่ผ่าน</b> แล้ววนลูป print ผลของทุกคน (ต้องได้ ไม่ผ่าน, ผ่าน, ผ่าน, ผ่าน, ไม่ผ่าน)',
-            starter: '# ด่านบอส: ตัดเกรดนักเรียนทั้งชั้น\nscores = [45, 82, 60, 95, 30]\n\ndef grade(s):\n    # return "ผ่าน" หรือ "ไม่ผ่าน"\n\n# วนลูป scores แล้ว print(grade(...))\n',
-            hint: 'ในฟังก์ชัน: <code>if s >= 50: return "ผ่าน"</code> ไม่งั้น <code>return "ไม่ผ่าน"</code> แล้ววน <code>for s in scores: print(grade(s))</code>',
-            xp: 150,
-            check: (out, code) => {
-              const expect = ["ไม่ผ่าน","ผ่าน","ผ่าน","ผ่าน","ไม่ผ่าน"];
-              return lines(out).join("|") === expect.join("|") && /def\s+grade/.test(code) && /for\s+/.test(code);
-            }
-          },
-          {
-            title: "บอสใหญ่: ร้านยาปริศนา",
-            desc: "ด่านสุดท้ายของคอร์ส! จำลองการเดินซื้อของจริง: มีเงินจำกัด เดินดูราคาทีละชิ้น ซื้อได้ก็ซื้อ ไม่พอก็บอกตรงๆ — ใช้ลูป เงื่อนไข ตัวแปรสะสม และ f-string ครบทุกท่า",
-            goal: 'มี <b>gold = 120</b> และ <b>prices = [30, 50, 80]</b> วนดูราคาทีละชิ้น: ถ้าเงินพอ (gold ≥ price) ให้หักเงินแล้วพิมพ์ <b>ซื้อยาราคา {price}</b> / ถ้าไม่พอพิมพ์ <b>เงินไม่พอ</b> / จบแล้วพิมพ์ <b>เหลือเงิน {gold}</b><span class="fc">ผลที่ถูกต้อง:\nซื้อยาราคา 30\nซื้อยาราคา 50\nเงินไม่พอ\nเหลือเงิน 40</span>',
-            starter: '# ด่านบอสใหญ่: ร้านยาปริศนา\ngold = 120\nprices = [30, 50, 80]\n\nfor price in prices:\n    pass  # เช็คเงิน ซื้อ หรือบอกว่าไม่พอ\n\n# จบลูปแล้ว พิมพ์เงินที่เหลือ\n',
-            hint: 'ในลูป: <code>if gold >= price:</code> → <code>gold -= price</code> และ <code>print(f"ซื้อยาราคา {price}")</code> / else พิมพ์ "เงินไม่พอ" — ปิดท้ายนอกลูปด้วย <code>print(f"เหลือเงิน {gold}")</code>',
-            xp: 200,
-            check: (out, code) => {
-              const expect = ["ซื้อยาราคา 30","ซื้อยาราคา 50","เงินไม่พอ","เหลือเงิน 40"];
-              return lines(out).join("|") === expect.join("|") && /for\s+/.test(code) && /if\s+/.test(code);
-            }
-          },
-          {
-            title: "บอสที่ 4: นักสถิติประจำกิลด์",
-            desc: "งานวิเคราะห์ข้อมูลของจริงย่อส่วน: วนดูข้อมูล นับตัวที่เข้าเงื่อนไข และรวมค่า — สองตัวแปรสะสมทำงานพร้อมกันในลูปเดียว",
-            goal: 'มี <b>scores = [55, 90, 72, 38, 64]</b> จงนับจำนวนคนที่ผ่าน (≥ 50) และรวมคะแนนทั้งหมด แล้วพิมพ์ 2 บรรทัด: <b>ผ่าน 4 คน</b> และ <b>คะแนนรวม 319</b>',
-            starter: '# ด่านบอส: สรุปสถิติกิลด์\nscores = [55, 90, 72, 38, 64]\ncount = 0\ntotal = 0\n\nfor s in scores:\n    pass  # นับคนผ่าน และรวมคะแนน\n\nprint("ผ่าน", count, "คน")\nprint("คะแนนรวม", total)\n',
-            hint: 'ในลูป: <code>total += s</code> ทุกรอบ และ <code>if s >= 50:</code> ค่อย <code>count += 1</code>',
-            xp: 150,
-            check: (out, code) => { const l = lines(out); return l.length === 2 && l[0] === "ผ่าน 4 คน" && l[1] === "คะแนนรวม 319" && /for\s+/.test(code) && /if\s+/.test(code); }
-          },
-          {
-            title: "บอสสุดท้าย: บันไดเลเวล",
-            desc: "จำลองระบบเลเวลของเกมนี้เองเลย! ล่ามอนสเตอร์เก็บ EXP ครบ 100 เมื่อไหร่ก็อัพเลเวลแล้วหัก 100 ออก — ไล่มือให้ดีทีละตัว",
-            goal: 'เริ่มที่ <b>xp = 0, level = 1</b> วนล่า <b>monsters = [50, 80, 120, 200]</b> แต่ละตัวได้ EXP เท่าค่าในลิสต์ ถ้า xp ถึง 100 ให้ level เพิ่ม 1 และ xp ลด 100 จบแล้วพิมพ์ <b>เลเวล 4 เหลือ 150 EXP</b>',
-            starter: '# ด่านบอสสุดท้าย: ไต่บันไดเลเวล\nxp = 0\nlevel = 1\nmonsters = [50, 80, 120, 200]\n\nfor m in monsters:\n    pass  # รับ EXP แล้วเช็คอัพเลเวล\n\nprint(f"เลเวล {level} เหลือ {xp} EXP")\n',
-            hint: 'ในลูป: <code>xp += m</code> แล้ว <code>if xp >= 100:</code> ข้างใน <code>level += 1</code> กับ <code>xp -= 100</code> — ไล่มือ: 50 → 130(อัพ,30) → 150(อัพ,50) → 250(อัพ,150)',
-            xp: 200,
-            check: (out, code) => eq(out, "เลเวล 4 เหลือ 150 EXP") && /for\s+/.test(code) && /if\s+/.test(code)
-          },
-          {
-            title: "บอสพิเศษ: ฮีโร่รับคำสั่ง",
-            desc: "รวม input + int + ลูป + f-string: โปรแกรมที่ปรับพฤติกรรมตามข้อมูลที่รับเข้ามา — หัวใจของทุกแอปที่คุณเคยใช้",
-            goal: 'รับ<b>ชื่อฮีโร่</b>และ<b>จำนวนครั้ง n</b> ด้วย input แล้ววนแสดง <b>อัศวิน โจมตีครั้งที่ 1</b> ถึงครั้งที่ n ปิดท้ายด้วย <b>ชนะแล้ว!</b> (ระบบป้อน "อัศวิน" และ "3")',
-            starter: '# ด่านบอส: ฮีโร่ทำตามคำสั่งผู้เล่น\nname = input()\nn = int(input())\n\n# วนลูป 1 ถึง n\n\nprint("ชนะแล้ว!")\n',
-            hint: '<code>for i in range(1, n + 1):</code> ข้างใน <code>print(f"{name} โจมตีครั้งที่ {i}")</code>',
-            xp: 180,
-            stdin: ["อัศวิน", "3"],
-            check: (out, code) => { const l = lines(out); return l.length === 4 && l[0] === "อัศวิน โจมตีครั้งที่ 1" && l[1] === "อัศวิน โจมตีครั้งที่ 2" && l[2] === "อัศวิน โจมตีครั้งที่ 3" && l[3] === "ชนะแล้ว!" && (code.match(/input\(/g) || []).length >= 2 && /for\s+/.test(code); }
-          },
-          {
-            title: "บอสพิเศษ: บัญชีร้านยา",
-            desc: "วนลูป dict ได้ด้วย! for day in sales จะได้ \"ชื่อช่อง\" มาทีละตัว แล้วใช้ sales[day] ดึงค่าของช่องนั้น — สรุปยอดขายทั้งสัปดาห์ในไม่กี่บรรทัด",
-            goal: 'มียอดขาย <b>sales = {"จันทร์": 3, "อังคาร": 5, "พุธ": 2}</b> จงวนรวมยอดทั้งหมด แล้วแสดง <b>ขายได้ทั้งหมด 10 ขวด</b>',
-            starter: '# ด่านบอส: ปิดบัญชีร้านยาประจำสัปดาห์\nsales = {"จันทร์": 3, "อังคาร": 5, "พุธ": 2}\ntotal = 0\n\nfor day in sales:\n    pass  # บวกยอดของแต่ละวันเข้า total\n\nprint("ขายได้ทั้งหมด", total, "ขวด")\n',
-            hint: 'ในลูป: <code>total += sales[day]</code>',
-            xp: 180,
-            check: (out, code) => { const l = lines(out); return l[l.length - 1] === "ขายได้ทั้งหมด 10 ขวด" && /for\s+/.test(code) && /sales\[/.test(code); }
-          }
+          { title: "ผังงานเงื่อนไข", desc: "ข้าวหลามตัด = การตัดสินใจ (if-else)", goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc0"></span>', starter: "x = 10\n", hint: "<code>if x > 5: print(\"มากกว่า\") else: print(\"น้อยกว่า\")</code>", xp: 80, check: (out, code) => eq(out, "มากกว่า") && /if\s+/.test(code) },
+          { title: "ผังงานลูป", desc: "เส้นวนกลับ = การวนซ้ำ (while)", goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc1"></span>', starter: "", hint: "i เริ่ม 1, while i<=3 พิมพ์แล้วเพิ่มค่า จบพิมพ์ \"จบ\"", xp: 80, check: (out, code) => { const l = lines(out); return l.length === 4 && l[0] === "รอบที่ 1" && l[3] === "จบ" && /while|for/.test(code); } },
+          { title: "ผังงานสะสมค่า", desc: "ลูปพร้อมตัวแปรสะสม", goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc3"></span>(ต้องได้ <b>20</b>)', starter: "total = 0\n", hint: "วน i 1-4 บวก i*2 เข้า total", xp: 100, check: (out, code) => eq(out, "20") && /for|while/.test(code) },
+          { title: "ผังงานหาค่ามากสุด", desc: "ลูป + เงื่อนไขหาค่าสูงสุด", goal: 'เขียนโค้ดตามผังงานนี้:<span class="fc-slot" data-flow="fc4"></span>(ต้องได้ <b>75</b>)', starter: "", hint: "best=0 วนเทียบ ถ้า s>best ให้ best=s", xp: 100, check: (out, code) => eq(out, "75") && /if\s+/.test(code) }
         ]
+      },
+      {
+        id: "function", icon: "function", title: "บทที่ 9: ฟังก์ชันและโมดูล",
+        blurb: "สร้างฟังก์ชัน, พารามิเตอร์, return, ค่าเริ่มต้น, Lambda และการใช้โมดูล",
+        lesson: [
+          { h: "สร้างฟังก์ชัน", p: "ใช้ <b>def</b> ตามด้วยชื่อและ ( ) — จัดกลุ่มโค้ดที่ใช้ซ้ำ เรียกใช้ด้วยชื่อฟังก์ชัน", code: "def greet():\n    print(\"สวัสดี\")\n\ngreet()  # เรียกใช้" },
+          { h: "พารามิเตอร์และ return", p: "รับค่าเข้าผ่านพารามิเตอร์ ส่งผลกลับด้วย <b>return</b> — ตั้งค่าเริ่มต้นให้พารามิเตอร์ได้ด้วย =", code: "def add(a, b=10):\n    return a + b\n\nprint(add(5))     # 15\nprint(add(5, 3))  # 8" },
+          { h: "Lambda และโมดูล", p: "<b>lambda</b> ฟังก์ชันสั้นบรรทัดเดียว • <b>import</b> เรียกใช้โมดูลสำเร็จรูป เช่น math, random", code: "square = lambda x: x * x\nprint(square(5))  # 25\n\nimport math\nprint(math.sqrt(16))  # 4.0" }
+        ],
+        stages: [
+          { title: "ฟังก์ชันแรก", desc: "def สร้างฟังก์ชัน แล้วเรียกใช้ด้วยชื่อ", goal: "สร้างฟังก์ชัน greet ที่แสดง <b>สวัสดีนักผจญภัย</b> แล้วเรียกใช้", starter: "def greet():\n    # เติมโค้ด\n\n", hint: "ในฟังก์ชัน print แล้วข้างนอกเรียก <code>greet()</code>", xp: 60, check: (out, code) => eq(out, "สวัสดีนักผจญภัย") && /def\s+greet/.test(code) },
+          { title: "return ค่า", desc: "return ส่งผลลัพธ์กลับ", goal: "สร้าง double(x) คืน x*2 แล้วแสดง double(21) (ต้องได้ <b>42</b>)", starter: "def double(x):\n    # return x คูณ 2\n\nprint(double(21))\n", hint: "<code>return x * 2</code>", xp: 60, check: (out, code) => eq(out, "42") && /return/.test(code) },
+          { title: "หลายพารามิเตอร์", desc: "ฟังก์ชันรับหลายค่าได้", goal: "สร้าง attack(name, dmg) แสดง <b>อัศวิน โจมตี 30</b> เมื่อเรียก attack(\"อัศวิน\", 30)", starter: "def attack(name, dmg):\n    # แสดงผล\n\nattack(\"อัศวิน\", 30)\n", hint: "<code>print(name, \"โจมตี\", dmg)</code>", xp: 80, check: (out, code) => eq(out, "อัศวิน โจมตี 30") && /def\s+attack/.test(code) },
+          { title: "ค่าเริ่มต้น", desc: "พารามิเตอร์มีค่าเริ่มต้นได้", goal: "สร้าง heal(amount=10) คืน amount แสดง heal() และ heal(50) (ต้องได้ <b>10</b> และ <b>50</b>)", starter: "def heal(amount=10):\n    return amount\n\n", hint: "<code>print(heal())</code> และ <code>print(heal(50))</code>", xp: 80, check: (out) => { const l = lines(out); return l[0] === "10" && l[1] === "50"; } },
+          { title: "Lambda", desc: "lambda ฟังก์ชันสั้นบรรทัดเดียว", goal: "สร้าง lambda square คืนกำลังสอง แสดง square(6) (ต้องได้ <b>36</b>)", starter: "square = lambda x: x * x\n", hint: "<code>print(square(6))</code>", xp: 80, check: (out, code) => eq(out, "36") && /lambda/.test(code) },
+          { title: "ใช้โมดูล math", desc: "import เรียกใช้โมดูลสำเร็จรูป", goal: "ใช้ math.sqrt หารากที่สองของ 144 (ต้องได้ <b>12.0</b>)", starter: "import math\n", hint: "<code>print(math.sqrt(144))</code>", xp: 80, check: (out, code) => eq(out, "12.0") && /import\s+math/.test(code) }
+        ]
+      },
+      {
+        id: "exception", icon: "ifelse", title: "บทที่ 10: การจัดการข้อผิดพลาด (Exception)",
+        blurb: "try-except-else-finally และ raise — จัดการข้อผิดพลาดไม่ให้โปรแกรมพัง",
+        lesson: [
+          { h: "try-except", p: "โค้ดที่อาจ error ใส่ใน <b>try</b> ถ้าเกิดข้อผิดพลาดจะกระโดดไป <b>except</b> แทนที่จะพังทั้งโปรแกรม", code: "try:\n    x = 10 / 0\nexcept:\n    print(\"หารด้วยศูนย์ไม่ได้\")" },
+          { h: "else และ finally", p: "<b>else</b> ทำเมื่อไม่มี error • <b>finally</b> ทำเสมอไม่ว่าจะ error หรือไม่ (เหมาะกับการปิดไฟล์/เชื่อมต่อ)", code: "try:\n    x = int(\"5\")\nexcept:\n    print(\"แปลงไม่ได้\")\nelse:\n    print(\"ได้\", x)\nfinally:\n    print(\"จบ\")" },
+          { h: "raise", p: "สั่งให้เกิด error เองด้วย <b>raise</b> เมื่อพบข้อมูลไม่ถูกต้อง เช่น อายุติดลบ", code: "age = -5\nif age < 0:\n    raise ValueError(\"อายุติดลบไม่ได้\")" }
+        ],
+        stages: [
+          { title: "จับ error", desc: "try-except ป้องกันโปรแกรมพัง", goal: "ใช้ try-except หาร 10/0 แล้วแสดง <b>error</b> เมื่อเกิดข้อผิดพลาด", starter: "try:\n    x = 10 / 0\n", hint: "<code>except: print(\"error\")</code>", xp: 60, check: (out, code) => eq(out, "error") && /except/.test(code) },
+          { title: "แปลงเลขปลอดภัย", desc: "จับ error ตอนแปลงข้อความที่ไม่ใช่ตัวเลข", goal: "ลอง int(\"abc\") ใน try ถ้า error แสดง <b>ไม่ใช่ตัวเลข</b>", starter: "try:\n    n = int(\"abc\")\n", hint: "<code>except: print(\"ไม่ใช่ตัวเลข\")</code>", xp: 80, check: (out, code) => eq(out, "ไม่ใช่ตัวเลข") && /try/.test(code) && /except/.test(code) },
+          { title: "finally ทำเสมอ", desc: "finally ทำงานทุกกรณี", goal: "try แปลง int(\"5\") สำเร็จ แล้ว finally แสดง <b>จบการทำงาน</b>", starter: "try:\n    n = int(\"5\")\nexcept:\n    print(\"error\")\n", hint: "<code>finally: print(\"จบการทำงาน\")</code>", xp: 80, check: (out, code) => eq(out, "จบการทำงาน") && /finally/.test(code) }
+        ]
+      },
+      {
+        id: "oop", icon: "function", title: "บทที่ 12: การเขียนโปรแกรมเชิงวัตถุ (OOP)",
+        blurb: "คลาส, ออบเจ็กต์, __init__, encapsulation, inheritance และ polymorphism",
+        lesson: [
+          { h: "คลาสและออบเจ็กต์", p: "<b>คลาส</b> คือแม่พิมพ์ <b>ออบเจ็กต์</b> คือของจริงที่สร้างจากแม่พิมพ์ — <code>__init__</code> คือเมท็อดที่ทำงานตอนสร้างออบเจ็กต์ (กำหนดค่าเริ่มต้น) <code>self</code> คือตัวออบเจ็กต์เอง", code: "class Hero:\n    def __init__(self, name):\n        self.name = name\n\nh = Hero(\"มะลิ\")\nprint(h.name)  # มะลิ" },
+          { h: "เมท็อดและ Encapsulation", p: "เมท็อดคือฟังก์ชันในคลาส — <b>Encapsulation</b> ซ่อนข้อมูลด้วย __ นำหน้า และให้เข้าถึงผ่านเมท็อด (getter/setter)", code: "class Hero:\n    def __init__(self, hp):\n        self.hp = hp\n    def attack(self):\n        print(\"โจมตี!\")\n\nHero(100).attack()" },
+          { h: "Inheritance และ Polymorphism", p: "<b>Inheritance</b> คลาสลูกสืบทอดจากคลาสแม่ (ใช้โค้ดซ้ำ) • <b>Polymorphism</b> เมท็อดชื่อเดียวกันทำงานต่างกันในแต่ละคลาส", code: "class Animal:\n    def sound(self):\n        print(\"...\")\nclass Cat(Animal):\n    def sound(self):\n        print(\"เหมียว\")\n\nCat().sound()  # เหมียว" }
+        ],
+        stages: [
+          { title: "สร้างคลาสแรก", desc: "class สร้างแม่พิมพ์ __init__ กำหนดค่าเริ่มต้น", goal: "สร้างคลาส Hero รับ name แล้วสร้างออบเจ็กต์ชื่อ \"มะลิ\" แสดงชื่อ (ต้องได้ <b>มะลิ</b>)", starter: "class Hero:\n    def __init__(self, name):\n        self.name = name\n\n# สร้างออบเจ็กต์แล้วแสดงชื่อ\n", hint: "<code>h = Hero(\"มะลิ\")</code> แล้ว <code>print(h.name)</code>", xp: 80, check: (out, code) => eq(out, "มะลิ") && /class\s+Hero/.test(code) },
+          { title: "เมท็อด", desc: "เมท็อดคือฟังก์ชันในคลาส (มี self)", goal: "เพิ่มเมท็อด attack ที่แสดง <b>โจมตี!</b> แล้วเรียกใช้", starter: "class Hero:\n    def attack(self):\n        # แสดงข้อความ\n\nh = Hero()\nh.attack()\n", hint: "ในเมท็อด <code>print(\"โจมตี!\")</code>", xp: 80, check: (out, code) => eq(out, "โจมตี!") && /def\s+attack\s*\(\s*self/.test(code) },
+          { title: "เก็บค่าในออบเจ็กต์", desc: "self.x เก็บข้อมูลประจำออบเจ็กต์", goal: "คลาส Hero รับ hp เก็บใน self.hp สร้างด้วย hp=100 แล้วแสดง hp (ต้องได้ <b>100</b>)", starter: "class Hero:\n    def __init__(self, hp):\n        self.hp = hp\n\n", hint: "<code>h = Hero(100)</code> แล้ว <code>print(h.hp)</code>", xp: 80, check: (out, code) => eq(out, "100") && /self\.hp/.test(code) },
+          { title: "การสืบทอด", desc: "คลาสลูกสืบทอดจากคลาสแม่ด้วย (แม่)", goal: "คลาส Cat สืบทอดจาก Animal มีเมท็อด sound แสดง <b>เหมียว</b> แล้วเรียกใช้", starter: "class Animal:\n    def sound(self):\n        print(\"...\")\n\nclass Cat(Animal):\n    def sound(self):\n        # แสดงเหมียว\n\nCat().sound()\n", hint: "ใน Cat.sound: <code>print(\"เหมียว\")</code>", xp: 100, check: (out, code) => eq(out, "เหมียว") && /class\s+Cat\s*\(\s*Animal\s*\)/.test(code) }
+        ]
+      },
+      {
+        id: "filehandling", icon: "datastructure", title: "บทที่ 11: การจัดการไฟล์ (File Handling)",
+        blurb: "อ่าน-เขียนไฟล์ Text, CSV, Excel — บทเรียนทฤษฎี (ต้องใช้ระบบไฟล์จริง)",
+        lesson: [
+          { h: "เปิดและเขียนไฟล์", p: "ใช้ <b>open(ชื่อไฟล์, โหมด)</b> โหมด: <code>\"r\"</code> อ่าน • <code>\"w\"</code> เขียนทับ • <code>\"a\"</code> เขียนต่อท้าย — เขียนด้วย <code>.write()</code> อ่านด้วย <code>.read()</code> และควรปิดไฟล์ด้วย <code>.close()</code>", code: "f = open(\"data.txt\", \"w\")\nf.write(\"สวัสดี\")\nf.close()" },
+          { h: "with statement", p: "การเปิดไฟล์ด้วย <b>with</b> จะปิดไฟล์ให้อัตโนมัติเมื่อจบบล็อก ปลอดภัยกว่าและเป็นวิธีที่แนะนำ", code: "with open(\"data.txt\", \"r\") as f:\n    content = f.read()\n    print(content)" },
+          { h: "ไฟล์ CSV และ Excel", p: "<b>CSV</b> ใช้โมดูล csv หรือ pandas อ่าน-เขียนข้อมูลตาราง • <b>Excel</b> ใช้ openpyxl หรือ pandas — เหมาะกับข้อมูลจำนวนมากที่เป็นตาราง (หมายเหตุ: ต้องรันบนเครื่องจริงที่มีระบบไฟล์)", code: "import pandas as pd\ndf = pd.read_csv(\"data.csv\")\nprint(df.head())" }
+        ],
+        stages: []
+      },
+      {
+        id: "gui", icon: "operator", title: "บทที่ 13: สร้าง GUI ด้วย Tkinter",
+        blurb: "หน้าต่างโปรแกรมและ widget ต่างๆ — บทเรียนทฤษฎี (ต้องใช้หน้าต่างจริง)",
+        lesson: [
+          { h: "รู้จัก Tkinter", p: "<b>Tkinter</b> คือไลบรารีสร้างหน้าต่างโปรแกรม (GUI) ที่มากับ Python — สร้างหน้าต่างด้วย <code>Tk()</code> และแสดงด้วย <code>mainloop()</code> ส่วน <b>ttk</b> คือ widget รุ่นใหม่ที่สวยกว่า", code: "import tkinter as tk\nwin = tk.Tk()\nwin.title(\"โปรแกรมแรก\")\nwin.mainloop()" },
+          { h: "Widget พื้นฐาน", p: "<b>Label</b> ข้อความ • <b>Button</b> ปุ่ม • <b>Entry</b> ช่องกรอก • <b>Text</b> กล่องข้อความหลายบรรทัด • <b>Checkbutton/Radiobutton</b> ตัวเลือก — แต่ละ widget มี option ปรับสี ขนาด ฟอนต์ได้", code: "label = tk.Label(win, text=\"สวัสดี\")\nbtn = tk.Button(win, text=\"กดฉัน\")\nlabel.pack()\nbtn.pack()" },
+          { h: "การจัดวาง (Layout)", p: "3 วิธีจัดวาง widget: <b>pack()</b> เรียงต่อกัน • <b>grid()</b> จัดเป็นตารางแถว-คอลัมน์ • <b>place()</b> ระบุพิกัดเอง — และผูกเหตุการณ์ปุ่มด้วย command หรือ bind()" }
+        ],
+        stages: []
+      },
+      {
+        id: "database", icon: "datastructure", title: "บทที่ 14-15: ฐานข้อมูล (MariaDB/MongoDB)",
+        blurb: "เชื่อมต่อและจัดการฐานข้อมูล SQL และ NoSQL — บทเรียนทฤษฎี",
+        lesson: [
+          { h: "ฐานข้อมูลและ DBMS", p: "<b>ฐานข้อมูล</b> คือที่เก็บข้อมูลอย่างเป็นระบบ <b>DBMS</b> คือโปรแกรมจัดการฐานข้อมูล — แบ่งเป็น <b>SQL</b> (ตาราง เช่น MariaDB/MySQL) และ <b>NoSQL</b> (เอกสาร เช่น MongoDB)" },
+          { h: "เชื่อมต่อ MariaDB", p: "Python เชื่อม MariaDB ด้วยโมดูล <b>pymysql</b> — เชื่อมต่อ, ส่งคำสั่ง SQL (INSERT/SELECT/UPDATE/DELETE), และดึงผลลัพธ์ด้วย fetchall()", code: "import pymysql\nconn = pymysql.connect(host=\"localhost\",\n    user=\"root\", database=\"game\")\ncur = conn.cursor()\ncur.execute(\"SELECT * FROM players\")\nprint(cur.fetchall())" },
+          { h: "MongoDB (NoSQL)", p: "MongoDB เก็บข้อมูลเป็น<b>เอกสาร (document)</b> คล้าย dict ของ Python — เชื่อมด้วยโมดูล <b>pymongo</b> จัดการด้วย insert_one(), find(), update_one(), delete_one()", code: "from pymongo import MongoClient\nclient = MongoClient(\"localhost\", 27017)\ndb = client.game\ndb.players.insert_one({\"name\": \"มะลิ\", \"hp\": 100})" }
+        ],
+        stages: []
+      },
+      {
+        id: "webapp", icon: "operator", title: "บทที่ 16-17: เว็บแอปฯ (Django) และ Web Scraping",
+        blurb: "พัฒนาเว็บด้วย Django และดึงข้อมูลจากเว็บ — บทเรียนทฤษฎี",
+        lesson: [
+          { h: "Django MVT Architecture", p: "<b>Django</b> คือเฟรมเวิร์กสร้างเว็บด้วย Python ใช้สถาปัตยกรรม <b>MVT</b>: <b>Model</b> (ข้อมูล/ฐานข้อมูล), <b>View</b> (ตรรกะ), <b>Template</b> (หน้าเว็บ HTML) — สร้างโปรเจกต์ด้วย django-admin startproject" },
+          { h: "โครงสร้างโปรเจกต์", p: "แบ่งเว็บเป็น <b>Apps</b> ย่อยๆ แต่ละแอปมี models, views, templates, urls — รันเซิร์ฟเวอร์ทดสอบด้วย <code>python manage.py runserver</code>", code: "# views.py\nfrom django.shortcuts import render\ndef home(request):\n    return render(request, \"home.html\")" },
+          { h: "Web Scraping", p: "การดึงข้อมูลจากเว็บด้วย <b>BeautifulSoup</b> (แกะ HTML) และ <b>Requests</b> (โหลดหน้าเว็บ) หรือ <b>Selenium</b> (ควบคุมเบราว์เซอร์) — ควรเคารพไฟล์ robots.txt และกฎหมายลิขสิทธิ์", code: "import requests\nfrom bs4 import BeautifulSoup\nr = requests.get(\"https://example.com\")\nsoup = BeautifulSoup(r.text, \"html.parser\")\nprint(soup.title.text)" }
+        ],
+        stages: []
+      },
+      {
+        id: "api", icon: "function", title: "บทที่ 18-21: API และ Microservices",
+        blurb: "REST API, Flask, FastAPI และ Automated Testing — บทเรียนทฤษฎี",
+        lesson: [
+          { h: "REST API คืออะไร", p: "<b>API</b> คือช่องทางให้โปรแกรมคุยกัน <b>REST API</b> ใช้ HTTP Method: <b>GET</b> (ดึงข้อมูล), <b>POST</b> (เพิ่ม), <b>PUT</b> (แก้), <b>DELETE</b> (ลบ) — ส่งข้อมูลในรูปแบบ <b>JSON</b>" },
+          { h: "Flask และ FastAPI", p: "<b>Flask</b> เฟรมเวิร์กเล็กยืดหยุ่นสำหรับสร้าง API • <b>FastAPI</b> ทันสมัย เร็ว มีเอกสารอัตโนมัติ (Swagger) — กำหนด endpoint ด้วย decorator", code: "from fastapi import FastAPI\napp = FastAPI()\n\n@app.get(\"/hello\")\ndef hello():\n    return {\"message\": \"สวัสดี\"}" },
+          { h: "Automated Testing", p: "<b>Unit Test</b> คือการทดสอบโค้ดอัตโนมัติด้วยโมดูล <b>unittest</b> — เขียน test case ตรวจว่าฟังก์ชันทำงานถูกต้อง ช่วยจับบั๊กก่อนขึ้นระบบจริง", code: "import unittest\nclass TestAdd(unittest.TestCase):\n    def test_add(self):\n        self.assertEqual(2 + 3, 5)" }
+        ],
+        stages: []
+      },
+      {
+        id: "datascience", icon: "datastructure", title: "บทที่ 22-26: Data Science",
+        blurb: "NumPy, Pandas, Matplotlib และ Machine Learning — บทเรียนทฤษฎี",
+        lesson: [
+          { h: "Data Science กับ Python", p: "Python เป็นภาษายอดนิยมสำหรับ Data Science ด้วยไลบรารีทรงพลัง: <b>NumPy</b> (คำนวณอาร์เรย์), <b>Pandas</b> (จัดการตารางข้อมูล), <b>Matplotlib</b> (กราฟ), <b>Scikit-learn</b> (Machine Learning)" },
+          { h: "NumPy และ Pandas", p: "<b>NumPy</b> จัดการอาร์เรย์หลายมิติ (ndarray) คำนวณเร็วมาก • <b>Pandas</b> จัดการข้อมูลตาราง (DataFrame) เหมือน Excel ในโค้ด — อ่านไฟล์ กรอง จัดกลุ่ม วิเคราะห์", code: "import numpy as np\nimport pandas as pd\narr = np.array([1, 2, 3])\nprint(arr.mean())  # 2.0\ndf = pd.DataFrame({\"a\": [1, 2], \"b\": [3, 4]})" },
+          { h: "Machine Learning", p: "<b>Scikit-learn</b> ทำ Machine Learning: <b>Supervised</b> (มีเฉลย เช่น Linear Regression, K-NN, SVM), <b>Unsupervised</b> (ไม่มีเฉลย เช่น K-Means) — สอนโมเดลด้วยข้อมูล แล้วให้ทำนายข้อมูลใหม่", code: "from sklearn.linear_model import LinearRegression\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\npred = model.predict(X_test)" }
+        ],
+        stages: []
       }
     ]
   },
@@ -1859,22 +1158,26 @@ function renderTopics() {
     const doneCount = t.stages.filter((_, s) => state.done.has(doneKey(state.lang, t.id, s))).length;
     const total = t.stages.length;
     const totalXp = t.stages.reduce((n, s) => n + s.xp, 0);
+    const readOnly = total === 0; // หัวข้อทฤษฎี: บทเรียนอ่านอย่างเดียว ไม่มีด่าน
     const el = document.createElement("button");
-    el.className = "topic-card" + (doneCount === total ? " complete" : "") + (t.boss ? " boss" : "");
-    el.innerHTML = `
-      <div class="t-num pixel">${t.boss ? "FINAL" : "TOPIC " + String(idx + 1).padStart(2, "0")}</div>
-      <div class="t-head"><span class="icon-art sm">${iconFor(t.id)}</span><h3>${t.title}</h3></div>
-      <p>${t.blurb}</p>
-      <div class="t-meta">
-        <span class="${doneCount === total ? "done-txt" : ""}">${doneCount} / ${total} ด่าน</span>
-        <span>💰 ${totalXp} EXP</span>
-      </div>
-      <div class="mini-bar"><div class="mini-fill" style="width:${(doneCount / total) * 100}%"></div></div>
-    `;
+    el.className = "topic-card" + (!readOnly && doneCount === total ? " complete" : "") + (t.boss ? " boss" : "") + (readOnly ? " readonly" : "");
+    const meta = readOnly
+      ? '<div class="t-meta"><span class="read-tag">📖 บทเรียน</span><span>' + (t.lesson ? t.lesson.length : 0) + ' ตอน</span></div>'
+      : '<div class="t-meta">' +
+          '<span class="' + (doneCount === total ? "done-txt" : "") + '">' + doneCount + ' / ' + total + ' ด่าน</span>' +
+          '<span>💰 ' + totalXp + ' EXP</span>' +
+        '</div>' +
+        '<div class="mini-bar"><div class="mini-fill" style="width:' + (total ? (doneCount / total) * 100 : 0) + '%"></div></div>';
+    el.innerHTML =
+      '<div class="t-num pixel">' + (t.boss ? "FINAL" : (readOnly ? "อ่าน" : "TOPIC " + String(idx + 1).padStart(2, "0"))) + '</div>' +
+      '<div class="t-head"><span class="icon-art sm">' + iconFor(t.id) + '</span><h3>' + t.title + '</h3></div>' +
+      '<p>' + t.blurb + '</p>' +
+      meta;
     el.onclick = () => {
       state.topic = t.id;
       try { localStorage.setItem("cq_topic_" + state.lang, t.id); } catch {}
-      if (lessonRead(t.id)) goLearn();
+      if (readOnly) openLesson(t);
+      else if (lessonRead(t.id)) goLearn();
       else openLesson(t);
     };
     g.appendChild(el);
@@ -2080,9 +1383,11 @@ function pickDefaultTopic() {
   const ts = COURSES[state.lang].topics;
   let saved = null;
   try { saved = localStorage.getItem("cq_topic_" + state.lang); } catch {}
-  if (saved && ts.some(t => t.id === saved)) return saved;
+  if (saved && ts.some(t => t.id === saved && t.stages.length > 0)) return saved;
   const firstUndone = ts.find(t => t.stages.some((_, s) => !state.done.has(doneKey(state.lang, t.id, s))));
-  return (firstUndone || ts[0]).id;
+  if (firstUndone) return firstUndone.id;
+  const firstPlayable = ts.find(t => t.stages.length > 0);
+  return (firstPlayable || ts[0]).id;
 }
 function goLearn() {
   if (!state.lang) {
@@ -2091,7 +1396,8 @@ function goLearn() {
     state.lang = (sl && COURSES[sl]) ? sl : "python";
   }
   const ts = COURSES[state.lang].topics;
-  if (!state.topic || !ts.some(t => t.id === state.topic)) state.topic = pickDefaultTopic();
+  const cur = ts.find(t => t.id === state.topic);
+  if (!cur || cur.stages.length === 0) state.topic = pickDefaultTopic();
   try {
     localStorage.setItem("cq_lang", state.lang);
     localStorage.setItem("cq_topic_" + state.lang, state.topic);
@@ -2101,7 +1407,7 @@ function goLearn() {
 }
 function renderLearn() {
   const ts = COURSES[state.lang].topics, t = curTopic(), idx = topicIndex();
-  const total = t.stages.length;
+  const total = t.stages.length || 1;
   const done = t.stages.filter((_, s) => state.done.has(doneKey(state.lang, t.id, s))).length;
   $("phEyebrow").textContent = COURSES[state.lang].name.toUpperCase() + " · หัวข้อ " + (idx + 1) + "/" + ts.length;
   $("phTitle").textContent = (idx + 1) + ". " + t.title;
@@ -2192,8 +1498,13 @@ function openLesson(t) {
     box.appendChild(d);
   });
   FC.fill(box);
-  const doneCount = t.stages.filter((_, s) => state.done.has(doneKey(state.lang, t.id, s))).length;
-  $("lsStart").textContent = doneCount > 0 ? "อ่านจบแล้ว ทำแบบฝึกหัดต่อ →" : "เข้าใจแล้ว เริ่มทำแบบฝึกหัด →";
+  if (!t.stages || t.stages.length === 0) {
+    $("lsStart").style.display = "none";
+  } else {
+    $("lsStart").style.display = "";
+    const doneCount = t.stages.filter((_, s) => state.done.has(doneKey(state.lang, t.id, s))).length;
+    $("lsStart").textContent = doneCount > 0 ? "อ่านจบแล้ว ทำแบบฝึกหัดต่อ →" : "เข้าใจแล้ว เริ่มทำแบบฝึกหัด →";
+  }
   showScreen("lesson");
 }
 function startExercises() {
@@ -2208,7 +1519,12 @@ function startExercises() {
   showScreen("game");
 }
 $("lsStart").onclick = startExercises;
-$("backFromLesson").onclick = () => { if (state.topic) goLearn(); else { renderTopics(); showScreen("topic"); } };
+$("backFromLesson").onclick = () => {
+  const t = lessonTopic;
+  if (t && (!t.stages || t.stages.length === 0)) { renderTopics(); showScreen("topic"); }
+  else if (state.topic) goLearn();
+  else { renderTopics(); showScreen("topic"); }
+};
 
 /* ═══════════════ Leaderboard ═══════════════ */
 async function openBoard() {
@@ -2772,7 +2088,7 @@ codeEl.addEventListener("keydown", e => {
 });
 
 /* ═══════════════ Init ═══════════════ */
-const CONTENT_VERSION = 10; // ต้องตรงกับ CONTENT_VERSION ใน server.js
+const CONTENT_VERSION = 11; // ต้องตรงกับ CONTENT_VERSION ใน server.js
 async function checkVersion() {
   try {
     const r = await fetch("/api/version");
