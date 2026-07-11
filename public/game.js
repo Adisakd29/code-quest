@@ -29,7 +29,7 @@ const fmt = n => (n || 0).toLocaleString("th-TH");
 const COURSES = {
   python: {
     name: "Python", icon: "🐍",
-    tagline: "หลักสูตร Python เต็มรูปแบบตามหนังสือ — พื้นฐานการเขียนโปรแกรม, OOP, ไฟล์, ฐานข้อมูล, เว็บ, API และ Data Science",
+    tagline: "หลักสูตรพื้นฐานภาษา Python — พื้นฐานการเขียนโปรแกรม, OOP, ไฟล์, ฐานข้อมูล, เว็บ, API และ Data Science",
     topics: [
       {
         id: "intro", icon: "python", title: "บทที่ 1-2: รู้จัก Python และเครื่องมือ",
