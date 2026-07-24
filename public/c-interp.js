@@ -102,9 +102,13 @@ const CRUN = (() => {
       const fns = [], globals = [];
       while (!at("eof")) {
         const line = toks[p].line;
-        const base = parseBaseType();
-        let ptr = 0;
-        while (at("*")) { p++; ptr++; }
+        let base, ptr = 0;
+        if (at("id") && peek(1).t === "(") {
+          base = "int"; // สไตล์ K&R ตามตำรา: main() ไม่ระบุชนิด ให้ถือเป็น int
+        } else {
+          base = parseBaseType();
+          while (at("*")) { p++; ptr++; }
+        }
         const name = eat("id").v;
         if (at("(")) {
           p++;
