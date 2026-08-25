@@ -285,3 +285,9 @@ textarea.code{width:100%;min-height:230px;resize:vertical;border:none;outline:no
 /* ---------- Flowchart diagrams ---------- */
 .fc-slot{display:block;margin-top:12px;overflow-x:auto;background:#fbfaff;border:1px solid var(--line);border-radius:12px;padding:8px 4px}
 .fc-slot svg{display:block;margin:0 auto;max-width:100%;height:auto}
+
+
+/* ---------- พรีวิวหน้าเว็บ (คอร์ส HTML/CSS/JS) ---------- */
+.preview-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.preview-wrap iframe.web-preview{width:100%;min-height:220px;border:0;display:block;background:#fff}
+.console pre#out.compact{max-height:170px}

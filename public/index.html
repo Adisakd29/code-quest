@@ -218,7 +218,8 @@
       <button class="next" id="nextBtn" style="display:none">ด่านถัดไป →</button>
     </div>
     <div class="console">
-      <span class="tag">ผลลัพธ์จากโปรแกรม</span>
+      <span class="tag" id="outTag">ผลลัพธ์จากโปรแกรม</span>
+      <div class="preview-wrap" id="previewWrap" style="display:none"></div>
       <pre id="out"><span class="empty">ยังไม่มีผลลัพธ์ — เขียนโค้ดแล้วกดรันดูสิ</span></pre>
     </div>
   </section>
@@ -235,6 +236,7 @@
 </div>
 
 <script src="c-interp.js"></script>
+<script src="web-run.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
