@@ -88,6 +88,7 @@
     <div class="logo pixel" id="homeBtn" title="กลับหน้าแผนที่ด่าน">CODE<span> QUEST</span></div>
     <nav class="tabbar">
       <button class="tab on" id="tabLearn">เรียน</button>
+      <button class="tab" id="roomBtn">แข่งขัน</button>
       <button class="tab" id="boardBtn">อันดับ</button>
       <button class="tab" id="profileBtn">โปรไฟล์</button>
     </nav>
@@ -155,6 +156,66 @@
 </section>
 
 <!-- ═══ Screen: ตารางอันดับ ═══ -->
+<section class="screen hide" id="roomScreen">
+  <div class="card room-hero">
+    <h2>🏁 โหมดแข่งขัน</h2>
+    <p>สร้างห้องแล้วให้เพื่อนเข้าด้วยรหัสห้อง ทุกคนได้โจทย์ชุดเดียวกัน ใครทำผ่านเร็วกว่าได้คะแนนมากกว่า — เข้าร่วมได้แม้ไม่ได้ล็อกอิน</p>
+  </div>
+
+  <div id="roomEntry">
+    <div class="room-grid">
+      <div class="card">
+        <h3>สร้างห้องใหม่</h3>
+        <div class="field"><label for="rcName">ชื่อของคุณ (โฮสต์)</label><input id="rcName" type="text" maxlength="30" placeholder="เช่น ครูมะลิ"></div>
+        <div class="field"><label for="rcTitle">ชื่อห้อง</label><input id="rcTitle" type="text" maxlength="60" placeholder="เช่น สอบกลางภาค ม.5/1"></div>
+        <div class="field"><label>ภาษาที่ใช้แข่ง</label>
+          <div class="chip-picks" id="rcLangs">
+            <label class="chip-pick"><input type="checkbox" value="python" checked> Python</label>
+            <label class="chip-pick"><input type="checkbox" value="c"> C</label>
+            <label class="chip-pick"><input type="checkbox" value="html"> HTML5</label>
+            <label class="chip-pick"><input type="checkbox" value="css"> CSS3</label>
+            <label class="chip-pick"><input type="checkbox" value="js"> JavaScript</label>
+          </div>
+        </div>
+        <div class="field"><label for="rcCount">จำนวนข้อ (3–30)</label><input id="rcCount" type="number" min="3" max="30" value="10"></div>
+        <button class="auth-submit" id="rcCreate">สร้างห้อง</button>
+      </div>
+
+      <div class="card">
+        <h3>เข้าร่วมห้อง</h3>
+        <div class="field"><label for="rjName">ชื่อของคุณ</label><input id="rjName" type="text" maxlength="30" placeholder="เช่น ฟ้า"></div>
+        <div class="field"><label for="rjCode">รหัสห้อง 5 ตัว</label><input id="rjCode" type="text" maxlength="5" placeholder="เช่น K7QMD" class="code-input"></div>
+        <button class="auth-submit" id="rjJoin">เข้าร่วม</button>
+        <div class="form-msg" id="roomMsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="roomLobby" class="hide">
+    <div class="card">
+      <div class="room-code-row">
+        <div>
+          <div class="rc-label">รหัสห้อง</div>
+          <div class="rc-code" id="rlCode">-----</div>
+        </div>
+        <div class="rc-info">
+          <h3 id="rlTitle">ห้องแข่ง</h3>
+          <p id="rlMeta">กำลังรอผู้เล่น...</p>
+        </div>
+      </div>
+      <div class="room-actions">
+        <button class="auth-submit" id="rlStart" style="display:none">เริ่มการแข่งขัน</button>
+        <button class="mini-btn ghost" id="rlEnd" style="display:none">ปิดห้อง/ประกาศผล</button>
+        <button class="mini-btn ghost" id="rlLeave">ออกจากห้อง</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>กระดานคะแนนสด</h3>
+      <div id="rlBoard" class="room-board"></div>
+    </div>
+  </div>
+</section>
+
 <section class="screen hide" id="boardScreen">
   <button class="back" id="backFromBoard">← กลับ</button>
   <div class="sec-eyebrow pixel">LEADERBOARD</div>
@@ -205,6 +266,7 @@
         <i style="background:#ef5b6f"></i><i style="background:#f5b942"></i><i style="background:#27c07d"></i>
       </div>
       <span class="filename" id="fileName">stage_1.py</span>
+      <div class="room-bar hide" id="roomBar"></div>
       <div class="actions">
         <button class="ghost" id="resetBtn">รีเซ็ต</button>
         <button class="ghost" id="runOwnBtn" disabled title="รันโดยพิมพ์ค่า input เอง (ไม่ตรวจคำตอบ)">⌨ ป้อนเอง</button>

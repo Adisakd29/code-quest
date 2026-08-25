@@ -52,7 +52,9 @@ const COURSES = {
         lesson: [
           { h: "print() แสดงผลออกจอ", p: "คำสั่งพื้นฐานที่สุด แสดงข้อความหรือค่าออกทางหน้าจอ ข้อความ (string) ต้องอยู่ในเครื่องหมายคำพูดเสมอ", code: "print(\"สวัสดีชาวโลก\")" },
           { h: "พิมพ์หลายค่า + ตัวเลือกเสริม", p: "คั่นค่าด้วย <code>,</code> print จะเว้นวรรคให้ • <code>\\n</code> ขึ้นบรรทัดใหม่ • <code>sep=</code> เปลี่ยนตัวคั่น • <code>end=</code> เปลี่ยนตัวปิดท้าย", code: "print(\"คะแนน:\", 99)\nprint(1, 2, 3, sep=\"-\")\nprint(\"ต่อ\", end=\"\")" },
-          { h: "input() รับข้อมูลจากผู้ใช้", p: "หยุดรอรับสิ่งที่ผู้ใช้พิมพ์ แล้วคืนค่าเป็น<b>ข้อความเสมอ</b> ถ้าจะคำนวณต้องแปลงด้วย int() หรือ float() ก่อน", code: "name = input(\"ชื่อ: \")\nage = int(input(\"อายุ: \"))\nprint(name, \"อายุ\", age + 1, \"ในปีหน้า\")" }
+          { h: "input() รับข้อมูลจากผู้ใช้", p: "หยุดรอรับสิ่งที่ผู้ใช้พิมพ์ แล้วคืนค่าเป็น<b>ข้อความเสมอ</b> ถ้าจะคำนวณต้องแปลงด้วย int() หรือ float() ก่อน", code: "name = input(\"ชื่อ: \")\nage = int(input(\"อายุ: \"))\nprint(name, \"อายุ\", age + 1, \"ในปีหน้า\")" },
+          { h: "⚠️ กับดักที่มือใหม่เจอบ่อย", p: "<b>1) ลืมแปลงชนิด</b> — <code>input() + 1</code> จะพัง เพราะข้อความบวกตัวเลขไม่ได้ • <b>2) ลืมเครื่องหมายคำพูด</b> — <code>print(สวัสดี)</code> Python จะคิดว่าเป็นชื่อตัวแปรแล้วฟ้อง NameError • <b>3) ใช้เครื่องหมายคำพูดไม่เข้าคู่</b> — เปิดด้วย \" ต้องปิดด้วย \" • <b>4) พิมพ์ Print ตัว P ใหญ่</b> — Python แยกตัวพิมพ์เล็กใหญ่ ต้องเป็น print เท่านั้น" },
+          { h: "💡 เคล็ดลับมืออาชีพ", p: "ใช้ <b>f-string</b> แทนการต่อข้อความด้วย + เพราะอ่านง่ายกว่าและไม่ต้องแปลงชนิดเอง • ตั้งชื่อตัวแปรให้สื่อความหมาย (<code>student_name</code> ดีกว่า <code>s</code>) • เขียนคอมเมนต์อธิบาย<b>เหตุผล</b>ที่ทำ ไม่ใช่อธิบายสิ่งที่โค้ดทำอยู่แล้ว", code: "# ไม่ดี: ต่อสตริงยาว อ่านยาก\nprint(\"สวัสดี \" + name + \" อายุ \" + str(age))\n# ดีกว่า: f-string\nprint(f\"สวัสดี {name} อายุ {age}\")" }
         ],
         stages: [
           { title: "สวัสดี Python", desc: "print() แสดงข้อความออกจอ — ข้อความต้องอยู่ในเครื่องหมายคำพูด", goal: "แสดงข้อความ <b>สวัสดี Python</b>", starter: "# แสดงข้อความออกหน้าจอ\n", hint: "<code>print(\"สวัสดี Python\")</code>", xp: 30, check: (out) => eq(out, "สวัสดี Python") },
@@ -60,7 +62,26 @@ const COURSES = {
           { title: "พิมพ์หลายค่า", desc: "คั่นค่าด้วย , print เว้นวรรคให้อัตโนมัติ", goal: "ใช้ print เดียวแสดง <b>คะแนน: 100</b> (คั่นด้วย ,)", starter: "", hint: "<code>print(\"คะแนน:\", 100)</code>", xp: 40, check: (out, code) => eq(out, "คะแนน: 100") && code.includes(",") },
           { title: "เปลี่ยนตัวคั่น sep", desc: "sep= เปลี่ยนตัวที่คั่นระหว่างค่า", goal: "ใช้ sep แสดง <b>2026-07-09</b>", starter: "", hint: "<code>print(2026, \"07\", \"09\", sep=\"-\")</code>", xp: 50, check: (out, code) => eq(out, "2026-07-09") && code.includes("sep") },
           { title: "รับชื่อมาทักทาย", desc: "input() รับข้อมูลเก็บในตัวแปร (ระบบป้อนค่าให้ในกล่อง ⌨️)", goal: "รับชื่อแล้วแสดง <b>สวัสดี มะลิ</b> (ระบบป้อน \"มะลิ\")", starter: "name = input()\n", hint: "<code>print(\"สวัสดี\", name)</code>", xp: 50, stdin: ["มะลิ"], check: (out, code) => eq(out, "สวัสดี มะลิ") && /input\(/.test(code) },
-          { title: "รับเลขมาบวก", desc: "input() ได้ข้อความเสมอ ต้องแปลงเป็น int ก่อนคำนวณ", goal: "รับเลขแล้วแสดงค่าที่บวก 10 (ระบบป้อน \"5\" ต้องได้ <b>15</b>)", starter: "n = input()\n", hint: "<code>print(int(n) + 10)</code>", xp: 60, stdin: ["5"], check: (out, code) => eq(out, "15") && /int\(/.test(code) }
+          { title: "รับเลขมาบวก", desc: "input() ได้ข้อความเสมอ ต้องแปลงเป็น int ก่อนคำนวณ", goal: "รับเลขแล้วแสดงค่าที่บวก 10 (ระบบป้อน \"5\" ต้องได้ <b>15</b>)", starter: "n = input()\n", hint: "<code>print(int(n) + 10)</code>", xp: 60, stdin: ["5"], check: (out, code) => eq(out, "15") && /int\(/.test(code) },
+          {
+            title: "ใบเสร็จหลายบรรทัด",
+            desc: "ฝึกจัดรูปแบบผลลัพธ์ให้สวยงามด้วย print หลายคำสั่งและการคั่นค่า",
+            goal: 'แสดง 3 บรรทัด: <b>=== ใบเสร็จ ===</b>, <b>กาแฟ 50 บาท</b>, <b>รวม 50 บาท</b>',
+            starter: "price = 50\n",
+            hint: 'ใช้ตัวแปร price ใน print เช่น <code>print("กาแฟ", price, "บาท")</code>',
+            xp: 50,
+            check: (out) => { const l = lines(out); return l.length === 3 && l[0] === "=== ใบเสร็จ ===" && l[1] === "กาแฟ 50 บาท" && l[2] === "รวม 50 บาท"; }
+          },
+          {
+            title: "รับสองค่ามาคำนวณ",
+            desc: "รับข้อมูลสองครั้งแล้วนำมาคำนวณต่อ — รูปแบบพื้นฐานของโปรแกรมโต้ตอบ",
+            goal: 'รับความกว้างและความยาว แล้วแสดง <b>พื้นที่ = 24</b> (ระบบป้อน "4" และ "6")',
+            starter: "",
+            hint: '<code>w = int(input())</code> สองครั้ง แล้ว <code>print("พื้นที่ =", w * h)</code>',
+            xp: 60,
+            stdin: ["4", "6"],
+            check: (out, code) => eq(out, "พื้นที่ = 24") && (code.match(/input\(/g) || []).length >= 2
+          }
         ]
       },
       {
@@ -110,7 +131,25 @@ const COURSES = {
           { title: "ตัดข้อความ", desc: "slice [start:end] ตัดช่วงตัวอักษร (ไม่รวม end)", goal: "ตัด 6 ตัวแรกของ \"python-master\" (ต้องได้ <b>python</b>)", starter: "s = \"python-master\"\n", hint: "<code>print(s[0:6])</code>", xp: 50, check: (out, code) => eq(out, "python") && /\[.*:.*\]/.test(code) },
           { title: "แทนที่คำ", desc: ".replace(เก่า, ใหม่) แทนที่ข้อความ", goal: "เปลี่ยน \"เกลียด\" เป็น \"รัก\" ใน \"ฉันเกลียดบั๊ก\" (ต้องได้ <b>ฉันรักบั๊ก</b>)", starter: "msg = \"ฉันเกลียดบั๊ก\"\n", hint: "<code>print(msg.replace(\"เกลียด\", \"รัก\"))</code>", xp: 60, check: (out, code) => eq(out, "ฉันรักบั๊ก") && /\.replace\(/.test(code) },
           { title: "แยกข้อความ", desc: ".split(ตัวคั่น) แยกข้อความเป็นลิสต์", goal: "แยก \"มะลิ,15,นักเวท\" ด้วย , แล้วแสดงช่องที่ 3 (ต้องได้ <b>นักเวท</b>)", starter: "data = \"มะลิ,15,นักเวท\"\n", hint: "<code>parts = data.split(\",\")</code> แล้ว <code>print(parts[2])</code>", xp: 60, check: (out, code) => eq(out, "นักเวท") && /\.split\(/.test(code) },
-          { title: "นับคำ", desc: ".count(คำ) นับจำนวนครั้งที่พบ", goal: "นับคำว่า \"นา\" ใน \"นานานา นา\" (ต้องได้ <b>4</b>)", starter: "song = \"นานานา นา\"\n", hint: "<code>print(song.count(\"นา\"))</code>", xp: 60, check: (out, code) => eq(out, "4") && /\.count\(/.test(code) }
+          { title: "นับคำ", desc: ".count(คำ) นับจำนวนครั้งที่พบ", goal: "นับคำว่า \"นา\" ใน \"นานานา นา\" (ต้องได้ <b>4</b>)", starter: "song = \"นานานา นา\"\n", hint: "<code>print(song.count(\"นา\"))</code>", xp: 60, check: (out, code) => eq(out, "4") && /\.count\(/.test(code) },
+          {
+            title: "ตรวจรหัสผ่านสั้นไป",
+            desc: "รวม len() กับเงื่อนไข — งานตรวจข้อมูลที่เจอในทุกระบบสมัครสมาชิก",
+            goal: 'pwd = "abc123" ถ้ายาว ≥ 8 ตัวแสดง <b>ผ่าน</b> ไม่งั้นแสดง <b>สั้นเกินไป</b> (ต้องได้ <b>สั้นเกินไป</b>)',
+            starter: 'pwd = "abc123"\n',
+            hint: '<code>if len(pwd) >= 8:</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "สั้นเกินไป") && /len\(/.test(code) && /if\s+/.test(code)
+          },
+          {
+            title: "กลับข้อความและตรวจพาลินโดรม",
+            desc: "slice แบบ [::-1] กลับข้อความได้ในบรรทัดเดียว — เทคนิคเฉพาะตัวของ Python",
+            goal: 'word = "level" แสดง 2 บรรทัด: ข้อความที่กลับด้าน (<b>level</b>) และผลเทียบว่าเหมือนเดิมไหม (<b>True</b>)',
+            starter: 'word = "level"\n',
+            hint: '<code>print(word[::-1])</code> แล้ว <code>print(word == word[::-1])</code>',
+            xp: 80,
+            check: (out, code) => lines(out).join(",") === "level,True" && /\[::-1\]/.test(code)
+          }
         ]
       },
       {
@@ -193,7 +232,25 @@ const COURSES = {
           { title: "บันไดเกรด", desc: "elif เช็คหลายช่วง จากมากไปน้อย", goal: "score=75: ≥80 A / ≥70 B / นอกนั้น F (ต้องได้ <b>B</b>)", starter: "score = 75\n", hint: "<code>if score >= 80: ... elif score >= 70: ... else: ...</code>", xp: 60, check: (out, code) => eq(out, "B") && /elif/.test(code) },
           { title: "เงื่อนไขร่วม and", desc: "รวมสองเงื่อนไขด้วย and", goal: "hp=50, has_key=True ถ้า hp>0 และมีกุญแจ แสดง <b>ไปต่อ</b> ไม่งั้น <b>ติดอยู่</b>", starter: "hp = 50\nhas_key = True\n", hint: "<code>if hp > 0 and has_key:</code>", xp: 60, check: (out, code) => eq(out, "ไปต่อ") && /and/.test(code) },
           { title: "คู่หรือคี่", desc: "% 2 == 0 คือเลขคู่", goal: "n=7 แสดง <b>คู่</b> หรือ <b>คี่</b> (ต้องได้ <b>คี่</b>)", starter: "n = 7\n", hint: "<code>if n % 2 == 0:</code>", xp: 50, check: (out, code) => eq(out, "คี่") && /%\s*2/.test(code) },
-          { title: "เงื่อนไขซ้อน", desc: "if ซ้อนใน if ตรวจเป็นชั้นๆ", goal: "hp=70, lv=12 ถ้า hp>50 และ lv>10 แสดง <b>สู้บอส</b>", starter: "hp = 70\nlv = 12\n", hint: "if hp>50 ข้างในมี if lv>10 อีกชั้น", xp: 60, check: (out, code) => eq(out, "สู้บอส") && (code.match(/if\s+/g) || []).length >= 2 }
+          { title: "เงื่อนไขซ้อน", desc: "if ซ้อนใน if ตรวจเป็นชั้นๆ", goal: "hp=70, lv=12 ถ้า hp>50 และ lv>10 แสดง <b>สู้บอส</b>", starter: "hp = 70\nlv = 12\n", hint: "if hp>50 ข้างในมี if lv>10 อีกชั้น", xp: 60, check: (out, code) => eq(out, "สู้บอส") && (code.match(/if\s+/g) || []).length >= 2 },
+          {
+            title: "ส่วนลดตามยอดซื้อ",
+            desc: "โจทย์ธุรกิจจริง: เงื่อนไขหลายชั้นที่ต้องเรียงจากมากไปน้อยให้ถูก",
+            goal: 'total = 1200 — ถ้า ≥ 1000 ลด 20% / ≥ 500 ลด 10% / นอกนั้นไม่ลด แล้วแสดงราคาที่ต้องจ่าย (ต้องได้ <b>960.0</b>)',
+            starter: "total = 1200\n",
+            hint: '<code>if total >= 1000: print(total * 0.8)</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "960.0") && /if\s+/.test(code)
+          },
+          {
+            title: "ตรวจปีอธิกสุรทิน",
+            desc: "โจทย์คลาสสิกที่ใช้ตรรกะซับซ้อน: ปีอธิกสุรทินคือปีที่หารด้วย 4 ลงตัว แต่ถ้าหารด้วย 100 ลงตัวต้องหารด้วย 400 ลงตัวด้วย",
+            goal: 'year = 2024 ตรวจว่าเป็นปีอธิกสุรทินไหม แสดง <b>อธิกสุรทิน</b> หรือ <b>ปีปกติ</b> (ต้องได้ <b>อธิกสุรทิน</b>)',
+            starter: "year = 2024\n",
+            hint: '<code>if (year % 4 == 0 and year % 100 != 0) or year % 400 == 0:</code>',
+            xp: 80,
+            check: (out, code) => eq(out, "อธิกสุรทิน") && /%\s*4/.test(code) && /(and|or)/.test(code)
+          }
         ]
       },
       {
@@ -202,7 +259,10 @@ const COURSES = {
         lesson: [
           { h: "ลูป for", p: "วนตามลำดับหรือช่วงตัวเลข <b>range(a, b)</b> ให้เลข a ถึง b-1 — เหมาะเมื่อรู้จำนวนรอบ", code: "for i in range(1, 4):\n    print(i)  # 1 2 3" },
           { h: "ลูป while", p: "วนตราบใดที่เงื่อนไขจริง — ต้องมีบรรทัดเปลี่ยนค่าเพื่อให้เงื่อนไขเป็นเท็จ ไม่งั้นวนไม่จบ", code: "n = 3\nwhile n > 0:\n    print(n)\n    n -= 1" },
-          { h: "break และ continue", p: "<b>break</b> ออกจากลูปทันที • <b>continue</b> ข้ามไปรอบถัดไป — ใช้ควบคุมการวนละเอียดขึ้น", code: "for i in range(1, 6):\n    if i == 3:\n        continue  # ข้าม 3\n    print(i)  # 1 2 4 5" }
+          { h: "break และ continue", p: "<b>break</b> ออกจากลูปทันที • <b>continue</b> ข้ามไปรอบถัดไป — ใช้ควบคุมการวนละเอียดขึ้น", code: "for i in range(1, 6):\n    if i == 3:\n        continue  # ข้าม 3\n    print(i)  # 1 2 4 5" },
+          { h: "range() แบบเต็มรูปแบบ", p: "<code>range(5)</code> = 0-4 • <code>range(1, 6)</code> = 1-5 (ไม่รวมตัวท้าย) • <code>range(0, 10, 2)</code> = 0,2,4,6,8 (ก้าวทีละ 2) • <code>range(5, 0, -1)</code> = 5,4,3,2,1 (นับถอยหลัง) — จำไว้ว่า<b>ตัวท้ายไม่ถูกรวมเสมอ</b> คือกับดักอันดับหนึ่งของ range" },
+          { h: "⚠️ ลูปไม่รู้จบและการย่อหน้า", p: "<b>while</b> ที่ลืมเปลี่ยนค่าตัวแปรเงื่อนไขจะวนไม่จบและทำให้หน้าเว็บค้าง — ตรวจเสมอว่ามีบรรทัดที่ทำให้เงื่อนไขเป็นเท็จได้ • การ<b>ย่อหน้าผิด</b>ทำให้คำสั่งหลุดออกนอกลูป เช่น บรรทัด print ที่ควรอยู่ในลูปแต่ย่อหน้าเท่ากับ for จะทำงานแค่ครั้งเดียวหลังลูปจบ" },
+          { h: "💡 ลูปซ้อนและ enumerate", p: "ลูปซ้อนใช้ทำตาราง/รูปทรง แต่ระวังจำนวนรอบคูณกัน (10×10 = 100 รอบ) • เมื่อต้องใช้ทั้งลำดับและค่า ใช้ <b>enumerate()</b> จะสวยกว่าการใช้ range(len(...))", code: "for i, name in enumerate([\"ก\", \"ข\"], start=1):\n    print(i, name)  # 1 ก / 2 ข" }
         ],
         stages: [
           { title: "วนด้วย for", desc: "range(1, 6) ให้ 1 ถึง 5", goal: "แสดง <b>เก็บเหรียญที่ 1</b> ถึง <b>5</b>", starter: "", hint: "<code>for i in range(1, 6): print(\"เก็บเหรียญที่\", i)</code>", xp: 50, check: (out, code) => { const l = lines(out); return l.length === 5 && l[0] === "เก็บเหรียญที่ 1" && l[4] === "เก็บเหรียญที่ 5" && /for\s+/.test(code); } },
@@ -210,7 +270,25 @@ const COURSES = {
           { title: "นับถอยหลัง while", desc: "while วนจนเงื่อนไขเป็นเท็จ", goal: "count=3 นับถอยหลัง 3,2,1 แล้วแสดง <b>ทะยาน!</b>", starter: "count = 3\n", hint: "<code>while count > 0:</code> print แล้ว <code>count -= 1</code>", xp: 60, check: (out, code) => { const l = lines(out); return l.join(",") === "3,2,1,ทะยาน!" && /while/.test(code); } },
           { title: "เฉพาะเลขคู่", desc: "รวม for กับ if กรองค่า", goal: "แสดงเลขคู่ 1 ถึง 10 (2,4,6,8,10 บรรทัดละเลข)", starter: "", hint: "<code>for i in range(1, 11): if i % 2 == 0: print(i)</code>", xp: 60, check: (out) => { const l = lines(out); return l.join(",") === "2,4,6,8,10"; } },
           { title: "continue ข้ามค่า", desc: "continue ข้ามไปรอบถัดไป", goal: "แสดง 1-5 แต่ข้าม 3 (ต้องได้ 1,2,4,5)", starter: "", hint: "<code>if i == 3: continue</code>", xp: 60, check: (out, code) => { const l = lines(out); return l.join(",") === "1,2,4,5" && /continue/.test(code); } },
-          { title: "ลูปซ้อน", desc: "ลูปใน ลูป — สร้างตาราง/รูปทรง", goal: "พิมพ์ตาราง 3 แถว แต่ละแถวมี *** (ดาว 3 ดวง)", starter: "", hint: "<code>for i in range(3): print(\"*\" * 3)</code> หรือลูปซ้อน", xp: 80, check: (out) => { const l = lines(out); return l.length === 3 && l.every(s => s === "***"); } }
+          { title: "ลูปซ้อน", desc: "ลูปใน ลูป — สร้างตาราง/รูปทรง", goal: "พิมพ์ตาราง 3 แถว แต่ละแถวมี *** (ดาว 3 ดวง)", starter: "", hint: "<code>for i in range(3): print(\"*\" * 3)</code> หรือลูปซ้อน", xp: 80, check: (out) => { const l = lines(out); return l.length === 3 && l.every(s => s === "***"); } },
+          {
+            title: "สูตรคูณแม่ 7",
+            desc: "ลูปกับการคำนวณและจัดรูปแบบข้อความในบรรทัดเดียว",
+            goal: 'แสดงสูตรคูณแม่ 7 ตั้งแต่ <b>7 x 1 = 7</b> ถึง <b>7 x 5 = 35</b> (5 บรรทัด)',
+            starter: "",
+            hint: '<code>for i in range(1, 6): print(f"7 x {i} = {7 * i}")</code>',
+            xp: 60,
+            check: (out) => { const l = lines(out); return l.length === 5 && l[0] === "7 x 1 = 7" && l[4] === "7 x 5 = 35"; }
+          },
+          {
+            title: "พีระมิดดาว",
+            desc: "รวมลูปกับการทำซ้ำข้อความ — โจทย์ยอดฮิตวัดความเข้าใจเรื่องลูป",
+            goal: 'สร้างพีระมิด 4 ชั้น: บรรทัดแรก <b>*</b> เพิ่มทีละดวงจนบรรทัดสุดท้าย <b>****</b>',
+            starter: "",
+            hint: '<code>for i in range(1, 5): print("*" * i)</code>',
+            xp: 80,
+            check: (out) => lines(out).join(",") === "*,**,***,****"
+          }
         ]
       },
       {
@@ -233,7 +311,10 @@ const COURSES = {
         lesson: [
           { h: "สร้างฟังก์ชัน", p: "ใช้ <b>def</b> ตามด้วยชื่อและ ( ) — จัดกลุ่มโค้ดที่ใช้ซ้ำ เรียกใช้ด้วยชื่อฟังก์ชัน", code: "def greet():\n    print(\"สวัสดี\")\n\ngreet()  # เรียกใช้" },
           { h: "พารามิเตอร์และ return", p: "รับค่าเข้าผ่านพารามิเตอร์ ส่งผลกลับด้วย <b>return</b> — ตั้งค่าเริ่มต้นให้พารามิเตอร์ได้ด้วย =", code: "def add(a, b=10):\n    return a + b\n\nprint(add(5))     # 15\nprint(add(5, 3))  # 8" },
-          { h: "Lambda และโมดูล", p: "<b>lambda</b> ฟังก์ชันสั้นบรรทัดเดียว • <b>import</b> เรียกใช้โมดูลสำเร็จรูป เช่น math, random", code: "square = lambda x: x * x\nprint(square(5))  # 25\n\nimport math\nprint(math.sqrt(16))  # 4.0" }
+          { h: "Lambda และโมดูล", p: "<b>lambda</b> ฟังก์ชันสั้นบรรทัดเดียว • <b>import</b> เรียกใช้โมดูลสำเร็จรูป เช่น math, random", code: "square = lambda x: x * x\nprint(square(5))  # 25\n\nimport math\nprint(math.sqrt(16))  # 4.0" },
+          { h: "ขอบเขตตัวแปร (Scope)", p: "ตัวแปรที่สร้างในฟังก์ชันเป็น<b>ตัวแปรเฉพาะที่ (local)</b> มองจากข้างนอกไม่เห็นและหายไปเมื่อฟังก์ชันจบ • ฟังก์ชันอ่านตัวแปรข้างนอก (global) ได้ แต่ถ้าจะ<b>แก้ค่า</b>ต้องประกาศ <code>global</code> ก่อน — ทางที่ดีกว่าคือรับค่าเข้าทางพารามิเตอร์และส่งผลออกทาง return" },
+          { h: "⚠️ กับดักของฟังก์ชัน", p: "<b>1) ลืม return</b> — ฟังก์ชันที่ไม่มี return จะคืน <code>None</code> เสมอ ทำให้เอาไปคำนวณต่อแล้วพัง • <b>2) สับสน print กับ return</b> — print แค่แสดงผลออกจอ ส่วน return ส่งค่ากลับไปใช้ต่อได้ • <b>3) ค่าเริ่มต้นเป็น list</b> — <code>def f(x=[])</code> อันตรายเพราะ list ตัวเดิมถูกใช้ซ้ำทุกครั้ง ให้ใช้ <code>x=None</code> แทน" },
+          { h: "💡 ฟังก์ชันที่ดีเป็นอย่างไร", p: "<b>ทำสิ่งเดียวให้ดี</b> (ถ้าอธิบายด้วยประโยคเดียวไม่ได้ แปลว่าควรแยกเป็นหลายฟังก์ชัน) • ตั้งชื่อเป็น<b>คำกริยา</b> เช่น calculate_total, is_valid • ไม่ควรยาวเกินหน้าจอเดียว • ใส่ docstring อธิบายไว้ในบรรทัดแรกของฟังก์ชัน", code: "def calculate_total(price, qty):\n    \"\"\"คืนราคารวมของสินค้า\"\"\"\n    return price * qty" }
         ],
         stages: [
           { title: "ฟังก์ชันแรก", desc: "def สร้างฟังก์ชัน แล้วเรียกใช้ด้วยชื่อ", goal: "สร้างฟังก์ชัน greet ที่แสดง <b>สวัสดีนักผจญภัย</b> แล้วเรียกใช้", starter: "def greet():\n    # เติมโค้ด\n\n", hint: "ในฟังก์ชัน print แล้วข้างนอกเรียก <code>greet()</code>", xp: 60, check: (out, code) => eq(out, "สวัสดีนักผจญภัย") && /def\s+greet/.test(code) },
@@ -586,7 +667,10 @@ const COURSES = {
         lesson: [
           { h: "4 ชนิดข้อมูลหลัก", p: "<b>int</b> จำนวนเต็ม • <b>float / double</b> ทศนิยม (double ละเอียดกว่า) • <b>char</b> ตัวอักษรตัวเดียวในเครื่องหมาย ' ' — ประกาศ: ชนิด ชื่อ = ค่า;", code: "int age = 15;\nfloat price = 19.5;\nchar grade = 'A';" },
           { h: "รหัสรูปแบบใน printf", p: "<b>%d</b> = int • <b>%f</b> = float/double (ปกติ 6 ตำแหน่ง ใช้ <b>%.2f</b> คุมเหลือ 2 ตำแหน่ง) • <b>%c</b> = char • <b>%s</b> = ข้อความ", code: "printf(\"อายุ %d ปี\", age);\nprintf(\"ราคา %.2f บาท\", price);" },
-          { h: "กับดักการหารจำนวนเต็ม", p: "int หาร int ได้ int เสมอ — เศษถูกตัดทิ้ง! เช่น 7 / 2 = 3 ไม่ใช่ 3.5 ต้องแปลงชนิด (casting) ด้วย (float) ก่อน", code: "int a = 7, b = 2;\nprintf(\"%.1f\", (float)a / b);  // 3.5" }
+          { h: "กับดักการหารจำนวนเต็ม", p: "int หาร int ได้ int เสมอ — เศษถูกตัดทิ้ง! เช่น 7 / 2 = 3 ไม่ใช่ 3.5 ต้องแปลงชนิด (casting) ด้วย (float) ก่อน", code: "int a = 7, b = 2;\nprintf(\"%.1f\", (float)a / b);  // 3.5" },
+          { h: "ขนาดหน่วยความจำและช่วงค่า", p: "แต่ละชนิดกินพื้นที่ต่างกันและเก็บค่าได้จำกัด (ใช้ <code>sizeof()</code> ดูขนาดได้): <b>char</b> 1 ไบต์ (-128 ถึง 127) • <b>int</b> ปกติ 4 ไบต์ (ประมาณ -2,147 ล้าน ถึง 2,147 ล้าน) • <b>float</b> 4 ไบต์ ทศนิยมประมาณ 7 หลัก • <b>double</b> 8 ไบต์ ละเอียดประมาณ 15 หลัก — ถ้าใส่ค่าเกินช่วงจะเกิด <b>overflow</b> ค่าวนกลับไปติดลบ", code: "printf(\"%d\", sizeof(int));  // 4" },
+          { h: "⚠️ กับดักที่ต้องระวัง", p: "<b>1) ใช้ตัวแปรก่อนกำหนดค่า</b> — ใน C ค่าเริ่มต้นคือขยะในหน่วยความจำ ไม่ใช่ 0 • <b>2) รหัสรูปแบบไม่ตรงชนิด</b> — ใช้ %d กับ float จะได้ค่าเพี้ยนสุดๆ • <b>3) เทียบ float ด้วย ==</b> — ทศนิยมมีความคลาดเคลื่อน ควรเทียบด้วยผลต่างที่ยอมรับได้แทน • <b>4) ลืม & ใน scanf</b> — โปรแกรมพังทันที" },
+          { h: "💡 เคล็ดลับ", p: "ประกาศตัวแปรพร้อมกำหนดค่าเริ่มต้นเสมอ (<code>int count = 0;</code>) • ใช้ <b>const</b> กับค่าที่ไม่ควรเปลี่ยน • เลือก <b>double</b> เป็นค่าเริ่มต้นสำหรับงานทศนิยมเพราะละเอียดกว่า float • ตั้งชื่อตัวแปรสื่อความหมายและใช้รูปแบบเดียวกันทั้งโปรแกรม" }
         ],
         stages: [
           {
@@ -916,6 +1000,24 @@ const COURSES = {
             hint: '<code>do { printf("%d\\n", n); n++; } while (n <= 3);</code>',
             xp: 80,
             check: (out, code) => { const l = lines(out); return l.join(",") === "1,2,3" && /do\s*\{/.test(code) && /while\s*\(/.test(code); }
+          },
+          {
+            title: "หาค่ามากสุดจากสามค่า",
+            desc: "เงื่อนไขซ้อนกันหลายชั้น — โจทย์พื้นฐานที่ออกสอบบ่อยที่สุดเรื่อง if",
+            goal: 'มี a=15, b=42, c=8 หาค่ามากที่สุดแล้วแสดง <b>มากสุด = 42</b>',
+            starter: "// เขียนโปรแกรมเองตั้งแต่ #include\n\nint main() {\n    int a = 15, b = 42, c = 8;\n\n    return 0;\n}\n",
+            hint: 'เก็บ max = a แล้วเทียบทีละตัว: <code>if (b > max) max = b;</code>',
+            xp: 60,
+            check: (out, code) => eq(out, "มากสุด = 42") && /if\s*\(/.test(code)
+          },
+          {
+            title: "พีระมิดดาวด้วยลูปซ้อน",
+            desc: "ลูปนอกคุมจำนวนแถว ลูปในคุมจำนวนดาวในแถวนั้น — คลาสสิกของภาษา C",
+            goal: 'พิมพ์พีระมิด 4 แถว: <b>*</b>, <b>**</b>, <b>***</b>, <b>****</b>',
+            starter: "// เขียนโปรแกรมเองตั้งแต่ #include\n\n",
+            hint: '<code>for (int i = 1; i <= 4; i++) { for (int j = 0; j < i; j++) printf("*"); printf("\\n"); }</code>',
+            xp: 80,
+            check: (out, code) => lines(out).join(",") === "*,**,***,****" && (code.match(/for\s*\(/g) || []).length >= 2
           }
         ]
       },
@@ -990,6 +1092,15 @@ const COURSES = {
             hint: '<code>for (int i = 3; i >= 0; i--) { printf("%d\\n", a[i]); }</code>',
             xp: 80,
             check: (out, code) => { const l = lines(out); return l.join(",") === "4,3,2,1" && /i\s*--|i\s*-=/.test(code); }
+          },
+          {
+            title: "หาค่าเฉลี่ยจากอาร์เรย์",
+            desc: "รวมการวนสะสมกับการหารทศนิยม — อย่าลืม casting ไม่งั้นค่าเฉลี่ยจะถูกตัดเศษ",
+            goal: 'มี <b>int s[4] = {80, 75, 90, 85}</b> หาค่าเฉลี่ยแล้วแสดง <b>เฉลี่ย = 82.50</b>',
+            starter: "// เขียนโปรแกรมเองตั้งแต่ #include\n\nint main() {\n    int s[4] = {80, 75, 90, 85};\n    int sum = 0;\n\n    return 0;\n}\n",
+            hint: 'วนบวกเข้า sum แล้ว <code>printf("เฉลี่ย = %.2f", (float)sum / 4);</code>',
+            xp: 80,
+            check: (out, code) => eq(out, "เฉลี่ย = 82.50") && /\(float\)/.test(code) && /for\s*\(/.test(code)
           }
         ]
       },
@@ -1258,7 +1369,8 @@ const COURSES = {
           { title: "ตัวเลือกเดียวด้วย radio", desc: "radio ที่ name เดียวกันจะกลายเป็นกลุ่มเดียวกัน เลือกได้แค่อันเดียว และควรมี value ต่างกัน", goal: 'สร้าง radio 2 ตัวที่ <b>name="gender"</b> เหมือนกัน value เป็น <b>male</b> และ <b>female</b>', starter: `<form>\n\n</form>\n`, hint: '<code>&lt;input type="radio" name="gender" value="male"&gt;</code>', xp: 60, check: (o, c, d) => { const r = W.qa(d, 'input[type="radio"][name="gender"]').map(e => W.attr(d, e, "value")); return r.length === 2 && r.includes("male") && r.includes("female"); } },
           { title: "เมนูดรอปดาวน์", desc: "select ครอบ option แต่ละตัวเลือกควรมี value สำหรับส่งไปเซิร์ฟเวอร์", goal: 'สร้าง <b>select name="city"</b> ที่มี 2 option: value=<b>bkk</b> ข้อความ <b>กรุงเทพ</b> และ value=<b>cnx</b> ข้อความ <b>เชียงใหม่</b>', starter: `<form>\n\n</form>\n`, hint: '<code>&lt;select name="city"&gt;&lt;option value="bkk"&gt;กรุงเทพ&lt;/option&gt;...&lt;/select&gt;</code>', xp: 60, check: (o, c, d) => { const s = W.q(d, 'select[name="city"]'); if (!s) return false; const op = W.qa(s, "option"); return op.length === 2 && W.attr(d, op[0], "value") === "bkk" && W.txt(op[0]) === "กรุงเทพ" && W.attr(d, op[1], "value") === "cnx"; } },
           { title: "ข้อความยาวและปุ่มส่ง", desc: "textarea สำหรับข้อความหลายบรรทัด และปุ่ม submit สำหรับส่งฟอร์ม", goal: 'สร้าง <b>textarea name="message"</b> ที่มี <b>placeholder="พิมพ์ข้อความ"</b> และปุ่ม <b>&lt;button type="submit"&gt;ส่ง&lt;/button&gt;</b>', starter: `<form>\n\n</form>\n`, hint: 'textarea มีแท็กปิดเสมอ ส่วนปุ่มใช้ button type="submit"', xp: 60, check: (o, c, d) => { const t = W.q(d, 'textarea[name="message"]'); const b = W.q(d, 'button[type="submit"]'); return !!t && W.attr(d, t, "placeholder") === "พิมพ์ข้อความ" && !!b && W.txt(b) === "ส่ง"; } },
-          { title: "ตรวจข้อมูลอัตโนมัติ", desc: "ใส่แอตทริบิวต์ไม่กี่ตัว เบราว์เซอร์ก็ตรวจให้ฟรีโดยไม่ต้องเขียน JavaScript เลย", goal: 'ทำให้ช่องอีเมล <b>required</b> และช่องอายุ <b>required</b> พร้อมกำหนด <b>min="1"</b> และ <b>max="120"</b>', starter: `<form>\n  <input type="email" name="email">\n  <input type="number" name="age">\n  <button type="submit">สมัคร</button>\n</form>\n`, hint: 'เพิ่ม required ในทั้งสองช่อง และ min/max ในช่อง number', xp: 80, check: (o, c, d) => { const e = W.q(d, 'input[type="email"]'), a = W.q(d, 'input[type="number"]'); return !!e && e.hasAttribute("required") && !!a && a.hasAttribute("required") && W.attr(d, a, "min") === "1" && W.attr(d, a, "max") === "120"; } }
+          { title: "ตรวจข้อมูลอัตโนมัติ", desc: "ใส่แอตทริบิวต์ไม่กี่ตัว เบราว์เซอร์ก็ตรวจให้ฟรีโดยไม่ต้องเขียน JavaScript เลย", goal: 'ทำให้ช่องอีเมล <b>required</b> และช่องอายุ <b>required</b> พร้อมกำหนด <b>min="1"</b> และ <b>max="120"</b>', starter: `<form>\n  <input type="email" name="email">\n  <input type="number" name="age">\n  <button type="submit">สมัคร</button>\n</form>\n`, hint: 'เพิ่ม required ในทั้งสองช่อง และ min/max ในช่อง number', xp: 80, check: (o, c, d) => { const e = W.q(d, 'input[type="email"]'), a = W.q(d, 'input[type="number"]'); return !!e && e.hasAttribute("required") && !!a && a.hasAttribute("required") && W.attr(d, a, "min") === "1" && W.attr(d, a, "max") === "120"; } },
+          { html: ``, title: "ฟอร์มสมัครสมาชิกเต็มรูปแบบ", desc: "รวมทุกอย่างในหน่วยนี้: label ครบทุกช่อง ชนิดถูกต้อง และตรวจสอบข้อมูลอัตโนมัติ", goal: 'สร้างฟอร์มที่มี <b>label for="uname"</b> คู่กับ <b>input id="uname" name="username" required</b>, <b>input type="email" name="email" required</b>, <b>select name="plan"</b> ที่มี 2 option และปุ่ม <b>submit</b>', starter: `<form>\n\n</form>\n`, hint: 'ไล่ทีละชิ้น: label+input ข้อความ → input อีเมล → select → button', xp: 100, check: (o, c, d) => { const u = W.q(d, "#uname"), l = W.q(d, 'label[for="uname"]'), e = W.q(d, 'input[type="email"]'), s = W.q(d, 'select[name="plan"]'); return !!l && !!u && W.attr(d, u, "name") === "username" && u.hasAttribute("required") && !!e && e.hasAttribute("required") && !!s && W.qa(s, "option").length >= 2 && W.has(d, 'button[type="submit"], input[type="submit"]'); } }
         ]
       },
       {
@@ -1348,7 +1460,10 @@ const COURSES = {
           { h: "เขียนย่อ 4 ทิศ", p: "<code>padding: 10px;</code> ทุกด้าน • <code>padding: 10px 20px;</code> บน-ล่าง / ซ้าย-ขวา • <code>padding: 5px 10px 15px 20px;</code> เรียงตามเข็มนาฬิกา บน-ขวา-ล่าง-ซ้าย • เจาะจงด้านเดียวได้ เช่น <code>margin-top</code> — เทคนิคยอดฮิต <code>margin: 0 auto;</code> คือจัดกล่องให้อยู่กลางแนวนอน" },
           { h: "เส้นขอบและมุมโค้ง", p: "<b>border: ความหนา รูปแบบ สี</b> เช่น <code>border: 2px solid #333;</code> รูปแบบมี solid, dashed, dotted • <b>border-radius</b> ทำมุมโค้ง (ใส่ <code>50%</code> กับกล่องสี่เหลี่ยมจัตุรัสจะได้วงกลม)" },
           { h: "box-sizing ตัวช่วยชีวิต", p: "ปกติ <code>width: 200px</code> นับเฉพาะเนื้อหา พอเพิ่ม padding กับ border กล่องจะกว้างเกิน 200 — แก้ด้วย <b>box-sizing: border-box</b> ที่ทำให้ width นับรวม padding และ border แล้ว นักพัฒนาส่วนใหญ่ตั้งค่านี้ให้ทุกอิลิเมนต์ตั้งแต่ต้นโปรเจกต์", code: "* {\n  box-sizing: border-box;\n}" },
-          { h: "display พื้นฐาน", p: "<b>block</b> กินเต็มบรรทัด ขึ้นบรรทัดใหม่ (div, p, h1) • <b>inline</b> กว้างเท่าเนื้อหา อยู่ในบรรทัดเดียวกัน กำหนด width/height ไม่ได้ (span, a) • <b>inline-block</b> อยู่ในบรรทัดเดียวกันแต่กำหนดขนาดได้ • <b>none</b> ซ่อนหายไปเลย" }
+          { h: "display พื้นฐาน", p: "<b>block</b> กินเต็มบรรทัด ขึ้นบรรทัดใหม่ (div, p, h1) • <b>inline</b> กว้างเท่าเนื้อหา อยู่ในบรรทัดเดียวกัน กำหนด width/height ไม่ได้ (span, a) • <b>inline-block</b> อยู่ในบรรทัดเดียวกันแต่กำหนดขนาดได้ • <b>none</b> ซ่อนหายไปเลย" },
+          { h: "margin ยุบรวมกัน (Collapsing)", p: "พฤติกรรมที่ทำให้มือใหม่งงที่สุด: เมื่อกล่องสองอันวางต่อกันในแนวตั้ง <b>margin ล่างของอันบนกับ margin บนของอันล่างจะยุบรวมเป็นค่าเดียว</b> (เอาค่าที่มากกว่า ไม่ใช่บวกกัน) — เช่น 20px กับ 30px ได้ระยะห่างจริง 30px ไม่ใช่ 50px • เกิดเฉพาะแนวตั้ง และไม่เกิดใน Flexbox/Grid (อีกเหตุผลที่ควรใช้ gap แทน margin)" },
+          { h: "หน่วยวัดที่ควรรู้", p: "<b>px</b> คงที่ แม่นยำ • <b>%</b> เทียบกับกล่องแม่ • <b>rem</b> เทียบกับขนาดฟอนต์ราก (ปกติ 16px) — เหมาะที่สุดสำหรับขนาดฟอนต์และระยะห่าง เพราะปรับตามที่ผู้ใช้ตั้งค่าเบราว์เซอร์ไว้ • <b>em</b> เทียบกับฟอนต์ของตัวเอง (ระวังการทบต้นเมื่อซ้อนกัน) • <b>vw/vh</b> เทียบกับขนาดหน้าจอ เหมาะกับ hero เต็มจอ" },
+          { h: "💡 ระบบระยะห่างที่มืออาชีพใช้", p: "อย่าสุ่มตัวเลขไปเรื่อย ให้ใช้<b>สเกลคงที่</b> เช่น 4, 8, 12, 16, 24, 32, 48 แล้วเลือกจากชุดนี้เท่านั้น หน้าเว็บจะดูเป็นระเบียบขึ้นทันที • เก็บค่าไว้ในตัวแปร CSS แล้วเรียกใช้ทั้งเว็บ", code: ":root { --sp-2: 8px; --sp-4: 16px; }\n.card { padding: var(--sp-4); }" }
         ],
         stages: [
           { html: `<div class="box">กล่อง</div>`, title: "ขนาดและขอบใน", desc: "width/height คุมขนาดเนื้อหา padding คือช่องว่างด้านในรอบเนื้อหา", goal: 'ทำให้ <b>.box</b> มี <b>width: 200px</b>, <b>padding: 16px</b> และพื้นหลัง <b>#ecf0f1</b>', starter: ``, hint: '<code>.box { width: 200px; padding: 16px; background-color: #ecf0f1; }</code>', xp: 40, check: (o, c, d) => W.cssNum(d, ".box", "width") === 200 && W.cssNum(d, ".box", "padding-top") === 16 && W.cssColor(d, ".box", "background-color", "#ecf0f1") },
@@ -1393,7 +1508,8 @@ const COURSES = {
           { html: `<div class="hero"><h2>ตรงกลางพอดี</h2></div>`, title: "จัดกึ่งกลางสมบูรณ์แบบ", desc: "โจทย์คลาสสิกที่เคยยากมากก่อนมี Flexbox — ตอนนี้แค่ 3 บรรทัด", goal: 'ทำให้ <b>.hero</b> สูง <b>200px</b> และจัดเนื้อหาไว้<b>กึ่งกลางทั้งแนวตั้งและแนวนอน</b> (flex + justify-content + align-items เป็น center)', starter: ``, hint: '<code>height: 200px; display: flex; justify-content: center; align-items: center;</code>', xp: 60, check: (o, c, d) => W.cssv(d, ".hero", "display") === "flex" && W.cssv(d, ".hero", "justify-content") === "center" && W.cssv(d, ".hero", "align-items") === "center" && W.cssNum(d, ".hero", "height") === 200 },
           { html: `<div class="col"><div>บน</div><div>กลาง</div><div>ล่าง</div></div>`, title: "เรียงเป็นคอลัมน์", desc: "เปลี่ยนแกนหลักเป็นแนวตั้งด้วย flex-direction: column", goal: 'ทำให้ <b>.col</b> เป็น flex เรียงแบบ <b>column</b> พร้อม <b>gap: 8px</b>', starter: ``, hint: '<code>flex-direction: column;</code>', xp: 50, check: (o, c, d) => W.cssv(d, ".col", "display") === "flex" && W.cssv(d, ".col", "flex-direction") === "column" && W.cssNum(d, ".col", "gap") === 8 },
           { html: `<div class="cards"><div class="card">A</div><div class="card">B</div><div class="card">C</div><div class="card">D</div></div>`, title: "ขึ้นบรรทัดใหม่อัตโนมัติ", desc: "flex-wrap: wrap ทำให้การ์ดตกลงบรรทัดใหม่เมื่อจอแคบ — พื้นฐานของเว็บที่ใช้ได้ทุกจอ", goal: 'ทำให้ <b>.cards</b> เป็น flex ที่ <b>flex-wrap: wrap</b> gap 10px และให้ <b>.card</b> มี <b>width: 45%</b>', starter: ``, hint: '<code>.cards { display: flex; flex-wrap: wrap; gap: 10px; }</code>', xp: 60, check: (o, c, d) => W.cssv(d, ".cards", "display") === "flex" && W.cssv(d, ".cards", "flex-wrap") === "wrap" && W.cssv(d, ".card", "width") === "45%" },
-          { html: `<div class="layout"><aside class="side">เมนู</aside><main class="content">เนื้อหาหลัก</main></div>`, title: "แบ่งพื้นที่ด้วย flex: 1", desc: "ตัวลูกที่ใส่ flex:1 จะยืดกินพื้นที่ว่างที่เหลือทั้งหมด — สูตรทำเลย์เอาต์ sidebar + เนื้อหา", goal: 'ทำให้ <b>.layout</b> เป็น flex, <b>.side</b> กว้างคงที่ <b>200px</b> และ <b>.content</b> ยืดเต็มที่เหลือด้วย <b>flex: 1</b>', starter: ``, hint: '<code>.side { width: 200px; }</code> และ <code>.content { flex: 1; }</code>', xp: 80, check: (o, c, d) => W.cssv(d, ".layout", "display") === "flex" && W.cssNum(d, ".side", "width") === 200 && (W.cssNum(d, ".content", "flex-grow") === 1 || /\.content\s*\{[^}]*flex\s*:\s*1/.test(c.replace(/\s+/g, " "))) }
+          { html: `<div class="layout"><aside class="side">เมนู</aside><main class="content">เนื้อหาหลัก</main></div>`, title: "แบ่งพื้นที่ด้วย flex: 1", desc: "ตัวลูกที่ใส่ flex:1 จะยืดกินพื้นที่ว่างที่เหลือทั้งหมด — สูตรทำเลย์เอาต์ sidebar + เนื้อหา", goal: 'ทำให้ <b>.layout</b> เป็น flex, <b>.side</b> กว้างคงที่ <b>200px</b> และ <b>.content</b> ยืดเต็มที่เหลือด้วย <b>flex: 1</b>', starter: ``, hint: '<code>.side { width: 200px; }</code> และ <code>.content { flex: 1; }</code>', xp: 80, check: (o, c, d) => W.cssv(d, ".layout", "display") === "flex" && W.cssNum(d, ".side", "width") === 200 && (W.cssNum(d, ".content", "flex-grow") === 1 || /\.content\s*\{[^}]*flex\s*:\s*1/.test(c.replace(/\s+/g, " "))) },
+          { html: `<div class="pricing"><div class="plan">ฟรี</div><div class="plan hot">มาตรฐาน</div><div class="plan">พรีเมียม</div></div>`, title: "การ์ดราคา 3 ใบเท่ากัน", desc: "งานจริงที่เจอบ่อยที่สุด: การ์ดหลายใบกว้างเท่ากัน เว้นระยะเท่ากัน และเรียงชิดบน", goal: 'ให้ <b>.pricing</b> เป็น flex, <b>gap: 16px</b>, <b>align-items: flex-start</b> และให้ <b>.plan</b> มี <b>flex: 1</b> กับ <b>padding: 24px</b>', starter: ``, hint: '<code>.pricing { display: flex; gap: 16px; align-items: flex-start; }</code> และ <code>.plan { flex: 1; padding: 24px; }</code>', xp: 80, check: (o, c, d) => W.cssv(d, ".pricing", "display") === "flex" && W.cssNum(d, ".pricing", "gap") === 16 && W.cssv(d, ".pricing", "align-items") === "flex-start" && W.cssNum(d, ".plan", "padding-top") === 24 && (W.cssNum(d, ".plan", "flex-grow") === 1 || /\.plan\s*\{[^}]*flex\s*:\s*1/.test(c.replace(/\s+/g, " "))) }
         ]
       },
       {
@@ -1537,7 +1653,10 @@ const COURSES = {
           { h: "สร้างและเข้าถึงอาร์เรย์", p: "อาร์เรย์เก็บหลายค่าใน [ ] เข้าถึงด้วยดัชนีเริ่มที่ <b>0</b> • <code>.length</code> จำนวนสมาชิก • ตัวสุดท้ายคือ <code>arr[arr.length - 1]</code> หรือ <code>arr.at(-1)</code>", code: "const fruits = [\"แอปเปิล\", \"กล้วย\"];\nconsole.log(fruits[0]);      // แอปเปิล\nconsole.log(fruits.length);  // 2" },
           { h: "เพิ่มและลบสมาชิก", p: "<b>push()</b> เพิ่มท้าย • <b>pop()</b> ลบท้าย • <b>unshift()</b> เพิ่มหน้า • <b>shift()</b> ลบหน้า • <b>splice(ตำแหน่ง, จำนวน)</b> ลบ/แทรกตรงกลาง • <b>slice(a, b)</b> ตัดสำเนาออกมาโดยไม่แก้ต้นฉบับ" },
           { h: "map, filter, reduce — สามทหารเสือ", p: "<b>map()</b> แปลงทุกตัวเป็นค่าใหม่ ได้อาร์เรย์ใหม่ขนาดเท่าเดิม • <b>filter()</b> คัดเฉพาะตัวที่ผ่านเงื่อนไข • <b>reduce()</b> ยุบทั้งอาร์เรย์ให้เหลือค่าเดียว (เช่น ผลรวม) — สามตัวนี้คือหัวใจของการเขียน JavaScript สมัยใหม่ ใช้แทนลูป for ได้เกือบทุกกรณี", code: "const n = [1, 2, 3, 4];\nconsole.log(n.map(x => x * 2));      // [2,4,6,8]\nconsole.log(n.filter(x => x > 2));   // [3,4]\nconsole.log(n.reduce((s, x) => s + x, 0)); // 10" },
-          { h: "ค้นหาและจัดการอื่นๆ", p: "<b>find()</b> หาตัวแรกที่ตรงเงื่อนไข • <b>includes()</b> มีค่านี้ไหม • <b>indexOf()</b> อยู่ตำแหน่งไหน • <b>sort()</b> เรียงลำดับ (ตัวเลขต้องใส่ฟังก์ชันเทียบ <code>(a,b) => a-b</code>) • <b>join()</b> รวมเป็นข้อความ • <b>reverse()</b> กลับด้าน • <b>forEach()</b> วนทำทีละตัว" }
+          { h: "ค้นหาและจัดการอื่นๆ", p: "<b>find()</b> หาตัวแรกที่ตรงเงื่อนไข • <b>includes()</b> มีค่านี้ไหม • <b>indexOf()</b> อยู่ตำแหน่งไหน • <b>sort()</b> เรียงลำดับ (ตัวเลขต้องใส่ฟังก์ชันเทียบ <code>(a,b) => a-b</code>) • <b>join()</b> รวมเป็นข้อความ • <b>reverse()</b> กลับด้าน • <b>forEach()</b> วนทำทีละตัว" },
+          { h: "⚠️ เมท็อดที่แก้ต้นฉบับ vs สร้างใหม่", p: "แยกให้ออกว่าอันไหน<b>แก้อาร์เรย์เดิม (mutating)</b>: push, pop, shift, unshift, splice, sort, reverse — และอันไหน<b>คืนอาร์เรย์ใหม่</b>: map, filter, slice, concat • บั๊กยอดฮิตคือใช้ <code>sort()</code> แล้วเผลอทำลายลำดับต้นฉบับที่โค้ดส่วนอื่นใช้อยู่ — ถ้าไม่อยากให้เดิมเปลี่ยน ให้คัดลอกก่อนด้วย <code>[...arr].sort()</code>" },
+          { h: "⚠️ sort() เรียงแบบข้อความ", p: "<code>[10, 9, 100].sort()</code> ได้ <code>[10, 100, 9]</code> เพราะเรียงตามรหัสตัวอักษร ไม่ใช่ค่าตัวเลข — ต้องใส่ฟังก์ชันเทียบเสมอ: <code>(a, b) => a - b</code> น้อยไปมาก และ <code>(a, b) => b - a</code> มากไปน้อย" },
+          { h: "💡 ต่อเมท็อดเป็นลูกโซ่ (Chaining)", p: "map/filter คืนอาร์เรย์ใหม่ จึงต่อกันได้เป็นประโยคเดียวที่อ่านเหมือนภาษาอังกฤษ — วิธีเขียนที่เป็นมาตรฐานของ JavaScript สมัยใหม่", code: "const total = orders\n  .filter(o => o.paid)\n  .map(o => o.price)\n  .reduce((s, p) => s + p, 0);" }
         ],
         stages: [
           { title: "เข้าถึงสมาชิก", desc: "ดัชนีเริ่มที่ 0 เสมอ", goal: 'แสดง 2 บรรทัด: สมาชิก<b>ตัวแรก</b> และ <b>จำนวนสมาชิก</b> (ต้องได้ <b>แอปเปิล</b> และ <b>3</b>)', starter: `const fruits = ["แอปเปิล", "กล้วย", "ส้ม"];\n`, hint: '<code>fruits[0]</code> และ <code>fruits.length</code>', xp: 40, check: (o) => lines(o).join(",") === "แอปเปิล,3" },
@@ -1546,7 +1665,8 @@ const COURSES = {
           { title: "คัดกรองด้วย filter", desc: "filter เก็บเฉพาะตัวที่เงื่อนไขเป็นจริง", goal: 'ใช้ <b>filter</b> เลือกเฉพาะเลขที่ <b>มากกว่า 50</b> แล้วแสดงด้วย join(",") (ต้องได้ <b>80,95</b>)', starter: `const scores = [45, 80, 30, 95];\n`, hint: '<code>scores.filter(s => s > 50)</code>', xp: 60, check: (o, c) => eq(o, "80,95") && /\.filter\(/.test(c) },
           { title: "รวมค่าด้วย reduce", desc: "reduce ยุบอาร์เรย์เหลือค่าเดียว — พารามิเตอร์ตัวที่สองคือค่าเริ่มต้น", goal: 'ใช้ <b>reduce</b> หาผลรวมของอาร์เรย์ (ต้องได้ <b>67</b>)', starter: `const nums = [12, 30, 25];\n`, hint: '<code>nums.reduce((sum, x) => sum + x, 0)</code>', xp: 80, check: (o, c) => eq(o, "67") && /\.reduce\(/.test(c) },
           { title: "ค้นหาด้วย find และ includes", desc: "find คืนตัวแรกที่ตรงเงื่อนไข ส่วน includes ตอบแค่มีหรือไม่มี", goal: 'แสดง 2 บรรทัด: ใช้ <b>find</b> หาเลขแรกที่มากกว่า 20 (ต้องได้ <b>30</b>) และใช้ <b>includes</b> เช็คว่ามีเลข 12 ไหม (ต้องได้ <b>true</b>)', starter: `const nums = [12, 30, 25];\n`, hint: '<code>nums.find(x => x > 20)</code> และ <code>nums.includes(12)</code>', xp: 60, check: (o, c) => lines(o).join(",") === "30,true" && /\.find\(/.test(c) && /\.includes\(/.test(c) },
-          { title: "เรียงลำดับตัวเลข", desc: "sort() เรียงแบบข้อความโดยปริยาย ตัวเลขต้องใส่ฟังก์ชันเทียบเสมอ", goal: 'เรียงอาร์เรย์<b>จากน้อยไปมาก</b>ด้วย <b>sort((a, b) => a - b)</b> แล้วแสดงด้วย join(",") (ต้องได้ <b>5,12,30,100</b>)', starter: `const nums = [30, 5, 100, 12];\n`, hint: 'ถ้าใช้ sort() เฉยๆ จะได้ 100 มาก่อน 12 เพราะเรียงแบบข้อความ', xp: 80, check: (o, c) => eq(o, "5,12,30,100") && /sort\(\s*\(/.test(c) }
+          { title: "เรียงลำดับตัวเลข", desc: "sort() เรียงแบบข้อความโดยปริยาย ตัวเลขต้องใส่ฟังก์ชันเทียบเสมอ", goal: 'เรียงอาร์เรย์<b>จากน้อยไปมาก</b>ด้วย <b>sort((a, b) => a - b)</b> แล้วแสดงด้วย join(",") (ต้องได้ <b>5,12,30,100</b>)', starter: `const nums = [30, 5, 100, 12];\n`, hint: 'ถ้าใช้ sort() เฉยๆ จะได้ 100 มาก่อน 12 เพราะเรียงแบบข้อความ', xp: 80, check: (o, c) => eq(o, "5,12,30,100") && /sort\(\s*\(/.test(c) },
+          { title: "สรุปยอดขายจากข้อมูลจริง", desc: "ต่อเมท็อดเป็นลูกโซ่: กรอง → แปลง → รวม ในประโยคเดียว แบบที่โค้ดมืออาชีพเขียนกัน", goal: 'หา<b>ยอดรวมเฉพาะรายการที่จ่ายแล้ว</b> (paid: true) ด้วย filter + map + reduce (ต้องได้ <b>350</b>)', starter: `const orders = [\n  { item: "กาแฟ", price: 50, paid: true },\n  { item: "เค้ก", price: 120, paid: false },\n  { item: "ชุดเซ็ต", price: 300, paid: true }\n];\n`, hint: '<code>orders.filter(o => o.paid).map(o => o.price).reduce((s, p) => s + p, 0)</code>', xp: 100, check: (o, c) => eq(o, "350") && /\.filter\(/.test(c) && /\.reduce\(/.test(c) }
         ]
       },
       {
@@ -1576,7 +1696,10 @@ const COURSES = {
           { h: "เลือกอิลิเมนต์", p: "<b>document.querySelector(\"selector\")</b> เลือกตัวแรกที่ตรง (ใช้ selector แบบ CSS ได้ทั้งหมด — แนะนำให้ใช้ตัวนี้) • <b>document.querySelectorAll()</b> เลือกทั้งหมด ได้ NodeList • <b>getElementById(\"id\")</b> แบบเก่าแต่ยังใช้ได้", code: "const title = document.querySelector(\"#title\");\nconst items = document.querySelectorAll(\".item\");" },
           { h: "อ่านและเปลี่ยนเนื้อหา", p: "<b>textContent</b> ข้อความล้วน (ปลอดภัย แนะนำให้ใช้) • <b>innerHTML</b> ใส่ HTML ได้ (ระวังช่องโหว่ XSS ถ้าใส่ข้อมูลจากผู้ใช้) • <b>value</b> ค่าของช่องกรอก input • <b>src</b>, <b>href</b> เปลี่ยนได้ตรงๆ" },
           { h: "เปลี่ยนสไตล์และคลาส", p: "<b>element.style.color = \"red\"</b> แก้สไตล์ทีละตัว (ชื่อคุณสมบัติเป็น camelCase เช่น backgroundColor) • วิธีที่ดีกว่าคือใช้ <b>classList</b>: <code>add()</code>, <code>remove()</code>, <code>toggle()</code>, <code>contains()</code> แล้วไปกำหนดสไตล์ใน CSS", code: "box.style.backgroundColor = \"tomato\";\nbox.classList.add(\"active\");" },
-          { h: "สร้างและลบอิลิเมนต์", p: "<b>document.createElement(\"li\")</b> สร้างใหม่ • ตั้งค่าเนื้อหา แล้ว <b>parent.appendChild(el)</b> หรือ <b>parent.append(el)</b> เพื่อนำไปแปะ • <b>el.remove()</b> ลบทิ้ง • <b>setAttribute(ชื่อ, ค่า)</b> / <b>getAttribute()</b> จัดการแอตทริบิวต์" }
+          { h: "สร้างและลบอิลิเมนต์", p: "<b>document.createElement(\"li\")</b> สร้างใหม่ • ตั้งค่าเนื้อหา แล้ว <b>parent.appendChild(el)</b> หรือ <b>parent.append(el)</b> เพื่อนำไปแปะ • <b>el.remove()</b> ลบทิ้ง • <b>setAttribute(ชื่อ, ค่า)</b> / <b>getAttribute()</b> จัดการแอตทริบิวต์" },
+          { h: "⚠️ textContent ปลอดภัยกว่า innerHTML", p: "<b>innerHTML</b> แปลข้อความเป็น HTML จริง ถ้าเอาข้อมูลจากผู้ใช้มาใส่ตรงๆ ผู้ไม่หวังดีอาจแทรกสคริปต์เข้ามาได้ (ช่องโหว่ <b>XSS</b>) — ใช้ <b>textContent</b> เป็นค่าเริ่มต้นเสมอ แล้วใช้ innerHTML เฉพาะกับ HTML ที่เราสร้างเองและควบคุมได้" },
+          { h: "⚠️ สคริปต์ทำงานก่อน HTML โหลดเสร็จ", p: "ถ้าวาง <code>&lt;script&gt;</code> ไว้ใน head โดยไม่มี <code>defer</code> โค้ดจะทำงานตั้งแต่ยังไม่มีอิลิเมนต์ในหน้า ทำให้ querySelector คืน <b>null</b> แล้วพังทันที — แก้ด้วยการใส่ <code>defer</code> หรือวาง script ไว้ท้าย body หรือครอบด้วย <code>DOMContentLoaded</code>", code: "document.addEventListener(\"DOMContentLoaded\", () => {\n  // โค้ดที่ต้องใช้ DOM อยู่ตรงนี้\n});" },
+          { h: "💡 ประสิทธิภาพ: อย่าแตะ DOM ในลูป", p: "การแก้ DOM แต่ละครั้งมีต้นทุนสูง ถ้าต้องเพิ่มสมาชิก 100 ตัว อย่า appendChild ทีละตัวในลูป — ให้สร้างข้อความ HTML เก็บไว้ก่อนแล้วใส่ทีเดียว หรือใช้ <b>DocumentFragment</b> รวมไว้แล้วค่อยแปะครั้งเดียว" }
         ],
         stages: [
           { html: `<h1 id="title">ข้อความเดิม</h1>`, title: "เปลี่ยนข้อความในหน้าเว็บ", desc: "เลือกอิลิเมนต์ด้วย querySelector แล้วเปลี่ยน textContent — ดูผลได้ในพรีวิวด้านล่างเลย", goal: 'เปลี่ยนข้อความใน <b>#title</b> เป็น <b>เปลี่ยนด้วย JavaScript</b>', starter: `// เลือก #title แล้วเปลี่ยนข้อความ\n`, hint: '<code>document.querySelector("#title").textContent = "เปลี่ยนด้วย JavaScript";</code>', xp: 50, check: (o, c, d) => W.txt(d, "#title") === "เปลี่ยนด้วย JavaScript" },
@@ -1585,7 +1708,8 @@ const COURSES = {
           { html: `<ul id="list"><li>รายการเดิม</li></ul>`, title: "สร้างอิลิเมนต์ใหม่", desc: "createElement + appendChild คือวิธีเพิ่มเนื้อหาใหม่เข้าหน้าเว็บด้วยโค้ด", goal: 'สร้าง <b>li</b> ใหม่ข้อความ <b>รายการใหม่</b> แล้วเพิ่มเข้าไปใน <b>#list</b> (ต้องมี li ทั้งหมด 2 ตัว)', starter: `const list = document.querySelector("#list");\n`, hint: '<code>const li = document.createElement("li"); li.textContent = "รายการใหม่"; list.appendChild(li);</code>', xp: 80, check: (o, c, d) => { const li = W.qa(d, "#list li").map(e => W.txt(e)); return li.length === 2 && li[1] === "รายการใหม่" && /createElement/.test(c); } },
           { html: `<ul id="menu"><li>หนึ่ง</li><li>สอง</li><li>สาม</li></ul>`, title: "วนจัดการหลายอิลิเมนต์", desc: "querySelectorAll ได้หลายตัว นำมาวนด้วย forEach เพื่อจัดการทีเดียวทั้งหมด", goal: 'ใช้ <b>querySelectorAll</b> เลือก li ทุกตัวใน #menu แล้ววนเติมข้อความ <b> ✓</b> ต่อท้ายทุกตัว (เช่น <b>หนึ่ง ✓</b>)', starter: ``, hint: '<code>document.querySelectorAll("#menu li").forEach(li => { li.textContent += " ✓"; });</code>', xp: 80, check: (o, c, d) => { const li = W.qa(d, "#menu li").map(e => W.txt(e)); return li.join(",") === "หนึ่ง ✓,สอง ✓,สาม ✓" && /querySelectorAll/.test(c); } },
           { html: `<img id="pic" src="old.jpg" alt="รูปเดิม">`, title: "จัดการแอตทริบิวต์", desc: "เปลี่ยน src/alt ของรูปได้ด้วย setAttribute หรือกำหนดค่าตรงๆ", goal: 'เปลี่ยน <b>src</b> ของ #pic เป็น <b>new.jpg</b> และ <b>alt</b> เป็น <b>รูปใหม่</b>', starter: `const pic = document.querySelector("#pic");\n`, hint: '<code>pic.src = "new.jpg";</code> หรือ <code>pic.setAttribute("src", "new.jpg");</code>', xp: 60, check: (o, c, d) => W.attr(d, "#pic", "src").includes("new.jpg") && W.attr(d, "#pic", "alt") === "รูปใหม่" },
-          { html: `<div id="app"></div>`, title: "สร้างการ์ดจากข้อมูล", desc: "รวมอาร์เรย์ของออบเจ็กต์เข้ากับ DOM — วิธีที่เว็บจริงใช้แสดงรายการสินค้าจากฐานข้อมูล", goal: 'วนอาร์เรย์ <b>items</b> สร้าง <b>&lt;p class="item"&gt;</b> ที่มีข้อความ <b>ชื่อ - ราคา</b> (เช่น <b>กาแฟ - 50</b>) ใส่ลงใน <b>#app</b> ทั้ง 2 รายการ', starter: `const items = [\n  { name: "กาแฟ", price: 50 },\n  { name: "ชาเย็น", price: 45 }\n];\nconst app = document.querySelector("#app");\n`, hint: 'วน forEach สร้าง p ตั้ง textContent แล้ว app.appendChild(p) และอย่าลืม <code>p.className = "item";</code>', xp: 100, check: (o, c, d) => { const p = W.qa(d, "#app p.item").map(e => W.txt(e)); return p.length === 2 && p[0] === "กาแฟ - 50" && p[1] === "ชาเย็น - 45"; } }
+          { html: `<div id="app"></div>`, title: "สร้างการ์ดจากข้อมูล", desc: "รวมอาร์เรย์ของออบเจ็กต์เข้ากับ DOM — วิธีที่เว็บจริงใช้แสดงรายการสินค้าจากฐานข้อมูล", goal: 'วนอาร์เรย์ <b>items</b> สร้าง <b>&lt;p class="item"&gt;</b> ที่มีข้อความ <b>ชื่อ - ราคา</b> (เช่น <b>กาแฟ - 50</b>) ใส่ลงใน <b>#app</b> ทั้ง 2 รายการ', starter: `const items = [\n  { name: "กาแฟ", price: 50 },\n  { name: "ชาเย็น", price: 45 }\n];\nconst app = document.querySelector("#app");\n`, hint: 'วน forEach สร้าง p ตั้ง textContent แล้ว app.appendChild(p) และอย่าลืม <code>p.className = "item";</code>', xp: 100, check: (o, c, d) => { const p = W.qa(d, "#app p.item").map(e => W.txt(e)); return p.length === 2 && p[0] === "กาแฟ - 50" && p[1] === "ชาเย็น - 45"; } },
+          { html: `<ul id="list"><li>หนึ่ง</li><li>สอง</li><li>สาม</li></ul>`, title: "ลบอิลิเมนต์ออกจากหน้า", desc: "remove() เอาอิลิเมนต์ออกจาก DOM ได้ทันที — ใช้ทำปุ่มลบรายการ", goal: 'ลบ <b>li ตัวสุดท้าย</b> ออกจาก #list ให้เหลือ 2 รายการ (ใช้ <b>remove()</b>)', starter: `const items = document.querySelectorAll("#list li");\n`, hint: '<code>items[items.length - 1].remove();</code>', xp: 80, check: (o, c, d) => { const li = W.qa(d, "#list li").map(e => W.txt(e)); return li.join(",") === "หนึ่ง,สอง" && /remove\(/.test(c); } }
         ]
       },
       {
@@ -1631,6 +1755,17 @@ const COURSES = {
 
 /* ═══════════════ State ═══════════════ */
 let state = { user: null, level: 1, xp: 0, lang: null, topic: null, stage: 0, done: new Set() };
+// สถานะโหมดห้องแข่งขัน (ประกาศไว้ก่อนเพราะ showScreen อ้างถึง)
+const room = {
+  active: false,   // กำลังแข่งอยู่ไหม (มีผลกับการนับคะแนนตอนผ่านด่าน)
+  code: null,
+  token: null,
+  stages: [],      // ชุดโจทย์ที่เซิร์ฟเวอร์สุ่มมา (ทุกคนในห้องเหมือนกัน)
+  index: 0,
+  isHost: false,
+  timer: null,
+  score: 0
+};
 let attempts = 0; // จำนวนครั้งที่รันไม่ผ่านในด่านปัจจุบัน (ใช้ปลดล็อกคำใบ้)
 const xpNeed = lv => Math.round(100 * Math.pow(lv, 1.5));
 const doneKey = (lang, topic, stage) => `${lang}/${topic}/${stage}`;
@@ -1648,9 +1783,11 @@ function showScreen(name) {
   $("lessonScreen").classList.toggle("hide", name !== "lesson");
   $("boardScreen").classList.toggle("hide", name !== "board");
   $("gameScreen").classList.toggle("hide", name !== "game");
+  $("roomScreen").classList.toggle("hide", name !== "room");
   const learnLike = ["learn", "game", "lesson", "topic", "lang"].includes(name);
-  $("tabLearn").classList.toggle("on", learnLike);
+  $("tabLearn").classList.toggle("on", learnLike && !room.active);
   $("boardBtn").classList.toggle("on", name === "board");
+  $("roomBtn").classList.toggle("on", name === "room" || (learnLike && room.active));
   window.scrollTo(0, 0);
 }
 
@@ -2347,6 +2484,14 @@ function renderStage() {
   $("fileName").textContent = t.id + "_" + (state.stage + 1) + (EXT[state.lang] || ".txt");
   $("runOwnBtn").style.display = isWeb() ? "none" : "";
   $("outTag").textContent = state.lang === "js" ? "ผลลัพธ์จาก console" : (isWeb() ? "หน้าเว็บที่ได้" : "ผลลัพธ์จากโปรแกรม");
+  const rb = $("roomBar");
+  if (rb) {
+    rb.classList.toggle("hide", !room.active);
+    if (room.active) rb.innerHTML = '<span class="rb-tag">🏁 แข่งขัน</span> ข้อที่ <b>' + (room.index + 1) + '</b> / ' + room.stages.length +
+      ' · คะแนนของคุณ <b>' + room.score + '</b> <button class="mini-btn ghost" id="rbBack">ดูกระดานคะแนน</button>';
+    const bb = $("rbBack");
+    if (bb) bb.onclick = () => { showScreen("room"); pollRoom(); };
+  }
   $("previewWrap").innerHTML = "";
   $("previewWrap").style.display = "none";
   outEl.classList.toggle("compact", isWeb());
@@ -2502,12 +2647,20 @@ async function runCode(ownInput) {
   if (!stderr && !indentMsg && L.check(stdout, code, webDoc)) {
     banner.className = "banner pass";
     $("bannerText").textContent = "ภารกิจสำเร็จ!";
-    const lastStage = state.stage >= levels().length - 1;
-    $("nextBtn").style.display = "inline-block";
-    $("nextBtn").textContent = lastStage ? "จบหัวข้อนี้แล้ว! เลือกหัวข้อถัดไป →" : "ด่านถัดไป →";
-    say(pick(["เก่งมาก! โค้ดสวยเป๊ะเลย 🎉", "ผ่านฉลุย! ไปด่านต่อกันเถอะ", "สุดยอดโปรแกรมเมอร์!"]), "ok");
-    await recordPass();
-    renderDots();
+    if (room.active) {
+      const last = room.index >= room.stages.length - 1;
+      $("nextBtn").style.display = "inline-block";
+      $("nextBtn").textContent = last ? "ส่งคำตอบครบแล้ว! ดูอันดับ →" : "ข้อถัดไป →";
+      say(pick(["ผ่าน! รีบไปข้อต่อไปเลย ⚡", "เยี่ยม! คู่แข่งตามมาแล้วนะ", "เร็วและแม่น! 🏁"]), "ok");
+      await recordRoomPass();
+    } else {
+      const lastStage = state.stage >= levels().length - 1;
+      $("nextBtn").style.display = "inline-block";
+      $("nextBtn").textContent = lastStage ? "จบหัวข้อนี้แล้ว! เลือกหัวข้อถัดไป →" : "ด่านถัดไป →";
+      say(pick(["เก่งมาก! โค้ดสวยเป๊ะเลย 🎉", "ผ่านฉลุย! ไปด่านต่อกันเถอะ", "สุดยอดโปรแกรมเมอร์!"]), "ok");
+      await recordPass();
+      renderDots();
+    }
   } else {
     banner.className = "banner fail";
     $("bannerText").textContent = stderr
@@ -2518,6 +2671,170 @@ async function runCode(ownInput) {
     attempts += 1;
     updateHintBtn();
     say(pick(["เกือบแล้ว! ลองอีกทีนะ", "ไม่เป็นไร ผิดคือครู 💪", attempts >= 2 ? "คำใบ้ปลดล็อกแล้ว กดดูได้เลย" : "ลองปรับแก้ด้วยตัวเองอีกนิดนะ"]), "no");
+  }
+}
+
+/* ═══════════════ โหมดห้องแข่งขัน ═══════════════ */
+
+/** token ประจำเครื่อง ใช้ระบุตัวผู้เล่นในห้องโดยไม่ต้องล็อกอิน */
+function roomToken() {
+  let t = null;
+  try { t = localStorage.getItem("cq_room_token"); } catch {}
+  if (!t) {
+    t = "t_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    try { localStorage.setItem("cq_room_token", t); } catch {}
+  }
+  return t;
+}
+function roomMsg(text, cls) {
+  const el = $("roomMsg");
+  el.textContent = text || "";
+  el.className = "form-msg" + (cls ? " " + cls : "");
+}
+function saveRoomSession() {
+  try {
+    if (room.code) localStorage.setItem("cq_room", JSON.stringify({ code: room.code, index: room.index }));
+    else localStorage.removeItem("cq_room");
+  } catch {}
+}
+
+/** วาดกระดานคะแนนสด + ปุ่มตามสถานะห้อง */
+function renderRoom(data) {
+  room.isHost = !!data.isHost;
+  $("rlCode").textContent = data.code;
+  $("rlTitle").textContent = data.title;
+  const statusText = data.status === "lobby" ? "กำลังรอผู้เล่น" : (data.status === "playing" ? "กำลังแข่งขัน" : "จบการแข่งขันแล้ว");
+  $("rlMeta").textContent = statusText + " · " + data.members.length + " คน · " + data.total + " ข้อ · โฮสต์: " + data.hostName;
+  $("rlStart").style.display = (data.isHost && data.status === "lobby") ? "" : "none";
+  $("rlEnd").style.display = (data.isHost && data.status === "playing") ? "" : "none";
+
+  const box = $("rlBoard");
+  box.innerHTML = "";
+  const medal = ["🥇", "🥈", "🥉"];
+  data.members.forEach(m => {
+    const row = document.createElement("div");
+    row.className = "rb-row" + (m.isMe ? " me" : "") + (m.finished ? " fin" : "");
+    row.innerHTML =
+      '<span class="rb-rank">' + (medal[m.rank - 1] || m.rank) + '</span>' +
+      '<span class="rb-name">' + m.name + (m.isMe ? ' <b>(คุณ)</b>' : "") + (m.finished ? ' <span class="rb-fin">จบแล้ว</span>' : "") + '</span>' +
+      '<span class="rb-solved">' + m.solved + "/" + data.total + '</span>' +
+      '<span class="rb-score">' + m.score + '</span>';
+    box.appendChild(row);
+  });
+
+  // เริ่มแข่งแล้ว → พาเข้าโหมดทำโจทย์ทันที
+  if (data.status === "playing" && data.stages.length && !room.active) {
+    room.stages = data.stages;
+    room.active = true;
+    room.index = 0;
+    try {
+      const saved = JSON.parse(localStorage.getItem("cq_room") || "{}");
+      if (saved.code === data.code && saved.index > 0) room.index = Math.min(saved.index, data.stages.length - 1);
+    } catch {}
+    openRoomStage();
+  }
+  if (data.status === "ended" && room.active) {
+    room.active = false;
+    showScreen("room");
+    say("จบการแข่งขันแล้ว! ดูอันดับสุดท้ายได้เลย 🏁", "ok");
+  }
+}
+
+/** เปิดด่านปัจจุบันของการแข่ง (ใช้หน้าจอเล่นเดิม แต่เปลี่ยนที่มาของโจทย์) */
+function openRoomStage() {
+  const s = room.stages[room.index];
+  if (!s) return;
+  state.lang = s.language;
+  state.topic = s.topic;
+  state.stage = s.stage;
+  attempts = 0;
+  renderStage();
+  showScreen("game");
+  saveRoomSession();
+}
+
+async function pollRoom() {
+  if (!room.code) return;
+  try {
+    const data = await api("/api/rooms/" + room.code + "?token=" + encodeURIComponent(room.token));
+    renderRoom(data);
+  } catch (e) {
+    if (/ไม่พบห้อง/.test(e.message)) leaveRoom();
+  }
+}
+function startRoomPolling() {
+  clearInterval(room.timer);
+  room.timer = setInterval(pollRoom, 2500);
+}
+function enterRoom(data) {
+  room.code = data.code;
+  room.token = roomToken();
+  $("roomEntry").classList.add("hide");
+  $("roomLobby").classList.remove("hide");
+  renderRoom(data);
+  startRoomPolling();
+  saveRoomSession();
+  showScreen("room");
+}
+function leaveRoom() {
+  clearInterval(room.timer);
+  Object.assign(room, { active: false, code: null, stages: [], index: 0, isHost: false, score: 0 });
+  saveRoomSession();
+  $("roomEntry").classList.remove("hide");
+  $("roomLobby").classList.add("hide");
+  showScreen("room");
+}
+
+$("roomBtn").onclick = () => {
+  if (room.code) { showScreen("room"); pollRoom(); }
+  else {
+    if (state.user && !$("rcName").value) { $("rcName").value = state.user.name; $("rjName").value = state.user.name; }
+    showScreen("room");
+  }
+};
+$("rcCreate").onclick = async () => {
+  const langs = Array.from($("rcLangs").querySelectorAll("input:checked")).map(i => i.value);
+  if (!langs.length) return roomMsg("เลือกภาษาอย่างน้อย 1 ภาษา", "err");
+  try {
+    roomMsg("กำลังสร้างห้อง...");
+    const data = await api("/api/rooms", {
+      name: $("rcName").value, title: $("rcTitle").value || "ห้องแข่งเขียนโค้ด",
+      languages: langs, count: parseInt($("rcCount").value) || 10, token: roomToken()
+    });
+    roomMsg("");
+    enterRoom(data);
+  } catch (e) { roomMsg(e.message, "err"); }
+};
+$("rjJoin").onclick = async () => {
+  const code = ($("rjCode").value || "").trim().toUpperCase();
+  if (code.length !== 5) return roomMsg("รหัสห้องต้องมี 5 ตัวอักษร", "err");
+  try {
+    roomMsg("กำลังเข้าห้อง...");
+    const data = await api("/api/rooms/" + code + "/join", { name: $("rjName").value, token: roomToken() });
+    roomMsg("");
+    enterRoom(data);
+  } catch (e) { roomMsg(e.message, "err"); }
+};
+$("rlStart").onclick = async () => {
+  try { renderRoom(await api("/api/rooms/" + room.code + "/start", { token: roomToken() })); }
+  catch (e) { alert(e.message); }
+};
+$("rlEnd").onclick = async () => {
+  try { renderRoom(await api("/api/rooms/" + room.code + "/end", { token: roomToken() })); }
+  catch (e) { alert(e.message); }
+};
+$("rlLeave").onclick = () => { if (confirm("ออกจากห้องแข่งขัน?")) leaveRoom(); };
+
+/** ผ่านด่านในโหมดแข่ง: ส่งคะแนนให้เซิร์ฟเวอร์คิด แล้วไปข้อถัดไป */
+async function recordRoomPass() {
+  try {
+    const r = await api("/api/rooms/" + room.code + "/solve", { token: roomToken(), index: room.index });
+    room.score = r.score;
+    $("xpPop").textContent = r.repeat ? "ข้อนี้ได้คะแนนไปแล้ว"
+      : "+" + r.gained + " คะแนน" + (r.speedBonus ? " (โบนัสเร็ว +" + r.speedBonus + ")" : "");
+    pollRoom();
+  } catch (e) {
+    $("xpPop").textContent = "(ส่งคะแนนไม่สำเร็จ: " + e.message + ")";
   }
 }
 
@@ -2601,6 +2918,16 @@ $("runOwnBtn").onclick = () => runCode(true);
 $("resetBtn").onclick = () => { codeEl.value = levels()[state.stage].starter; };
 $("hintBtn").onclick = () => $("hintBox").classList.toggle("show");
 $("nextBtn").onclick = () => {
+  if (room.active) {
+    if (room.index < room.stages.length - 1) {
+      room.index++;
+      openRoomStage();
+    } else {
+      showScreen("room");
+      pollRoom();
+    }
+    return;
+  }
   if (state.stage < levels().length - 1) {
     state.stage++;
     renderStage();
@@ -2646,7 +2973,7 @@ codeEl.addEventListener("keydown", e => {
 });
 
 /* ═══════════════ Init ═══════════════ */
-const CONTENT_VERSION = 16; // ต้องตรงกับ CONTENT_VERSION ใน server.js
+const CONTENT_VERSION = 17; // ต้องตรงกับ CONTENT_VERSION ใน server.js
 async function checkVersion() {
   try {
     const r = await fetch("/api/version");
