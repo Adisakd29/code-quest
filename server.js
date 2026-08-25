@@ -70,6 +70,30 @@ async function initDb() {
       completed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       PRIMARY KEY (user_id, language, topic, stage)
     );
+    CREATE TABLE IF NOT EXISTS rooms (
+      id         SERIAL PRIMARY KEY,
+      code       TEXT UNIQUE NOT NULL,
+      host_name  TEXT NOT NULL,
+      host_token TEXT NOT NULL,
+      title      TEXT NOT NULL,
+      stages     JSONB NOT NULL,
+      status     TEXT NOT NULL DEFAULT 'lobby',
+      started_at TIMESTAMPTZ,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+    CREATE TABLE IF NOT EXISTS room_members (
+      id         SERIAL PRIMARY KEY,
+      room_id    INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
+      token      TEXT NOT NULL,
+      name       TEXT NOT NULL,
+      user_id    INTEGER REFERENCES users(id) ON DELETE SET NULL,
+      score      INTEGER NOT NULL DEFAULT 0,
+      solved     INTEGER NOT NULL DEFAULT 0,
+      done_keys  JSONB NOT NULL DEFAULT '[]'::jsonb,
+      finished_at TIMESTAMPTZ,
+      joined_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+      UNIQUE (room_id, token)
+    );
   `);
   console.log("✅ Database พร้อมใช้งาน");
 }
@@ -79,7 +103,7 @@ async function initDb() {
  * เวอร์ชันเนื้อหา — ต้องตรงกับ CONTENT_VERSION ใน public/index.html
  * ถ้าไม่ตรง หน้าเกมจะแสดงแถบเตือนว่า deploy ไม่ครบทุกไฟล์
  */
-const CONTENT_VERSION = 16;
+const CONTENT_VERSION = 17;
 
 /**
  * XP ของแต่ละด่าน: STAGE_XP[ภาษา][หัวข้อ][ด่าน]
@@ -87,16 +111,16 @@ const CONTENT_VERSION = 16;
  */
 const STAGE_XP = {
   python: {
-    print:         [30, 40, 40, 50, 50, 60],
+    print:         [30, 40, 40, 50, 50, 60, 50, 60],
     variable:      [40, 40, 50, 50, 60, 60],
     datatype:      [40, 50, 40, 50, 50],
-    string:        [40, 40, 50, 60, 60, 60],
+    string:        [40, 40, 50, 60, 60, 60, 60, 80],
     list:          [40, 50, 50, 50, 60, 60],
     tupleset:      [50, 50, 60, 60, 60],
     dict:          [50, 50, 50, 60, 50],
     operator:      [40, 40, 50, 50, 60, 60],
-    ifelse:        [50, 60, 60, 50, 60],
-    loop:          [50, 60, 60, 60, 60, 80],
+    ifelse:        [50, 60, 60, 50, 60, 60, 80],
+    loop:          [50, 60, 60, 60, 60, 80, 60, 80],
     flowchart:     [80, 80, 100, 100],
     function:      [60, 60, 80, 80, 80, 80],
     exception:     [60, 80, 80],
@@ -109,8 +133,8 @@ const STAGE_XP = {
     ctypes:  [40, 50, 50, 50, 60, 60, 60],
     coper:   [40, 40, 50, 60, 60, 50, 60],
     cio:     [50, 50, 60, 60, 80, 60, 80, 50],
-    cctrl:   [50, 60, 60, 60, 60, 80, 80, 100, 80, 80],
-    carray:  [50, 50, 60, 80, 80, 60, 80],
+    cctrl:   [50, 60, 60, 60, 60, 80, 80, 100, 80, 80, 60, 80],
+    carray:  [50, 50, 60, 80, 80, 60, 80, 80],
     cptr:    [60, 60, 80, 80, 100, 100],
     cfunc:   [60, 60, 80, 80, 100, 120, 80, 150],
   },
@@ -120,7 +144,7 @@ const STAGE_XP = {
     hlist:   [40, 40, 60, 50, 50, 50, 60],
     himg:    [40, 50, 60, 60, 60],
     htable:  [40, 50, 60, 60, 80],
-    hform:   [40, 50, 50, 60, 60, 60, 80],
+    hform:   [40, 50, 50, 60, 60, 60, 80, 100],
     hsem:    [60, 60, 50, 60, 60, 100],
     hadv:    [60, 60, 60, 60, 120],
   },
@@ -129,7 +153,7 @@ const STAGE_XP = {
     csstext:  [40, 50, 50, 50, 50, 60],
     cssbox:   [40, 50, 50, 60, 60, 60],
     csssel:   [50, 50, 60, 60, 80, 80],
-    cssflex:  [40, 50, 60, 50, 60, 80],
+    cssflex:  [40, 50, 60, 50, 60, 80, 80],
     cssgrid:  [50, 50, 60, 80, 100],
     csspos:   [50, 80, 80, 60, 60],
     cssadv:   [60, 60, 60, 80, 80, 80, 120],
@@ -139,9 +163,9 @@ const STAGE_XP = {
     jsop:    [40, 50, 50, 50, 60, 60],
     jsloop:  [40, 50, 50, 60, 60],
     jsfunc:  [40, 50, 60, 60, 60, 80],
-    jsarray: [40, 50, 60, 60, 80, 60, 80],
+    jsarray: [40, 50, 60, 60, 80, 60, 80, 100],
     jsobj:   [40, 50, 60, 60, 80, 80],
-    jsdom:   [50, 60, 60, 80, 80, 60, 100],
+    jsdom:   [50, 60, 60, 80, 80, 60, 100, 80],
     jsevent: [60, 80, 80, 100, 120],
     jsadv:   [60, 60, 60, 80, 100, 100, 150],
   },
@@ -325,6 +349,225 @@ app.post("/api/complete", needDb, auth, async (req, res) => {
     res.status(500).json({ error: "บันทึกความคืบหน้าไม่สำเร็จ" });
   } finally {
     client.release();
+  }
+});
+
+/* ═══════════════ โหมดห้องแข่งขัน (Competition Room) ═══════════════ */
+
+/** สร้างรหัสห้อง 5 ตัวอักษร เลี่ยงตัวที่สับสนง่าย (0/O/1/I) */
+function makeRoomCode() {
+  const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let s = "";
+  for (let i = 0; i < 5; i++) s += A[Math.floor(Math.random() * A.length)];
+  return s;
+}
+
+/**
+ * สุ่มชุดด่านสำหรับการแข่ง จากตาราง STAGE_XP ฝั่งเซิร์ฟเวอร์
+ * (สุ่มฝั่งเซิร์ฟเวอร์เพื่อให้ทุกคนในห้องได้โจทย์ชุดเดียวกันและตรวจคะแนนได้)
+ */
+function pickRoomStages(langs, count) {
+  const pool = [];
+  for (const lang of langs) {
+    const topics = STAGE_XP[lang];
+    if (!topics) continue;
+    for (const topic of Object.keys(topics)) {
+      topics[topic].forEach((xp, stage) => pool.push({ language: lang, topic, stage, xp }));
+    }
+  }
+  // คละให้ยากง่ายปนกัน แล้วเรียงจากง่ายไปยากเพื่อให้เกมไหลลื่น
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, Math.max(1, Math.min(count, pool.length))).sort((a, b) => a.xp - b.xp);
+}
+
+const publicRoom = (room, members, token) => ({
+  code: room.code,
+  title: room.title,
+  status: room.status,
+  hostName: room.host_name,
+  isHost: !!token && token === room.host_token,
+  total: room.stages.length,
+  startedAt: room.started_at,
+  stages: room.status === "lobby" ? [] : room.stages.map(s => ({ language: s.language, topic: s.topic, stage: s.stage, xp: s.xp })),
+  members: members.map((m, i) => ({
+    rank: i + 1,
+    name: m.name,
+    score: m.score,
+    solved: m.solved,
+    finished: !!m.finished_at,
+    isMe: !!token && m.token === token
+  }))
+});
+
+async function loadRoom(code) {
+  const { rows } = await pool.query(`SELECT * FROM rooms WHERE code = $1`, [String(code || "").toUpperCase()]);
+  return rows[0] || null;
+}
+async function loadMembers(roomId) {
+  const { rows } = await pool.query(
+    `SELECT * FROM room_members WHERE room_id = $1
+     ORDER BY score DESC, solved DESC, COALESCE(finished_at, now()) ASC, joined_at ASC`,
+    [roomId]
+  );
+  return rows;
+}
+
+/** สร้างห้องใหม่ — ใครก็สร้างได้ (ไม่ต้องล็อกอิน) ผู้สร้างเป็นโฮสต์ */
+app.post("/api/rooms", needDb, optionalAuth, async (req, res) => {
+  try {
+    const { name, title, languages, count, token } = req.body || {};
+    const hostName = String(name || "").trim().slice(0, 30);
+    const hostToken = String(token || "").trim().slice(0, 80);
+    if (!hostName) return res.status(400).json({ error: "กรุณาใส่ชื่อผู้สร้างห้อง" });
+    if (!hostToken) return res.status(400).json({ error: "token ไม่ถูกต้อง" });
+    const langs = Array.isArray(languages) && languages.length
+      ? languages.filter(l => STAGE_XP[l])
+      : Object.keys(STAGE_XP);
+    if (!langs.length) return res.status(400).json({ error: "กรุณาเลือกภาษาอย่างน้อย 1 ภาษา" });
+    const n = Math.max(3, Math.min(parseInt(count) || 10, 30));
+    const stages = pickRoomStages(langs, n);
+
+    let code = "", room = null;
+    for (let i = 0; i < 8 && !room; i++) {
+      code = makeRoomCode();
+      try {
+        const r = await pool.query(
+          `INSERT INTO rooms (code, host_name, host_token, title, stages)
+           VALUES ($1, $2, $3, $4, $5::jsonb) RETURNING *`,
+          [code, hostName, hostToken, String(title || "ห้องแข่งเขียนโค้ด").trim().slice(0, 60), JSON.stringify(stages)]
+        );
+        room = r.rows[0];
+      } catch (e) { if (e.code !== "23505") throw e; }
+    }
+    if (!room) return res.status(500).json({ error: "สร้างห้องไม่สำเร็จ ลองอีกครั้ง" });
+
+    await pool.query(
+      `INSERT INTO room_members (room_id, token, name, user_id) VALUES ($1, $2, $3, $4)`,
+      [room.id, hostToken, hostName, req.userId || null]
+    );
+    res.json(publicRoom(room, await loadMembers(room.id), hostToken));
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "สร้างห้องไม่สำเร็จ" });
+  }
+});
+
+/** เข้าร่วมห้องด้วยรหัส — เข้าได้แม้ไม่ได้ล็อกอิน (ใส่แค่ชื่อ) */
+app.post("/api/rooms/:code/join", needDb, optionalAuth, async (req, res) => {
+  try {
+    const { name, token } = req.body || {};
+    const memberName = String(name || "").trim().slice(0, 30);
+    const memberToken = String(token || "").trim().slice(0, 80);
+    if (!memberName) return res.status(400).json({ error: "กรุณาใส่ชื่อผู้เล่น" });
+    if (!memberToken) return res.status(400).json({ error: "token ไม่ถูกต้อง" });
+    const room = await loadRoom(req.params.code);
+    if (!room) return res.status(404).json({ error: "ไม่พบห้องนี้ — ตรวจรหัสอีกครั้ง" });
+    if (room.status === "ended") return res.status(400).json({ error: "ห้องนี้จบการแข่งขันแล้ว" });
+
+    const exists = await pool.query(`SELECT id FROM room_members WHERE room_id = $1 AND token = $2`, [room.id, memberToken]);
+    if (!exists.rows.length) {
+      if (room.status !== "lobby") return res.status(400).json({ error: "การแข่งขันเริ่มไปแล้ว เข้าร่วมไม่ได้" });
+      await pool.query(
+        `INSERT INTO room_members (room_id, token, name, user_id) VALUES ($1, $2, $3, $4)`,
+        [room.id, memberToken, memberName, req.userId || null]
+      );
+    } else {
+      await pool.query(`UPDATE room_members SET name = $1 WHERE room_id = $2 AND token = $3`, [memberName, room.id, memberToken]);
+    }
+    res.json(publicRoom(room, await loadMembers(room.id), memberToken));
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "เข้าห้องไม่สำเร็จ" });
+  }
+});
+
+/** ดูสถานะห้อง + กระดานคะแนนสด (ฝั่งหน้าเว็บเรียกซ้ำทุก 2 วินาที) */
+app.get("/api/rooms/:code", needDb, async (req, res) => {
+  try {
+    const room = await loadRoom(req.params.code);
+    if (!room) return res.status(404).json({ error: "ไม่พบห้องนี้" });
+    res.json(publicRoom(room, await loadMembers(room.id), String(req.query.token || "")));
+  } catch (e) {
+    res.status(500).json({ error: "ดึงข้อมูลห้องไม่สำเร็จ" });
+  }
+});
+
+/** โฮสต์เริ่มการแข่งขัน */
+app.post("/api/rooms/:code/start", needDb, async (req, res) => {
+  try {
+    const token = String((req.body || {}).token || "");
+    const room = await loadRoom(req.params.code);
+    if (!room) return res.status(404).json({ error: "ไม่พบห้องนี้" });
+    if (room.host_token !== token) return res.status(403).json({ error: "เฉพาะผู้สร้างห้องเท่านั้นที่เริ่มได้" });
+    const { rows } = await pool.query(
+      `UPDATE rooms SET status = 'playing', started_at = now() WHERE id = $1 AND status = 'lobby' RETURNING *`,
+      [room.id]
+    );
+    const updated = rows[0] || room;
+    res.json(publicRoom(updated, await loadMembers(updated.id), token));
+  } catch (e) {
+    res.status(500).json({ error: "เริ่มการแข่งขันไม่สำเร็จ" });
+  }
+});
+
+/**
+ * บันทึกว่าผู้เล่นทำด่านหนึ่งผ่าน — เซิร์ฟเวอร์คิดคะแนนเอง
+ * คะแนน = XP ของด่าน + โบนัสความเร็ว (ยิ่งตอบเร็วยิ่งได้เพิ่ม สูงสุด 50%)
+ */
+app.post("/api/rooms/:code/solve", needDb, async (req, res) => {
+  try {
+    const { token, index } = req.body || {};
+    const room = await loadRoom(req.params.code);
+    if (!room) return res.status(404).json({ error: "ไม่พบห้องนี้" });
+    if (room.status !== "playing") return res.status(400).json({ error: "ห้องนี้ยังไม่เริ่มหรือจบแล้ว" });
+    const i = parseInt(index);
+    if (!(i >= 0 && i < room.stages.length)) return res.status(400).json({ error: "ด่านไม่ถูกต้อง" });
+
+    const m = (await pool.query(`SELECT * FROM room_members WHERE room_id = $1 AND token = $2`, [room.id, String(token || "")])).rows[0];
+    if (!m) return res.status(403).json({ error: "คุณไม่ได้อยู่ในห้องนี้" });
+    const doneKeys = Array.isArray(m.done_keys) ? m.done_keys : [];
+    if (doneKeys.includes(i)) return res.json({ gained: 0, score: m.score, solved: m.solved, repeat: true });
+
+    const base = room.stages[i].xp || 50;
+    const elapsedMin = room.started_at ? (Date.now() - new Date(room.started_at).getTime()) / 60000 : 0;
+    const speedBonus = Math.round(base * 0.5 * Math.max(0, 1 - elapsedMin / 15)); // โบนัสลดลงจนหมดใน 15 นาที
+    const gained = base + speedBonus;
+    const nextKeys = doneKeys.concat([i]);
+    const finished = nextKeys.length >= room.stages.length;
+
+    const upd = await pool.query(
+      `UPDATE room_members
+       SET score = score + $1, solved = $2, done_keys = $3::jsonb,
+           finished_at = CASE WHEN $4 THEN now() ELSE finished_at END
+       WHERE id = $5 RETURNING score, solved`,
+      [gained, nextKeys.length, JSON.stringify(nextKeys), finished, m.id]
+    );
+    if (finished) {
+      const left = await pool.query(`SELECT COUNT(*)::int AS n FROM room_members WHERE room_id = $1 AND finished_at IS NULL`, [room.id]);
+      if (left.rows[0].n === 0) await pool.query(`UPDATE rooms SET status = 'ended' WHERE id = $1`, [room.id]);
+    }
+    res.json({ gained, speedBonus, score: upd.rows[0].score, solved: upd.rows[0].solved, finished });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "บันทึกคะแนนไม่สำเร็จ" });
+  }
+});
+
+/** โฮสต์ปิดการแข่งขัน (ประกาศผลทันที) */
+app.post("/api/rooms/:code/end", needDb, async (req, res) => {
+  try {
+    const token = String((req.body || {}).token || "");
+    const room = await loadRoom(req.params.code);
+    if (!room) return res.status(404).json({ error: "ไม่พบห้องนี้" });
+    if (room.host_token !== token) return res.status(403).json({ error: "เฉพาะผู้สร้างห้องเท่านั้นที่ปิดได้" });
+    await pool.query(`UPDATE rooms SET status = 'ended' WHERE id = $1`, [room.id]);
+    const updated = await loadRoom(req.params.code);
+    res.json(publicRoom(updated, await loadMembers(updated.id), token));
+  } catch (e) {
+    res.status(500).json({ error: "ปิดห้องไม่สำเร็จ" });
   }
 });
 
