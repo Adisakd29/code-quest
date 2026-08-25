@@ -43,6 +43,7 @@ module.exports = {
   "html:hform/4": `<form>\n  <select name="city">\n    <option value="bkk">กรุงเทพ</option>\n    <option value="cnx">เชียงใหม่</option>\n  </select>\n</form>`,
   "html:hform/5": `<form>\n  <textarea name="message" placeholder="พิมพ์ข้อความ"></textarea>\n  <button type="submit">ส่ง</button>\n</form>`,
   "html:hform/6": `<form>\n  <input type="email" name="email" required>\n  <input type="number" name="age" required min="1" max="120">\n  <button type="submit">สมัคร</button>\n</form>`,
+  "html:hform/7": `<form>\n  <label for="uname">ชื่อผู้ใช้</label>\n  <input type="text" id="uname" name="username" required>\n  <input type="email" name="email" required>\n  <select name="plan">\n    <option value="free">ฟรี</option>\n    <option value="pro">โปร</option>\n  </select>\n  <button type="submit">สมัคร</button>\n</form>`,
 
   "html:hsem/0": `<header>\n  <h1>ร้านกาแฟ</h1>\n  <nav>\n    <a href="#">หน้าแรก</a>\n    <a href="#">เมนู</a>\n  </nav>\n</header>`,
   "html:hsem/1": `<main>\n  <article>\n    <h2>เมล็ดกาแฟคั่วใหม่</h2>\n    <p>หอมกรุ่นทุกเช้า</p>\n  </article>\n</main>`,
@@ -92,6 +93,7 @@ module.exports = {
   "css:cssflex/3": `.col {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}`,
   "css:cssflex/4": `.cards {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 10px;\n}\n.card {\n  width: 45%;\n}`,
   "css:cssflex/5": `.layout {\n  display: flex;\n}\n.side {\n  width: 200px;\n}\n.content {\n  flex: 1;\n}`,
+  "css:cssflex/6": `.pricing {\n  display: flex;\n  gap: 16px;\n  align-items: flex-start;\n}\n.plan {\n  flex: 1;\n  padding: 24px;\n}`,
 
   "css:cssgrid/0": `.grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n  gap: 10px;\n}`,
   "css:cssgrid/1": `.grid {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 8px;\n}`,
@@ -148,6 +150,7 @@ module.exports = {
   "js:jsarray/4": `const nums = [12, 30, 25];\nconsole.log(nums.reduce((sum, x) => sum + x, 0));`,
   "js:jsarray/5": `const nums = [12, 30, 25];\nconsole.log(nums.find(x => x > 20));\nconsole.log(nums.includes(12));`,
   "js:jsarray/6": `const nums = [30, 5, 100, 12];\nconsole.log(nums.sort((a, b) => a - b).join(","));`,
+  "js:jsarray/7": `const orders = [\n  { item: "กาแฟ", price: 50, paid: true },\n  { item: "เค้ก", price: 120, paid: false },\n  { item: "ชุดเซ็ต", price: 300, paid: true }\n];\nconsole.log(orders.filter(o => o.paid).map(o => o.price).reduce((s, p) => s + p, 0));`,
 
   "js:jsobj/0": `const player = { name: "มะลิ", hp: 100 };\nconsole.log(player.name);\nconsole.log(player.hp);`,
   "js:jsobj/1": `const player = { name: "มะลิ", hp: 100 };\nplayer.level = 5;\nplayer.hp = 80;\nconsole.log(player.hp);\nconsole.log(player.level);`,
@@ -163,6 +166,7 @@ module.exports = {
   "js:jsdom/4": `document.querySelectorAll("#menu li").forEach(li => {\n  li.textContent += " ✓";\n});`,
   "js:jsdom/5": `const pic = document.querySelector("#pic");\npic.src = "new.jpg";\npic.alt = "รูปใหม่";`,
   "js:jsdom/6": `const items = [\n  { name: "กาแฟ", price: 50 },\n  { name: "ชาเย็น", price: 45 }\n];\nconst app = document.querySelector("#app");\nitems.forEach(it => {\n  const p = document.createElement("p");\n  p.className = "item";\n  p.textContent = \`\${it.name} - \${it.price}\`;\n  app.appendChild(p);\n});`,
+  "js:jsdom/7": `const items = document.querySelectorAll("#list li");\nitems[items.length - 1].remove();`,
 
   "js:jsevent/0": `const btn = document.querySelector("#btn");\nbtn.addEventListener("click", () => {\n  document.querySelector("#msg").textContent = "กดแล้ว!";\n});`,
   "js:jsevent/1": `let count = 0;\nconst btn = document.querySelector("#counter");\nbtn.addEventListener("click", () => {\n  count++;\n  btn.textContent = count;\n});`,

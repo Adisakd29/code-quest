@@ -68,6 +68,8 @@ module.exports = {
   "cctrl/7": H + 'int main() {\n    int i = 1;\n    while (i <= 4) {\n        printf("%d\\n", i);\n        i = i + 1;\n    }\n    printf("จบลูป");\n    return 0;\n}',
   "cctrl/8": H + 'int main() {\n    for (int i = 1; i <= 3; i++) {\n        printf("2 x %d = %d\\n", i, 2 * i);\n    }\n    return 0;\n}',
   "cctrl/9": H + 'int main() {\n    int n = 1;\n    do {\n        printf("%d\\n", n);\n        n++;\n    } while (n <= 3);\n    return 0;\n}',
+  "cctrl/10": H + 'int main() {\n    int a = 15, b = 42, c = 8;\n    int max = a;\n    if (b > max) {\n        max = b;\n    }\n    if (c > max) {\n        max = c;\n    }\n    printf("มากสุด = %d", max);\n    return 0;\n}',
+  "cctrl/11": H + 'int main() {\n    for (int i = 1; i <= 4; i++) {\n        for (int j = 0; j < i; j++) {\n            printf("*");\n        }\n        printf("\\n");\n    }\n    return 0;\n}',
 
   // หน่วยที่ 8: อาร์เรย์
   "carray/0": H + 'int main() {\n    int items[3] = {10, 20, 30};\n    printf("%d", items[0]);\n    return 0;\n}',
@@ -77,6 +79,7 @@ module.exports = {
   "carray/4": H + 'int main() {\n    int a[3] = {40, 75, 60};\n    int best = 0;\n    for (int i = 0; i < 3; i++) {\n        if (a[i] > best) {\n            best = a[i];\n        }\n    }\n    printf("มากสุด = %d", best);\n    return 0;\n}',
   "carray/5": H + 'int main() {\n    int s[5] = {45, 80, 60, 30, 95};\n    int count = 0;\n    for (int i = 0; i < 5; i++) {\n        if (s[i] >= 50) {\n            count++;\n        }\n    }\n    printf("ผ่าน %d คน", count);\n    return 0;\n}',
   "carray/6": H + 'int main() {\n    int a[4] = {1, 2, 3, 4};\n    for (int i = 3; i >= 0; i--) {\n        printf("%d\\n", a[i]);\n    }\n    return 0;\n}',
+  "carray/7": H + 'int main() {\n    int s[4] = {80, 75, 90, 85};\n    int sum = 0;\n    for (int i = 0; i < 4; i++) {\n        sum += s[i];\n    }\n    printf("เฉลี่ย = %.2f", (float)sum / 4);\n    return 0;\n}',
 
   // หน่วยที่ 9: พอยน์เตอร์
   "cptr/0": H + 'int main() {\n    int x = 42;\n    int *p = &x;\n    printf("%d", *p);\n    return 0;\n}',

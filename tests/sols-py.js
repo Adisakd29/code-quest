@@ -6,6 +6,8 @@ module.exports = {
   "print/3": 'print(2026, "07", "09", sep="-")',
   "print/4": 'name = input()\nprint("สวัสดี", name)',
   "print/5": 'n = input()\nprint(int(n) + 10)',
+  "print/6": 'price = 50\nprint("=== ใบเสร็จ ===")\nprint("กาแฟ", price, "บาท")\nprint("รวม", price, "บาท")',
+  "print/7": 'w = int(input())\nh = int(input())\nprint("พื้นที่ =", w * h)',
 
   "variable/0": 'name = "มะลิ"\nprint("ฉันชื่อ", name)',
   "variable/1": 'hp = 80\npotion = 25\nprint(hp + potion)',
@@ -26,6 +28,8 @@ module.exports = {
   "string/3": 'msg = "ฉันเกลียดบั๊ก"\nprint(msg.replace("เกลียด", "รัก"))',
   "string/4": 'data = "มะลิ,15,นักเวท"\nparts = data.split(",")\nprint(parts[2])',
   "string/5": 'song = "นานานา นา"\nprint(song.count("นา"))',
+  "string/6": 'pwd = "abc123"\nif len(pwd) >= 8:\n    print("ผ่าน")\nelse:\n    print("สั้นเกินไป")',
+  "string/7": 'word = "level"\nprint(word[::-1])\nprint(word == word[::-1])',
 
   "list/0": 'items = ["ดาบ", "โล่", "ยา"]\nprint(items[0])',
   "list/1": 'items = ["ดาบ", "โล่", "ยา"]\nitems.append("คบเพลิง")\nprint(len(items))',
@@ -58,6 +62,8 @@ module.exports = {
   "ifelse/2": 'hp = 50\nhas_key = True\nif hp > 0 and has_key:\n    print("ไปต่อ")\nelse:\n    print("ติดอยู่")',
   "ifelse/3": 'n = 7\nif n % 2 == 0:\n    print("คู่")\nelse:\n    print("คี่")',
   "ifelse/4": 'hp = 70\nlv = 12\nif hp > 50:\n    if lv > 10:\n        print("สู้บอส")\n    else:\n        print("ฝึกต่อ")',
+  "ifelse/5": 'total = 1200\nif total >= 1000:\n    print(total * 0.8)\nelif total >= 500:\n    print(total * 0.9)\nelse:\n    print(total)',
+  "ifelse/6": 'year = 2024\nif (year % 4 == 0 and year % 100 != 0) or year % 400 == 0:\n    print("อธิกสุรทิน")\nelse:\n    print("ปีปกติ")',
 
   "loop/0": 'for i in range(1, 6):\n    print("เก็บเหรียญที่", i)',
   "loop/1": 'total = 0\nfor i in range(1, 11):\n    total += i\nprint(total)',
@@ -65,6 +71,8 @@ module.exports = {
   "loop/3": 'for i in range(1, 11):\n    if i % 2 == 0:\n        print(i)',
   "loop/4": 'for i in range(1, 6):\n    if i == 3:\n        continue\n    print(i)',
   "loop/5": 'for i in range(3):\n    print("*" * 3)',
+  "loop/6": 'for i in range(1, 6):\n    print(f"7 x {i} = {7 * i}")',
+  "loop/7": 'for i in range(1, 5):\n    print("*" * i)',
 
   "flowchart/0": 'x = 10\nif x > 5:\n    print("มากกว่า")\nelse:\n    print("น้อยกว่า")',
   "flowchart/1": 'i = 1\nwhile i <= 3:\n    print("รอบที่", i)\n    i += 1\nprint("จบ")',
