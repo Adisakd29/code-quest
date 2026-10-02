@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Code Quest — เกมผจญภัยเรียนเขียนโปรแกรมภาษาไทย ({{LANG_NAMES_PLAIN}})</title>
+<meta name="description" content="เรียนเขียนโปรแกรมแบบเกมผจญภัยในจักรวาลแห่งโค้ด {{STAGES}} ภารกิจ ครบ {{N_LANGS}} ภาษา รันโค้ดจริงในเบราว์เซอร์ ไม่ต้องติดตั้ง เก็บ EXP ปลดล็อกเหรียญ และแข่งกับเพื่อนทั้งห้อง">
+<meta name="theme-color" content="#2d1f73">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Code Quest — ออกผจญภัยในจักรวาลแห่งโค้ด">
+<meta property="og:description" content="เกมเรียนเขียนโปรแกรมภาษาไทย {{STAGES}} ภารกิจ ครบ {{LANG_NAMES_LIST}}">
+<meta property="og:locale" content="th_TH">
+<link rel="icon" href="img/codebot.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Press+Start+2P&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="on-landing">
+
+<!-- Profile overlay -->
+
+<header>
+  <div class="hrow">
+    <div class="logo pixel" id="homeBtn" title="Code Quest">CODE<span> QUEST</span></div>
+    <template data-mount>
+    <nav class="tabbar">
+      <button class="tab on" id="tabLearn">{{icon:learn}}<span>เรียน</span></button>
+      <button class="tab" id="roomBtn">{{icon:battle}}<span>แข่งขัน</span></button>
+      <button class="tab" id="boardBtn">{{icon:trophy}}<span>อันดับ</span></button>
+      <button class="tab" id="profileBtn">{{icon:user}}<span>โปรไฟล์</span></button>
+    </nav>
+    <button class="user-chip" id="userChip" title="แก้ไขโปรไฟล์">
+      <span class="avatar" id="headAvatar">{{icon:user}}</span>
+      <span class="uc-txt">
+        <span class="pname" id="pname">ผู้เยี่ยมชม</span>
+        <span class="edit-hint" id="editHint">แตะเพื่อล็อกอิน</span>
+      </span>
+    </button>
+    <button class="hbtn sound-btn icon-btn" id="soundBtn" aria-pressed="true" aria-label="ปิดเสียงประกอบ">{{icon:volume-on}}</button>
+    <button class="hbtn" id="authBtn">เข้าสู่ระบบ</button>
+    </template>
+  </div>
+  <template data-mount>
+  <div class="chips">
+    <div class="chip"><i class="ico coin-ico"></i><span id="chipXp">0</span>&nbsp;EXP</div>
+    <div class="chip"><span class="lvl-badge pixel" id="lvlBadge">LV.1</span></div>
+    <div class="chip chip-bar">
+      <div class="xp-wrap">
+        <div class="xp-label"><span>เลเวลถัดไป</span><span id="xpText">0 / 100</span></div>
+        <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+      </div>
+    </div>
+    <div class="chip"><i class="ico star-ico"></i><span id="chipStages">0</span>&nbsp;ภารกิจ</div>
+  </div>
+  </template>
+</header>
+
+<!-- ═══ Screen: หน้าแรก (ยังไม่ล็อกอิน) ═══ -->
+<main class="screen" id="landingScreen">
+  <div class="landing">
+    <div class="landing-text">
+      <div class="landing-kicker">{{icon:rocket|16}} เกมเรียนเขียนโปรแกรมภาษาไทย</div>
+      <h1 class="landing-title">ออกผจญภัย<br>ใน<span>จักรวาลแห่งโค้ด</span></h1>
+      <p class="landing-sub">สำรวจ {{N_LANGS}} ดาวเคราะห์ {{LANG_NAMES_DOT}} ผ่านภารกิจสั้นๆ เก็บ EXP ปลดล็อกเหรียญรางวัล และแข่งกับเพื่อนทั้งห้อง</p>
+      <div class="landing-cta">
+        <button class="btn-hero" id="ctaStart">{{icon:rocket}}<span>เริ่มผจญภัย</span></button>
+        <button class="btn-ghost" id="ctaLogin">{{icon:login}}<span>เข้าสู่ระบบ</span></button>
+      </div>
+      <button class="link-btn" id="ctaGuest">เล่นแบบผู้เยี่ยมชม — สมัครทีหลังเพื่อบันทึกความคืบหน้าได้ {{icon:chevron-right|16}}</button>
+      <ul class="landing-points">
+        <li><b>{{STAGES}}</b> ภารกิจ ตั้งแต่ศูนย์จนสร้างเว็บได้</li>
+        <li><b>รันโค้ดจริง</b> ในเบราว์เซอร์ ไม่ต้องติดตั้ง</li>
+        <li><b>ห้องแข่ง</b> สำหรับทั้งชั้นเรียน</li>
+      </ul>
+    </div>
+    <div class="landing-art" id="landingArt"><img src="img/hero.svg" alt="นักบินอวกาศกำลังเขียนโค้ดบนแล็ปท็อปท่ามกลางดวงดาว" width="440" height="412"></div>
+  </div>
+  <section class="land-sec" aria-labelledby="howTitle">
+    <h2 id="howTitle">{{icon:compass|28}} เล่นอย่างไร</h2>
+    <ol class="steps">
+      <li><img src="img/planet-python.svg" alt="" width="84" height="72"><b>1. เลือกดาวเคราะห์</b><span>แต่ละดาวคือภาษาโปรแกรมหนึ่งภาษา เริ่มจาก Python Planet ถ้ายังไม่เคยเขียนโค้ด</span></li>
+      <li><img src="img/codebot.svg" alt="" width="60" height="66"><b>2. ทำภารกิจ</b><span>อ่านบทเรียนสั้นๆ เขียนโค้ด กดรัน ระบบตรวจคำตอบทันที ติดตรงไหน CodeBot ช่วยใบ้ทีละขั้น</span></li>
+      <li><span class="step-ico">{{icon:award|52}}</span><b>3. เก็บ EXP และเหรียญ</b><span>ปลดล็อกของตกแต่งตัวละคร ไต่ตารางอันดับรายสัปดาห์ และแข่งกับเพื่อนในห้องเรียน</span></li>
+    </ol>
+  </section>
+
+  <section class="land-sec" aria-labelledby="sampleTitle">
+    <h2 id="sampleTitle">{{icon:eye|28}} ตัวอย่างภารกิจแรก</h2>
+    <div class="sample">
+      <div class="sample-mission">
+        <div class="sm-tag">{{lang:python|28}} PYTHON PLANET · ภารกิจ 2-1</div>
+        <h3>สวัสดี Python</h3>
+        <p><b>เป้าหมาย:</b> ทำให้โปรแกรมแสดงข้อความ <code>สวัสดี Python</code> ออกทางหน้าจอ</p>
+        <div class="sm-meta"><span>★☆☆ ง่าย</span><span>+30 EXP</span></div>
+      </div>
+      <div class="sample-code">
+        <pre><code><span class="c-fn">print</span>(<span class="c-str">"สวัสดี Python"</span>)</code></pre>
+        <div class="sample-out"><span class="so-label">ผลลัพธ์</span>สวัสดี Python</div>
+        <div class="sample-bot"><img src="img/codebot.svg" alt="CodeBot" width="40" height="44"><span>เยี่ยมมาก! ภารกิจสำเร็จ <b>+30 EXP</b></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="land-sec" aria-labelledby="worldsTitle">
+    <h2 id="worldsTitle">{{icon:orbit|28}} {{N_LANGS}} ภาษา {{STAGES}} ภารกิจ</h2>
+    <ul class="land-worlds" aria-label="ภาษาที่มีใน Code Quest">
+      {{LANG_CARDS}}
+    </ul>
+  </section>
+
+  <section class="land-sec" aria-labelledby="whoTitle">
+    <h2 id="whoTitle">{{icon:graduation|28}} เหมาะกับใคร</h2>
+    <div class="who">
+      <div><b>นักเรียนและมือใหม่</b><p>เริ่มจากศูนย์ได้ ทุกภารกิจมีบทเรียนและคำใบ้ ผิดได้ไม่จำกัด</p></div>
+      <div><b>ครูผู้สอน</b><p>สร้างห้องแข่ง ตั้งเวลาและระดับความยาก นักเรียนเข้าด้วยรหัสห้อง 5 ตัว ไม่ต้องสมัครสมาชิก</p></div>
+      <div><b>คนทั่วไป</b><p>ฝึกทีละนิดวันละ 3 ภารกิจ เล่นได้ทั้งบนคอมพิวเตอร์และมือถือ</p></div>
+    </div>
+    <div class="land-final">
+      <button class="btn-hero" id="ctaStart2">{{icon:rocket}}<span>เริ่มผจญภัยฟรี</span></button>
+    </div>
+  </section>
+</main>
+
+
+<!-- หน้าจอของแอป: อยู่ใน <template> จึงไม่ถูกแสดงหรืออ่านจนกว่า JavaScript จะเปิดใช้ (HTML ดิบสำหรับ search engine / เครื่องมืออ่านหน้าเว็บ จะเห็นเฉพาะหน้าแรก) -->
+<template data-mount>
+<!-- Boot screen -->
+<div class="boot" id="boot">
+  <div class="inner">
+    <div class="logo-big pixel">CODE<span> QUEST</span></div>
+    <div class="loader"><i></i></div>
+    <div class="status" id="bootStatus">กำลังเตรียมโลกแห่งการเขียนโค้ด...</div>
+  </div>
+</div>
+
+<!-- Auth overlay -->
+<div class="overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="auth-card">
+    <div class="logo-mid pixel">CODE<span> QUEST</span></div>
+    <h2 class="auth-title" id="authTitle">เข้าสู่ระบบ</h2>
+    <div class="sub" id="authSub">ล็อกอินเพื่อเก็บ EXP ขึ้นตารางอันดับ และเล่นต่อได้ทุกอุปกรณ์</div>
+    <div class="tabs" role="tablist">
+      <button id="tabLogin" class="on" role="tab" aria-selected="true" type="button">เข้าสู่ระบบ</button>
+      <button id="tabRegister" role="tab" aria-selected="false" type="button">สมัครสมาชิก</button>
+    </div>
+    <div class="google-block hide" id="googleBlock">
+      <a class="btn-google" id="googleBtn" href="/api/auth/google/start?mode=login"><svg class="g-logo" viewBox="0 0 48 48" width="20" height="20" aria-hidden="true" focusable="false"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span id="googleBtnText">ดำเนินการต่อด้วย Google</span></a>
+      <div class="or-divider" role="separator"><span>หรือ</span></div>
+    </div>
+    <div class="form-msg" id="authErr"></div>
+    <div class="field" id="fieldName" style="display:none">
+      <label for="inName">ชื่อผู้เล่น (จะแสดงบนตารางอันดับ)</label>
+      <input id="inName" type="text" maxlength="24" placeholder="เช่น นักผจญภัยสายโค้ด" autocomplete="nickname">
+    </div>
+    <div class="field">
+      <label for="inEmail">อีเมล</label>
+      <input id="inEmail" type="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label for="inPass">รหัสผ่าน</label>
+      <input id="inPass" type="password" placeholder="รหัสผ่านของคุณ" autocomplete="current-password" maxlength="128">
+      <div class="field hide" id="fieldPass2"><label for="inPass2">ยืนยันรหัสผ่าน</label><input id="inPass2" type="password" autocomplete="new-password" maxlength="128"></div>
+      <div class="pw-hint" id="pwHint" style="display:none">อย่างน้อย 10 ตัวอักษร — แนะนำให้ใช้ประโยคยาวๆ ที่จำง่าย เช่น <i>ชอบกินมะม่วงตอนเช้า2026</i> · ใช้ตัวจัดการรหัสผ่านหรือวางรหัส (paste) ได้</div>
+    </div>
+    <button class="auth-submit" id="authSubmit">เข้าสู่ระบบ</button>
+    <button class="guest" id="guestBtn">เล่นแบบผู้เยี่ยมชม (สมัครบัญชีภายหลังเพื่อบันทึกความคืบหน้าได้)</button>
+    <div class="sync-note">การสมัครหรือเข้าสู่ระบบถือว่ายอมรับ<a href="/terms" target="_blank" rel="noopener">ข้อกำหนดการใช้งาน</a>และ<a href="/privacy" target="_blank" rel="noopener">นโยบายความเป็นส่วนตัว</a></div>
+  </div>
+</div>
+
+<div class="overlay" id="profileOverlay" role="dialog" aria-modal="true" aria-label="แก้ไขโปรไฟล์">
+  <div class="auth-card">
+    <div class="logo-mid">{{icon:user|26}} โปรไฟล์ของฉัน</div>
+    <div class="sub">แก้ไขข้อมูลส่วนตัวของคุณ</div>
+    <div class="form-msg" id="pfMsg"></div>
+    <div class="char-pick">
+      <div class="cp-head">เลือกตัวละคร <span class="muted">(ของตกแต่งปลดล็อกเมื่อเลเวลสูงขึ้น)</span></div>
+      <div class="cp-row" id="cpChars"></div>
+      <div class="cp-row" id="cpAcc"></div>
+    </div>
+    <div class="avatar-edit">
+      <div class="avatar-preview" id="pfAvatar">{{icon:user|32}}</div>
+      <div class="avatar-actions">
+        <button type="button" class="mini-btn" id="pfPick">{{icon:camera|16}}<span>เลือกรูป...</span></button>
+        <button type="button" class="mini-btn ghost" id="pfClear">ลบรูป</button>
+        <div class="avatar-note">รองรับ PNG, JPG, WEBP — ระบบจะย่อรูปให้อัตโนมัติ</div>
+      </div>
+      <input id="pfFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none">
+    </div>
+    <div class="field">
+      <label for="pfName">ชื่อผู้เล่น</label>
+      <input id="pfName" type="text" maxlength="30">
+    </div>
+    <div class="divider">เปลี่ยนรหัสผ่าน (เว้นว่างไว้ถ้าไม่ต้องการเปลี่ยน)</div>
+    <div class="field">
+      <label for="pfCur">รหัสผ่านปัจจุบัน</label>
+      <input id="pfCur" type="password" autocomplete="current-password">
+    </div>
+    <div class="field">
+      <label for="pfNew">รหัสผ่านใหม่</label>
+      <input id="pfNew" type="password" placeholder="อย่างน้อย 10 ตัวอักษร" autocomplete="new-password" maxlength="128">
+    </div>
+    <button class="auth-submit" id="pfSave">บันทึก</button>
+    <button class="guest" id="pfCancel">ปิดหน้าต่างนี้</button>
+  </div>
+</div>
+
+<div class="ver-warn" id="verWarn" role="status">{{icon:refresh|18}} ระบบกำลังอัปเดตเป็นเวอร์ชันใหม่ กรุณารีเฟรชอีกครั้ง <button type="button" class="mini-btn" id="verReload">รีเฟรชเลย</button></div>
+<div class="verify-banner hide" id="verifyBanner" role="status">{{icon:info|18}} <span><b>ยืนยันอีเมลของคุณ</b> — เพื่อขึ้นตารางอันดับและกู้บัญชีได้ในอนาคต</span> <button type="button" class="mini-btn" id="verifyOpen">{{icon:check-circle|16}}<span>กรอกรหัสยืนยัน</span></button></div>
+<div class="overlay" id="linkOverlay" role="dialog" aria-modal="true" aria-labelledby="linkTitle">
+  <div class="auth-card link-card">
+    <h2 class="auth-title" id="linkTitle">อีเมลนี้มีบัญชีอยู่แล้ว</h2>
+    <p class="sub" id="linkSub"></p>
+    <button type="button" class="btn-hero link-full" id="linkWithPassword">{{icon:login|18}}<span>เข้าสู่ระบบด้วยรหัสผ่านเพื่อเชื่อม Google</span></button>
+    <div class="claim-box hide" id="claimBox">
+      <p class="muted">ไม่มีรหัสผ่าน หรือบัญชีนี้ไม่ได้สมัครโดยคุณ? บัญชีนี้ยังไม่ยืนยันอีเมล และ Google ยืนยันแล้วว่าคุณเป็นเจ้าของอีเมลนี้
+        — ระบบจะเชื่อม Google <b>ลบรหัสผ่านเดิม และออกจากระบบทุกเครื่อง</b> เพื่อความปลอดภัย (ความคืบหน้าในบัญชียังอยู่ครบ)</p>
+      <button type="button" class="btn-ghost link-full" id="linkClaim">{{icon:shield|18}}<span>ยืนยันความเป็นเจ้าของด้วย Google</span></button>
+    </div>
+    <div class="form-msg" id="linkMsg" role="alert"></div>
+    <button type="button" class="link-btn inline" id="linkCancel">ยกเลิก</button>
+  </div>
+</div>
+<div class="overlay" id="verifyOverlay" role="dialog" aria-modal="true" aria-labelledby="verifyTitle">
+  <div class="auth-card verify-card">
+    <h2 class="auth-title" id="verifyTitle">ยืนยันอีเมล</h2>
+    <p class="sub" id="verifySub">เราส่งรหัส 6 หลักไปที่อีเมลของคุณแล้ว (อาจอยู่ในโฟลเดอร์สแปม)</p>
+    <div class="field"><label for="verifyCode">รหัสยืนยัน</label>
+      <input id="verifyCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000"></div>
+    <div class="form-msg" id="verifyMsg" role="alert"></div>
+    <div class="change-box hide" id="changeBox">
+      <div class="field"><label for="chEmail">อีเมลใหม่</label><input id="chEmail" type="email" autocomplete="email" maxlength="254"></div>
+      <div class="field"><label for="chPass">รหัสผ่านของบัญชีนี้</label><input id="chPass" type="password" autocomplete="current-password" maxlength="128"></div>
+      <button type="button" class="btn-ghost link-full" id="chSubmit">บันทึกอีเมลใหม่และส่งรหัส</button>
+    </div>
+    <button type="button" class="btn-hero verify-submit" id="verifySubmit">{{icon:check-circle|18}}<span>ยืนยันอีเมล</span></button>
+    <div class="verify-actions">
+      <button type="button" class="link-btn inline" id="verifyResend">ส่งรหัสใหม่</button>
+      <button type="button" class="link-btn inline" id="verifyChangeOpen">เปลี่ยนอีเมล</button>
+      <button type="button" class="link-btn inline" id="verifyLater">ไว้ทีหลัง</button>
+    </div>
+  </div>
+</div>
+<div class="guest-banner hide" id="guestBanner" role="status">{{icon:guest|18}} <span><b>โหมดผู้เยี่ยมชม</b> — เล่นได้เต็มที่ ความคืบหน้าเก็บไว้ในเครื่องนี้ สมัครบัญชีภายหลังเพื่อบันทึกถาวร</span> <button type="button" class="mini-btn" id="guestSignup">{{icon:user-plus|16}}<span>สมัครฟรี</span></button></div>
+<!-- ═══ Screen: แดชบอร์ด ═══ -->
+<section class="screen hide" id="homeScreen">
+  <div class="home-grid">
+    <div class="card continue-card" id="continueCard"></div>
+    <div class="card daily-card" id="dailyCard"></div>
+  </div>
+  <h2 class="home-h">{{icon:orbit|26}} เลือกภาษาที่จะผจญภัย</h2>
+  <div class="world-grid" id="homeWorlds"></div>
+  <div class="card badges-card">
+    <div class="card-head"><h3>{{icon:award|22}} เหรียญรางวัลของคุณ</h3><span class="muted" id="badgeCount"></span></div>
+    <div class="badge-row" id="badgeRow"></div>
+  </div>
+</section>
+
+
+<!-- ═══ Screen: ตั้งค่าบัญชี (v34) ═══ -->
+<section class="screen hide" id="settingsScreen" aria-labelledby="stTitle">
+  <div class="st-head">
+    <h1 class="sec-title" id="stTitle">{{icon:settings|30}} ตั้งค่า</h1>
+    <span class="st-status" id="stStatus" role="status" aria-live="polite"></span>
+  </div>
+  <div class="st-layout">
+    <nav class="st-nav" id="stNav" aria-label="หมวดการตั้งค่า"></nav>
+    <div class="st-body">
+      <div class="st-card st-guest hide" id="stGuest">
+        <h2>{{icon:user|22}} จัดการบัญชี</h2>
+        <p>สมัครหรือเข้าสู่ระบบเพื่อบันทึกความคืบหน้า ดูอุปกรณ์ที่เข้าสู่ระบบ และจัดการข้อมูลของคุณ — การตั้งค่าการแสดงผลด้านล่างใช้ได้เลยและจะบันทึกในเครื่องนี้</p>
+        <button type="button" class="btn-hero" id="stGuestSignup">{{icon:user-plus}}<span>สมัครหรือเข้าสู่ระบบ</span></button>
+      </div>
+
+      <section class="st-card acct-only" id="st-profile" aria-labelledby="h-profile">
+        <h2 id="h-profile">{{icon:user|22}} โปรไฟล์</h2>
+        <div class="st-profile" id="stProfile"></div>
+      </section>
+
+      <section class="st-card acct-only" id="st-security" aria-labelledby="h-security">
+        <h2 id="h-security">{{icon:shield|22}} ความปลอดภัย</h2>
+        <div class="st-row" id="stEmailRow"></div>
+        <h3 id="stPwTitle">เปลี่ยนรหัสผ่าน</h3>
+        <form class="st-form" id="stPwForm" autocomplete="on" novalidate>
+          <input type="text" name="username" autocomplete="username" id="stPwUser" class="visually-hidden" tabindex="-1" aria-hidden="true">
+          <div class="field" id="stCurWrap"><label for="stCur">รหัสผ่านปัจจุบัน</label><input id="stCur" type="password" autocomplete="current-password" maxlength="128"></div>
+          <div class="field"><label for="stNew">รหัสผ่านใหม่</label><input id="stNew" type="password" autocomplete="new-password" maxlength="128" aria-describedby="stPwHint"></div>
+          <div class="field"><label for="stNew2">ยืนยันรหัสผ่านใหม่</label><input id="stNew2" type="password" autocomplete="new-password" maxlength="128"></div>
+          <p class="st-hint" id="stPwHint">อย่างน้อย 10 ตัวอักษร ไม่ใช่ตัวเลขล้วน — หลังเปลี่ยน อุปกรณ์อื่นทั้งหมดจะถูกออกจากระบบ</p>
+          <div class="form-msg" id="stPwMsg" role="alert"></div>
+          <button type="submit" class="btn-hero" id="stPwSave">{{icon:check|18}}<span>บันทึกรหัสผ่าน</span></button>
+        </form>
+      </section>
+
+      <section class="st-card acct-only" id="st-linked" aria-labelledby="h-linked">
+        <h2 id="h-linked">{{icon:globe|22}} บัญชีที่เชื่อมต่อ</h2>
+        <div id="stLinked"></div>
+      </section>
+
+      <section class="st-card acct-only" id="st-devices" aria-labelledby="h-devices">
+        <h2 id="h-devices">{{icon:monitor|22}} อุปกรณ์ที่เข้าสู่ระบบ</h2>
+        <p class="st-hint">แสดงชนิดอุปกรณ์และเบราว์เซอร์เท่านั้น — ระบบไม่เก็บตำแหน่งหรือหมายเลข IP</p>
+        <ul class="st-devices" id="stDevices" aria-live="polite"></ul>
+        <button type="button" class="btn-ghost" id="stRevokeOthers">{{icon:logout|18}}<span>ออกจากระบบอุปกรณ์อื่นทั้งหมด</span></button>
+      </section>
+
+      <section class="st-card acct-only" id="st-privacy" aria-labelledby="h-privacy">
+        <h2 id="h-privacy">{{icon:eye|22}} ความเป็นส่วนตัว</h2>
+        <div id="stPrivacy"></div>
+      </section>
+
+      <section class="st-card" id="st-notify" aria-labelledby="h-notify">
+        <h2 id="h-notify">{{icon:info|22}} การแจ้งเตือน</h2>
+        <div id="stNotify"></div>
+      </section>
+
+      <section class="st-card" id="st-display" aria-labelledby="h-display">
+        <h2 id="h-display">{{icon:eye|22}} การแสดงผลและการเข้าถึง</h2>
+        <div id="stDisplay"></div>
+      </section>
+
+      <section class="st-card" id="st-editor" aria-labelledby="h-editor">
+        <h2 id="h-editor">{{icon:code|22}} Code Editor</h2>
+        <div id="stEditor"></div>
+        <pre class="st-editor-preview" id="stEditorPreview" aria-label="ตัวอย่างการแสดงผลของ editor"></pre>
+      </section>
+
+      <section class="st-card" id="st-region" aria-labelledby="h-region">
+        <h2 id="h-region">{{icon:globe|22}} ภาษาและภูมิภาค</h2>
+        <div id="stRegion"></div>
+      </section>
+
+      <section class="st-card acct-only" id="st-data" aria-labelledby="h-data">
+        <h2 id="h-data">{{icon:file-text|22}} ข้อมูลของฉัน</h2>
+        <p>ดาวน์โหลดสำเนาข้อมูลบัญชี ความคืบหน้า การตั้งค่า ประวัติห้องแข่ง และอุปกรณ์ เป็นไฟล์ JSON — ไม่มีรหัสผ่านหรือข้อมูลลับของระบบ</p>
+        <div class="field st-reauth"><label for="stExportPw">ยืนยันด้วยรหัสผ่าน</label><input id="stExportPw" type="password" autocomplete="current-password" maxlength="128"></div>
+        <div class="form-msg" id="stExportMsg" role="alert"></div>
+        <button type="button" class="btn-ghost" id="stExport">{{icon:file-text|18}}<span>ดาวน์โหลดข้อมูลของฉัน</span></button>
+      </section>
+
+      <section class="st-card st-danger acct-only" id="st-danger" aria-labelledby="h-danger">
+        <h2 id="h-danger">{{icon:warning|22}} โซนอันตราย</h2>
+        <div class="dz-item">
+          <div><b>ออกจากระบบทุกอุปกรณ์</b><p>รวมอุปกรณ์นี้ด้วย ต้องเข้าสู่ระบบใหม่ทุกเครื่อง</p></div>
+          <button type="button" class="btn-danger" id="stLogoutAll">{{icon:logout|16}}<span>ออกจากระบบทุกอุปกรณ์</span></button>
+        </div>
+        <div class="dz-item dz-delete">
+          <div><b>ลบบัญชีถาวร</b><p>ลบบัญชี ความคืบหน้า EXP การเชื่อม Google อุปกรณ์ และการตั้งค่าทั้งหมด <b>ย้อนกลับไม่ได้</b> — ชื่อในประวัติห้องแข่งจะเปลี่ยนเป็น “ผู้เล่นที่ลบบัญชี” แนะนำให้ดาวน์โหลดข้อมูลก่อน</p></div>
+          <button type="button" class="btn-danger" id="stDeleteOpen">{{icon:trash|16}}<span>ลบบัญชี…</span></button>
+        </div>
+        <form class="st-form st-delete-form hide" id="stDeleteForm" novalidate>
+          <div class="field st-reauth"><label for="stDelPw">รหัสผ่าน</label><input id="stDelPw" type="password" autocomplete="current-password" maxlength="128"></div>
+          <div class="field"><label for="stDelConfirm">พิมพ์คำว่า <b>ลบบัญชี</b> เพื่อยืนยัน</label><input id="stDelConfirm" type="text" autocomplete="off" maxlength="20"></div>
+          <div class="form-msg" id="stDelMsg" role="alert"></div>
+          <div class="st-actions"><button type="submit" class="btn-danger solid" id="stDelete">{{icon:trash|16}}<span>ลบบัญชีถาวร</span></button>
+            <button type="button" class="btn-ghost" id="stDeleteCancel">ยกเลิก</button></div>
+        </form>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="screen hide" id="learnScreen">
+  <button class="path-card" id="pathCard" title="แตะเพื่อเปลี่ยนหัวข้อ">
+    <div class="ph-top">
+      <span class="ph-eyebrow" id="phEyebrow">PYTHON</span>
+      <span class="ph-change">เปลี่ยนหัวข้อ ▾</span>
+    </div>
+    <h2 class="ph-title" id="phTitle"></h2>
+    <div class="ph-bar"><i id="phFill"></i></div>
+  </button>
+  <div class="path-wrap" id="pathWrap"></div>
+</section>
+
+<!-- ═══ Screen: เลือกภาษา ═══ -->
+<section class="screen hide" id="langScreen">
+  <div class="sec-eyebrow pixel">CHOOSE YOUR WORLD</div>
+  <h1 class="sec-title">{{icon:orbit|30}} เลือกภาษาที่จะผจญภัย</h1>
+  <p class="sec-sub">แต่ละดาวคือภาษาโปรแกรมหนึ่งภาษา มีเส้นทางภารกิจและบอสรออยู่ — ถ้าเพิ่งเริ่ม แนะนำ Python Planet</p>
+  <div class="world-grid" id="langGrid"></div>
+</section>
+
+<!-- ═══ Screen: เลือกหัวข้อ ═══ -->
+<section class="screen hide" id="topicScreen">
+  <button class="back" id="backToLang">{{icon:back|18}}<span>เปลี่ยนภาษา</span></button>
+  <div class="sec-eyebrow pixel" id="topicEyebrow">PYTHON COURSE</div>
+  <h1 class="sec-title" id="topicTitle">เลือกหัวข้อที่อยากเรียน</h1>
+  <p class="sec-sub">เดินตามเส้นทางจากหน่วยแรกจนถึงภารกิจบอส — การ์ดแต่ละหน่วยบอกความคืบหน้าและเริ่มได้ทันที</p>
+  <div class="quest-map" id="questMap"></div>
+  <div class="qm-panel" id="qmPanel" aria-live="polite"></div>
+  <div class="topic-grid hide" id="topicGrid"></div>
+</section>
+
+<!-- ═══ Screen: บทเรียน ═══ -->
+<section class="screen hide" id="lessonScreen">
+  <button class="back" id="backFromLesson">{{icon:back|18}}<span>กลับ</span></button>
+  <div class="sec-eyebrow pixel">LESSON</div>
+  <h1 class="sec-title" id="lsTitle"></h1>
+  <p class="sec-sub" id="lsBlurb"></p>
+  <div id="lsBody"></div>
+  <button class="ls-start" id="lsStart">เข้าใจแล้ว เริ่มทำแบบฝึกหัด →</button>
+</section>
+
+<!-- ═══ Screen: ตารางอันดับ ═══ -->
+<section class="screen hide" id="roomScreen">
+  <div class="card room-hero">
+    <h2>{{icon:battle|28}} โหมดแข่งขัน</h2>
+    <p>สร้างห้องแล้วให้เพื่อนเข้าด้วยรหัสห้อง ทุกคนได้โจทย์ชุดเดียวกัน ใครทำผ่านเร็วกว่าได้คะแนนมากกว่า — เข้าร่วมได้แม้ไม่ได้ล็อกอิน</p>
+  </div>
+
+  <div id="roomEntry">
+    <div class="room-grid">
+      <div class="card">
+        <h3>สร้างห้องใหม่</h3>
+        <div class="field"><label for="rcName">ชื่อของคุณ (โฮสต์)</label><input id="rcName" type="text" maxlength="30" placeholder="เช่น ครูมะลิ"></div>
+        <div class="field"><label for="rcTitle">ชื่อห้อง</label><input id="rcTitle" type="text" maxlength="60" placeholder="เช่น สอบกลางภาค ม.5/1"></div>
+        <div class="field"><label id="rcLangsLabel">ภาษาที่ใช้แข่ง <span class="muted">(เลือกได้หลายภาษา)</span></label>
+          <div class="chip-picks" id="rcLangs">
+            <label class="chip-pick"><input type="checkbox" value="python" checked> Python</label>
+            <label class="chip-pick"><input type="checkbox" value="c"> C</label>
+            <label class="chip-pick"><input type="checkbox" value="html"> HTML5</label>
+            <label class="chip-pick"><input type="checkbox" value="css"> CSS3</label>
+            <label class="chip-pick"><input type="checkbox" value="js"> JavaScript</label>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="rcCount">จำนวนข้อ</label><input id="rcCount" type="number" min="3" max="30" value="10"></div>
+          <div class="field"><label for="rcTime">เวลาแข่ง</label>
+            <select id="rcTime"><option value="0">ไม่จำกัด</option><option value="5">5 นาที</option><option value="10" selected>10 นาที</option><option value="15">15 นาที</option><option value="30">30 นาที</option></select></div>
+        </div>
+        <div class="field"><label>ระดับความยาก</label>
+          <div class="chip-picks" id="rcLevels">
+            <label class="chip-pick"><input type="checkbox" value="1" checked> ★ ง่าย</label>
+            <label class="chip-pick"><input type="checkbox" value="2" checked> ★★ ปานกลาง</label>
+            <label class="chip-pick"><input type="checkbox" value="3"> ★★★ ท้าทาย</label>
+          </div>
+        </div>
+        <label class="switch-row"><input type="checkbox" id="rcHints" checked> อนุญาตให้ใช้คำใบ้ระหว่างแข่ง</label>
+        <button class="auth-submit" id="rcCreate">สร้างห้อง</button>
+      </div>
+
+      <div class="card">
+        <h3>เข้าร่วมห้อง</h3>
+        <div class="field"><label for="rjName">ชื่อของคุณ</label><input id="rjName" type="text" maxlength="30" placeholder="เช่น ฟ้า"></div>
+        <div class="field"><label for="rjCode">รหัสห้อง 5 ตัว</label><input id="rjCode" type="text" maxlength="5" placeholder="เช่น K7QMD" class="code-input"></div>
+        <button class="auth-submit" id="rjJoin">เข้าร่วม</button>
+        <div class="form-msg" id="roomMsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="roomLobby" class="hide" hidden>
+    <div class="card">
+      <div class="room-code-row">
+        <div>
+          <div class="rc-label">รหัสห้อง</div>
+          <div class="rc-code-row"><div class="rc-code" id="rlCode" aria-live="polite"></div><button type="button" class="icon-btn copy-btn" id="rlCopy" aria-label="คัดลอกรหัสห้อง">{{icon:copy}}</button></div>
+        </div>
+        <div class="rc-info">
+          <h3 id="rlTitle">ห้องแข่ง</h3>
+          <p id="rlMeta">กำลังรอผู้เล่น...</p>
+        </div>
+      </div>
+      <div class="room-actions">
+        <button class="auth-submit" id="rlStart" style="display:none">เริ่มการแข่งขัน</button>
+        <button class="mini-btn ghost" id="rlEnd" style="display:none">ปิดห้อง/ประกาศผล</button>
+        <button class="mini-btn ghost" id="rlLeave">{{icon:door|16}}<span>ออกจากห้อง</span></button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>กระดานคะแนนสด</h3>
+      <div id="rlBoard" class="room-board"></div>
+    </div>
+  </div>
+</section>
+
+<section class="screen hide" id="boardScreen">
+  <button class="back" id="backFromBoard">← กลับ</button>
+  <div class="sec-eyebrow pixel">LEADERBOARD</div>
+  <h1 class="sec-title">{{icon:trophy|30}} ตารางอันดับนักผจญภัย</h1>
+  <p class="sec-sub">อันดับรายสัปดาห์เริ่มใหม่ทุก 7 วัน — ผู้เล่นใหม่ก็ขึ้นโพเดียมได้!</p>
+  <div class="seg" role="tablist" id="boardSeg">
+    <button role="tab" aria-selected="true" class="on" data-period="week">{{icon:calendar|18}}<span>สัปดาห์นี้</span></button>
+    <button role="tab" aria-selected="false" data-period="all">{{icon:globe|18}}<span>ตลอดกาล</span></button>
+  </div>
+  <div class="podium" id="podium"></div>
+  <div class="board" id="boardList"></div>
+  <div class="my-rank" id="myRank"></div>
+</section>
+
+<!-- ═══ Screen: เล่นเกม ═══ -->
+<section class="hide game-layout" id="gameScreen">
+  <section class="card mission">
+    <button class="back" id="backToTopic">{{icon:back|18}}<span>แผนที่ภารกิจ</span></button>
+    <button class="back" id="lessonBtn">{{icon:book|18}}<span>ทบทวนบทเรียน</span></button>
+    <div class="stage-tag pixel" id="stageTag"></div>
+    <h2 id="mTitle">กำลังโหลดภารกิจ...</h2>
+    <p id="mDesc"></p>
+    <div class="goal" id="mGoal"></div>
+    <div class="stdin-box hide" id="stdinBox">{{icon:keyboard|18}} ระบบจะป้อนข้อมูลให้ตามลำดับ: <span id="stdinVals"></span></div>
+    <div class="reward"><span class="coin"></span><span id="mReward"></span></div>
+    <button class="hint-btn" id="hintBtn">{{icon:hint|18}}<span>ขอคำใบ้</span></button>
+    <div class="hint-box" id="hintBox"></div>
+
+    <div class="robot-zone">
+      <div class="robot" id="robot">
+        <svg width="86" height="92" viewBox="0 0 86 92" fill="none" aria-hidden="true">
+          <rect x="18" y="20" width="50" height="40" rx="10" fill="#e9e4fb"/>
+          <rect x="18" y="20" width="50" height="40" rx="10" stroke="#7b5cf0" stroke-width="2.5"/>
+          <rect x="27" y="32" width="12" height="12" rx="3" fill="#7b5cf0"/>
+          <rect x="47" y="32" width="12" height="12" rx="3" fill="#7b5cf0"/>
+          <rect x="34" y="50" width="18" height="4" rx="2" fill="#f5b942"/>
+          <line x1="43" y1="20" x2="43" y2="8" stroke="#7b5cf0" stroke-width="2.5"/>
+          <circle cx="43" cy="6" r="4" fill="#f5b942"/>
+          <rect x="26" y="64" width="34" height="18" rx="7" fill="#f3f1fd" stroke="#cfc3f5" stroke-width="2"/>
+          <rect x="10" y="62" width="10" height="6" rx="3" fill="#7b5cf0"/>
+          <rect x="66" y="62" width="10" height="6" rx="3" fill="#7b5cf0"/>
+        </svg>
+      </div>
+      <div class="speech" id="speech"></div>
+    </div>
+
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <section class="card quiz-card hide" id="quizCard">
+    <div class="quiz-head">
+      <span class="quiz-badge">{{icon:quiz|18}} แบบทดสอบทฤษฎี</span>
+      <span class="quiz-note">ตอบถูกครบทุกข้อเพื่อผ่านภารกิจ · ตอบผิดได้ไม่จำกัด แก้แล้วส่งใหม่ได้เลย</span>
+    </div>
+    <div id="quizList"></div>
+    <div class="quiz-result" id="quizResult"></div>
+    <div class="quiz-actions">
+      <button class="run" id="qSubmit">ส่งคำตอบ</button>
+      <button class="next" id="qNext" style="display:none">ภารกิจถัดไป →</button>
+    </div>
+  </section>
+  <section class="card editor-card">
+    <div class="editor-head">
+      <div class="traffic">
+        <i style="background:#ef5b6f"></i><i style="background:#f5b942"></i><i style="background:#27c07d"></i>
+      </div>
+      <span class="filename" id="fileName">stage_1.py</span>
+      <span class="rt-chip" id="rtChip" role="status" aria-live="polite"></span>
+      <span class="save-state" id="saveState" aria-live="polite"></span>
+      <div class="room-bar hide" id="roomBar"></div>
+      <div class="actions">
+        <button class="ghost" id="resetBtn">{{icon:reset|16}}<span>รีเซ็ต</span></button>
+        <button class="ghost" id="runOwnBtn" disabled title="รันโดยพิมพ์ค่า input เอง (ไม่ตรวจคำตอบ)">{{icon:keyboard|16}}<span>ป้อนค่าเอง</span></button>
+        <button class="ghost run-btn" id="runBtn" disabled data-state="loading" title="รันดูผลลัพธ์ (Ctrl + Enter) — ยังไม่ตรวจคำตอบ">{{icon:spinner|18}}<span>กำลังเตรียมตัวรัน...</span></button>
+        <button class="run" id="submitBtn" disabled title="ส่งคำตอบให้ระบบตรวจ (Ctrl + Shift + Enter)">{{icon:check-circle|18}}<span>ส่งคำตอบ</span></button>
+      </div>
+    </div>
+    <textarea class="code" id="code" spellcheck="false"></textarea>
+    <div class="banner" id="banner">
+      <span id="bannerText"></span>
+      <span class="xp-pop" id="xpPop"></span>
+      <button class="next" id="nextBtn" style="display:none">ภารกิจถัดไป →</button>
+    </div>
+    <div class="console">
+      <span class="tag" id="outTag">ผลลัพธ์จากโปรแกรม</span>
+      <div class="preview-wrap" id="previewWrap" style="display:none"></div>
+      <pre id="out"><span class="empty">ยังไม่มีผลลัพธ์ — เขียนโค้ดแล้วกดรันดูสิ</span></pre>
+    </div>
+  </section>
+</section>
+
+<!-- Level up -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="เลเวลอัป">
+  <div class="levelup">
+    <div class="big pixel">LEVEL UP!</div>
+    <div class="num pixel" id="newLvl">2</div>
+    <p id="lvlMsg">สุดยอด! พลังการเขียนโค้ดของคุณเพิ่มขึ้นแล้ว</p>
+    <div class="lvl-unlocks" id="lvlUnlocks"></div>
+    <button id="closeOverlay">{{icon:rocket|18}}<span>ลุยภารกิจต่อ</span></button>
+  </div>
+</div>
+
+<div class="countdown hide" id="countdown" aria-live="assertive"><div class="cd-num" id="cdNum">3</div><div class="cd-sub">เตรียมตัว!</div></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+</template>
+
+<footer class="app-foot">Code Quest · เกมเรียนเขียนโปรแกรมภาษาไทย · <a href="/privacy">นโยบายความเป็นส่วนตัว</a> · <a href="/terms">ข้อกำหนดการใช้งาน</a> · เวอร์ชันเนื้อหา <span id="appVer">{{VERSION}}</span></footer>
+<noscript><p class="noscript">Code Quest ต้องเปิดใช้ JavaScript เพื่อเล่นเกม — กรุณาเปิด JavaScript ในเบราว์เซอร์ของคุณ</p></noscript>
+<script>
+/* เปิดใช้หน้าจอของแอปที่อยู่ใน template (ต้องทำก่อนสคริปต์อื่นทั้งหมด) */
+document.querySelectorAll("template[data-mount]").forEach(function (t) { t.replaceWith(t.content.cloneNode(true)); });
+try { if (localStorage.getItem("cq_had_session") === "1") document.body.classList.add("booting"); } catch (e) {}
+</script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="c-interp.js"></script>
+<script src="web-run.js"></script>
+<script src="vm.js"></script>
+<script src="icon-data.js"></script>
+<script src="rich-text.js"></script>
+<script src="ui-kit.js"></script>
+<script src="stage-icons.js"></script>
+<script src="world-themes.js"></script>
+<script src="art.js"></script>
+<script src="game.js"></script>
+<script src="courses/cpp.js"></script>
+<script src="courses/c2.js"></script>
+<script src="cpp/testgen.js"></script>
+<script src="cpp/cpp-runtime.js"></script>
+<script src="quest.js"></script>
+<script src="quest-social.js"></script>
+<script src="ui.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>
