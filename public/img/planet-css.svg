@@ -1,0 +1,9 @@
+<svg width="140" height="120" viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><radialGradient id="plcss" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#9fdcff"/><stop offset="1" stop-color="#6a4dff"/></radialGradient></defs>
+    <ellipse cx="70" cy="108" rx="40" ry="6" fill="#241f45" opacity=".12"/>
+    <ellipse cx="70" cy="60" rx="62" ry="15" fill="none" stroke="#ff5fa2" stroke-width="6" opacity=".55" transform="rotate(-14 70 60)"/>
+    <circle cx="70" cy="58" r="42" fill="url(#plcss)"/>
+    <path d="M40 38 q18 -14 40 -6" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".35"/>
+    <circle cx="54" cy="66" r="7" fill="#ff5fa2"/><circle cx="54" cy="66" r="3" fill="#ffd166"/><circle cx="84" cy="46" r="8" fill="#ffd166"/><circle cx="84" cy="46" r="3.5" fill="#ff5fa2"/><circle cx="80" cy="78" r="6" fill="#12b981"/><text x="70" y="36" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="12" fill="#fff" opacity=".85">{ }</text>
+    <path d="M9 72 q61 28 122 -26" fill="none" stroke="#ff5fa2" stroke-width="6" opacity=".8" transform="rotate(-2 70 60)"/>
+  </svg>

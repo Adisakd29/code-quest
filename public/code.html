@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<title>ห้องเขียนโค้ด Python — Code Quest</title>
+<meta name="description" content="เขียนและรันโค้ด Python พร้อมเซลล์ Markdown แบบหลายเซลล์ (เหมือน Jupyter Notebook) บนมือถือหรือคอมพิวเตอร์ ไม่ต้องติดตั้ง ไม่ต้องสมัครสมาชิก — เหมาะกับการเรียนในห้องเรียน">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="img/codebot.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- crossorigin: หน้านี้เปิด cross-origin isolation (ให้ input() รอคำตอบได้จริง) จึงต้องโหลดฟอนต์แบบ CORS -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" crossorigin="anonymous">
+<link rel="stylesheet" href="code-lab.css">
+</head>
+<body>
+<div class="nb" id="nb">
+  <header class="nb-top">
+    <a class="nb-icon-btn" href="/" aria-label="กลับหน้าหลัก Code Quest">{{icon:back|20}}</a>
+    <button class="nb-name" id="menuBtn" aria-haspopup="dialog" aria-label="เมนูสมุดโน้ต">
+      {{lang:python|22}}<span class="nb-name-text" id="bookName">สมุดที่ 1</span><span class="nb-dots" aria-hidden="true">⋯</span>
+    </button>
+    <button class="nb-run" id="runBtn" aria-label="รันเซลล์ที่เลือกแล้วไปเซลล์ถัดไป">{{icon:play|18}}<span>รัน</span></button>
+  </header>
+  <div class="nb-status" id="status" role="status" aria-live="polite">กำลังเตรียม Python…</div>
+  <main class="nb-cells" id="cells" aria-label="เซลล์โค้ด"></main>
+</div>
+
+<div class="nb-sheet hide" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="nb-sheet-card">
+    <div class="nb-sheet-head">
+      <h2 id="sheetTitle">สมุดโน้ตของฉัน</h2>
+      <button class="nb-icon-btn" id="sheetClose" aria-label="ปิด">{{icon:close|20}}</button>
+    </div>
+    <div class="nb-actions">
+      <button class="nb-btn" id="runAllBtn">{{icon:play|18}} รันทุกเซลล์</button>
+      <button class="nb-btn" id="restartBtn">{{icon:refresh|18}} รีสตาร์ตเคอร์เนล</button>
+      <button class="nb-btn" id="clearBtn">{{icon:close|18}} ล้างผลลัพธ์</button>
+      <div class="nb-zoom" role="group" aria-label="ขนาดตัวอักษร">
+        <button class="nb-btn" id="zoomOut" aria-label="ตัวอักษรเล็กลง">A−</button>
+        <button class="nb-btn" id="zoomIn" aria-label="ตัวอักษรใหญ่ขึ้น">A+</button>
+      </div>
+    </div>
+    <p class="nb-sheet-note">บันทึกอัตโนมัติในเครื่องนี้ (เบราว์เซอร์นี้เท่านั้น)</p>
+    <ul class="nb-books" id="bookList"></ul>
+    <div class="nb-actions">
+      <button class="nb-btn primary" id="newBookBtn">{{icon:edit|18}} สมุดใหม่</button>
+      <button class="nb-btn" id="renameBtn">{{icon:type|18}} เปลี่ยนชื่อ</button>
+      <button class="nb-btn" id="ipynbBtn">{{icon:file-text|18}} ดาวน์โหลด .ipynb</button>
+      <button class="nb-btn" id="pyBtn">{{icon:file-text|18}} ดาวน์โหลด .py</button>
+    </div>
+  </div>
+</div>
+
+<template id="iconPlay">{{icon:play|16}}</template>
+<template id="iconCopy">{{icon:copy|18}}</template>
+<script src="/vendor/marked/marked.umd.js"></script>
+<script src="code-lab.js"></script>
+</body>
+</html>
